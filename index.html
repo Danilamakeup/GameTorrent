@@ -539,7 +539,7 @@
                                 <span>📥 <span id="downloads-cyberpunk">0</span></span>
                             </div>
                         </div>
-                        <a href="torrents/cyberpunk-2077.torrent" class="download-btn" onclick="downloadGame('cyberpunk')">Скачать торрент</a>
+                        <a href="torrents/cyberpunk-2077.torrent" class="download-btn" onclick="return downloadGame('cyberpunk')">Скачать торрент</a>
                     </div>
                 </div>
                 
@@ -562,7 +562,7 @@
                                 <span>📥 <span id="downloads-elden">0</span></span>
                             </div>
                         </div>
-                        <a href="torrents/Elden-Ring-by-Igruha.torrent" class="download-btn" onclick="downloadGame('elden')">Скачать торрент</a>
+                        <a href="torrents/Elden-Ring-by-Igruha.torrent" class="download-btn" onclick="return downloadGame('elden')">Скачать торрент</a>
                     </div>
                 </div>
                 
@@ -585,7 +585,7 @@
                                 <span>📥 <span id="downloads-witcher">0</span></span>
                             </div>
                         </div>
-                        <a href="torrents/The-Witcher-3-Wild-Hunt-Complete-Edition-by-Igruha.torrent" class="download-btn" onclick="downloadGame('witcher')">Скачать торрент</a>
+                        <a href="torrents/The-Witcher-3-Wild-Hunt-Complete-Edition-by-Igruha.torrent" class="download-btn" onclick="return downloadGame('witcher')">Скачать торрент</a>
                     </div>
                 </div>
                 
@@ -608,7 +608,7 @@
                                 <span>📥 <span id="downloads-reddead">0</span></span>
                             </div>
                         </div>
-                        <a href="torrents/red-dead-redemption-2-by-xatab.torrent" class="download-btn" onclick="downloadGame('reddead')">Скачать торрент</a>
+                        <a href="torrents/red-dead-redemption-2-by-xatab.torrent" class="download-btn" onclick="return downloadGame('reddead')">Скачать торрент</a>
                     </div>
                 </div>
 
@@ -631,7 +631,7 @@
                                 <span>📥 <span id="downloads-metalgear">0</span></span>
                             </div>
                         </div>
-                        <a href="torrents/Metal-Gear-Rising-Revengeance-by-Igruha.torrent" class="download-btn" onclick="downloadGame('metalgear')">Скачать торрент</a>
+                        <a href="torrents/Metal-Gear-Rising-Revengeance-by-Igruha.torrent" class="download-btn" onclick="return downloadGame('metalgear')">Скачать торрент</a>
                     </div>
                 </div>
 
@@ -654,7 +654,7 @@
                                 <span>📥 <span id="downloads-devilmaycry">0</span></span>
                             </div>
                         </div>
-                        <a href="torrents/Devil-May-Cry-5-by-Igruha.torrent" class="download-btn" onclick="downloadGame('devilmaycry')">Скачать торрент</a>
+                        <a href="torrents/Devil-May-Cry-5-by-Igruha.torrent" class="download-btn" onclick="return downloadGame('devilmaycry')">Скачать торрент</a>
                     </div>
                 </div>
 
@@ -677,7 +677,7 @@
                                 <span>📥 <span id="downloads-counterstrike">0</span></span>
                             </div>
                         </div>
-                        <a href="torrents/Counter-strike-1.6.torrent" class="download-btn" onclick="downloadGame('counterstrike')">Скачать торрент</a>
+                        <a href="torrents/Counter-strike-1.6.torrent" class="download-btn" onclick="return downloadGame('counterstrike')">Скачать торрент</a>
                     </div>
                 </div>
 
@@ -700,7 +700,7 @@
                                 <span>📥 <span id="downloads-left4dead">0</span></span>
                             </div>
                         </div>
-                        <a href="torrents/Left-4-Dead-2-by-Igruha.torrent" class="download-btn" onclick="downloadGame('left4dead')">Скачать торрент</a>
+                        <a href="torrents/Left-4-Dead-2-by-Igruha.torrent" class="download-btn" onclick="return downloadGame('left4dead')">Скачать торрент</a>
                     </div>
                 </div>
 
@@ -723,7 +723,7 @@
                                 <span>📥 <span id="downloads-halflife">0</span></span>
                             </div>
                         </div>
-                        <a href="torrents/Half-Life.torrent" class="download-btn" onclick="downloadGame('halflife')">Скачать торрент</a>
+                        <a href="torrents/Half-Life.torrent" class="download-btn" onclick="return downloadGame('halflife')">Скачать торрент</a>
                     </div>
                 </div>
 
@@ -746,7 +746,7 @@
                                 <span>📥 <span id="downloads-halflife2">0</span></span>
                             </div>
                         </div>
-                        <a href="torrents/Half-Life-2-Complete-Edition-by-Igruha.torrent" class="download-btn" onclick="downloadGame('halflife2')">Скачать торрент</a>
+                        <a href="torrents/Half-Life-2-Complete-Edition-by-Igruha.torrent" class="download-btn" onclick="return downloadGame('halflife2')">Скачать торрент</a>
                     </div>
                 </div>
             </div>
@@ -829,32 +829,36 @@
         const initializeData = () => {
             // Пробуем загрузить из localStorage
             try {
-                const savedStats = localStorage.getItem('siteRating');
-                const savedDownloads = localStorage.getItem('gameDownloads');
+                const savedStats = localStorage.getItem('gameTorrentSiteRating');
+                const savedDownloads = localStorage.getItem('gameTorrentDownloads');
                 
                 if (savedStats) {
-                    siteStats = JSON.parse(savedStats);
+                    const parsed = JSON.parse(savedStats);
+                    siteStats = {...siteStats, ...parsed};
                 }
                 if (savedDownloads) {
-                    gameDownloads = JSON.parse(savedDownloads);
+                    const parsed = JSON.parse(savedDownloads);
+                    gameDownloads = {...gameDownloads, ...parsed};
                 }
             } catch (e) {
-                console.log('LocalStorage не доступен, используем данные по умолчанию');
+                console.log('Ошибка загрузки данных, используем значения по умолчанию');
             }
         };
 
         // Сохранение данных
         const saveData = () => {
             try {
-                localStorage.setItem('siteRating', JSON.stringify(siteStats));
-                localStorage.setItem('gameDownloads', JSON.stringify(gameDownloads));
+                localStorage.setItem('gameTorrentSiteRating', JSON.stringify(siteStats));
+                localStorage.setItem('gameTorrentDownloads', JSON.stringify(gameDownloads));
             } catch (e) {
-                console.log('Не удалось сохранить в localStorage');
+                console.log('Не удалось сохранить данные');
             }
         };
 
         // Обновление статистики на странице
         const updateStats = () => {
+            console.log('Обновление статистики...', gameDownloads);
+            
             // Обновляем счетчики скачиваний
             Object.keys(gameDownloads).forEach(game => {
                 const element = document.getElementById(`downloads-${game}`);
@@ -864,9 +868,13 @@
             });
 
             // Обновляем рейтинг сайта
-            document.getElementById('siteRating').textContent = siteStats.averageRating.toFixed(1);
-            document.getElementById('siteVotes').textContent = `${siteStats.voteCount} ${getVotesText(siteStats.voteCount)}`;
-            document.getElementById('siteStars').innerHTML = getStars(siteStats.averageRating);
+            const ratingElement = document.getElementById('siteRating');
+            const votesElement = document.getElementById('siteVotes');
+            const starsElement = document.getElementById('siteStars');
+            
+            if (ratingElement) ratingElement.textContent = siteStats.averageRating.toFixed(1);
+            if (votesElement) votesElement.textContent = `${siteStats.voteCount} ${getVotesText(siteStats.voteCount)}`;
+            if (starsElement) starsElement.innerHTML = getStars(siteStats.averageRating);
 
             // Блокируем кнопки если уже оценили
             if (siteStats.hasRated) {
@@ -877,7 +885,8 @@
                     btn.style.color = '#666687';
                     btn.style.cursor = 'not-allowed';
                 });
-                document.getElementById('alreadyRated').style.display = 'block';
+                const alreadyRated = document.getElementById('alreadyRated');
+                if (alreadyRated) alreadyRated.style.display = 'block';
             }
         };
 
@@ -902,24 +911,30 @@
 
         // Функция скачивания игры
         const downloadGame = (gameId) => {
+            console.log('Скачивание игры:', gameId);
+            
             // Увеличиваем счетчик скачиваний
-            gameDownloads[gameId]++;
-            
-            // Сохраняем данные
-            saveData();
-            
-            // Обновляем отображение
-            updateStats();
+            if (gameDownloads[gameId] !== undefined) {
+                gameDownloads[gameId]++;
+                
+                // Сохраняем данные
+                saveData();
+                
+                // Обновляем отображение
+                updateStats();
 
-            // Показываем уведомление
-            const gameName = document.querySelector(`[data-game="${gameId}"] .game-title`).textContent;
-            alert(`Начинается скачивание "${gameName}"! 🎮\nСкачано раз: ${gameDownloads[gameId]}`);
+                // Показываем уведомление
+                const gameName = document.querySelector(`[data-game="${gameId}"] .game-title`).textContent;
+                alert(`Начинается скачивание "${gameName}"! 🎮\nСкачано раз: ${gameDownloads[gameId]}`);
+            }
 
-            return false;
+            return false; // Предотвращаем переход по ссылке
         };
 
         // Функция оценки сайта (ТОЛЬКО 1 РАЗ!)
         const rateSite = (rating) => {
+            console.log('Оценка сайта:', rating);
+            
             // Проверяем, не оценивал ли уже пользователь
             if (siteStats.hasRated) {
                 alert('Вы уже оценили наш сайт! Спасибо! ❤️');
@@ -939,24 +954,4 @@
             updateStats();
             
             // Показываем благодарность
-            alert(`Спасибо за вашу оценку ${rating} звезд! ⭐\nТеперь вы не сможете изменить оценку!`);
-        };
-
-        // Инициализация при загрузке страницы
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeData();
-            updateStats();
-
-            // Простой поиск
-            document.querySelector('.search-bar button').addEventListener('click', function() {
-                const searchTerm = document.querySelector('.search-bar input').value.toLowerCase();
-                const gameCards = document.querySelectorAll('.game-card');
-                let found = false;
-                
-                gameCards.forEach(card => {
-                    const title = card.querySelector('.game-title').textContent.toLowerCase();
-                    if (title.includes(searchTerm)) {
-                        card.style.display = 'block';
-                        found = true;
-                    } else {
-                        card.style.display =
+            alert(`Спасибо за вашу оценку ${rating} звезд! ⭐\nТеперь вы не сможете изменить оценку!
