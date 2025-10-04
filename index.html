@@ -221,6 +221,32 @@
             margin-bottom: 15px;
             min-height: 60px;
         }
+
+        /* Статистика игры */
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .stars {
+            color: #ffd700;
+        }
+        
+        .downloads {
+            color: #a5a5c7;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
         
         .download-btn {
             display: block;
@@ -240,6 +266,83 @@
         .download-btn:hover {
             background: #ff2a6d;
             transform: translateY(-2px);
+        }
+
+        /* Рейтинг сайта */
+        .site-rating {
+            background: #1a1a2e;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border: 1px solid #05d9e8;
+            text-align: center;
+        }
+
+        .site-rating h3 {
+            color: #05d9e8;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .rating-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .rating-stars {
+            font-size: 32px;
+            color: #ffd700;
+        }
+
+        .rating-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ff2a6d;
+        }
+
+        .rating-votes {
+            color: #a5a5c7;
+            font-size: 16px;
+        }
+
+        .rate-buttons {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .rate-btn {
+            padding: 8px 16px;
+            background: #2d2d44;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .rate-btn:hover {
+            background: #ff2a6d;
+            transform: translateY(-2px);
+        }
+
+        .rate-btn:disabled {
+            background: #1a1a2e;
+            color: #666687;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .already-rated {
+            color: #05d9e8;
+            margin-top: 10px;
+            font-size: 14px;
         }
         
         /* Категории */
@@ -355,6 +458,11 @@
                 padding: 10px 20px;
                 font-size: 14px;
             }
+
+            .rating-display {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -388,12 +496,32 @@
             <a href="#games" class="btn">Смотреть все игры</a>
         </section>
 
+        <!-- Рейтинг сайта -->
+        <section class="site-rating">
+            <h3>⭐ РЕЙТИНГ НАШЕГО САЙТА</h3>
+            <div class="rating-display">
+                <div class="rating-stars" id="siteStars">★★★★★</div>
+                <div class="rating-number" id="siteRating">5.0</div>
+                <div class="rating-votes" id="siteVotes">0 голосов</div>
+            </div>
+            <div class="rate-buttons" id="rateButtons">
+                <button class="rate-btn" onclick="rateSite(5)">⭐ 5 - Отлично!</button>
+                <button class="rate-btn" onclick="rateSite(4)">⭐ 4 - Хорошо</button>
+                <button class="rate-btn" onclick="rateSite(3)">⭐ 3 - Нормально</button>
+                <button class="rate-btn" onclick="rateSite(2)">⭐ 2 - Плохо</button>
+                <button class="rate-btn" onclick="rateSite(1)">⭐ 1 - Ужасно</button>
+            </div>
+            <div class="already-rated" id="alreadyRated" style="display: none;">
+                Вы уже оценили наш сайт! Спасибо! ❤️
+            </div>
+        </section>
+
         <!-- Популярные игры -->
         <section class="popular-games" id="games">
             <h2 class="section-title">Популярные игры</h2>
             <div class="games-grid">
                 <!-- Cyberpunk 2077 -->
-                <div class="game-card">
+                <div class="game-card" data-game="cyberpunk">
                     <img src="images/Обложка_компьютерной_игры_Cyberpunk_2077.jpg" alt="Cyberpunk 2077" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Cyberpunk 2077</h3>
@@ -402,12 +530,21 @@
                             <span class="game-size">65.2 GB</span>
                         </div>
                         <p class="game-description">Ролевая игра в открытом мире от создателей The Witcher.</p>
-                        <a href="torrents/cyberpunk-2077.torrent" class="download-btn" download>Скачать торрент</a>
+                        <div class="game-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★★</span>
+                                <span>4.8/5</span>
+                            </div>
+                            <div class="downloads">
+                                <span>📥 <span id="downloads-cyberpunk">0</span></span>
+                            </div>
+                        </div>
+                        <a href="torrents/cyberpunk-2077.torrent" class="download-btn" onclick="downloadGame('cyberpunk')">Скачать торрент</a>
                     </div>
                 </div>
                 
                 <!-- Elden Ring -->
-                <div class="game-card">
+                <div class="game-card" data-game="elden">
                     <img src="images/Elden_Ring_-_cover.jpg" alt="Elden Ring" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Elden Ring</h3>
@@ -416,12 +553,21 @@
                             <span class="game-size">48.3 GB</span>
                         </div>
                         <p class="game-description">Фэнтезийная ролевая игра от создателей Dark Souls.</p>
-                        <a href="torrents/Elden-Ring-by-Igruha.torrent" class="download-btn" download>Скачать торрент</a>
+                        <div class="game-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★★</span>
+                                <span>4.9/5</span>
+                            </div>
+                            <div class="downloads">
+                                <span>📥 <span id="downloads-elden">0</span></span>
+                            </div>
+                        </div>
+                        <a href="torrents/Elden-Ring-by-Igruha.torrent" class="download-btn" onclick="downloadGame('elden')">Скачать торрент</a>
                     </div>
                 </div>
                 
                 <!-- The Witcher 3 -->
-                <div class="game-card">
+                <div class="game-card" data-game="witcher">
                     <img src="images/The_Witcher_3-_Wild_Hunt_Cover.jpg" alt="The Witcher 3" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">The Witcher 3: Wild Hunt</h3>
@@ -430,12 +576,21 @@
                             <span class="game-size">35.1 GB</span>
                         </div>
                         <p class="game-description">Эпическая ролевая игра в фэнтезийном мире.</p>
-                        <a href="torrents/The-Witcher-3-Wild-Hunt-Complete-Edition-by-Igruha.torrent" class="download-btn" download>Скачать торрент</a>
+                        <div class="game-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★★</span>
+                                <span>4.9/5</span>
+                            </div>
+                            <div class="downloads">
+                                <span>📥 <span id="downloads-witcher">0</span></span>
+                            </div>
+                        </div>
+                        <a href="torrents/The-Witcher-3-Wild-Hunt-Complete-Edition-by-Igruha.torrent" class="download-btn" onclick="downloadGame('witcher')">Скачать торрент</a>
                     </div>
                 </div>
                 
                 <!-- Red Dead Redemption 2 -->
-                <div class="game-card">
+                <div class="game-card" data-game="reddead">
                     <img src="images/Red_Dead_Redemption_2_coverart.jpg" alt="Red Dead Redemption 2" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Red Dead Redemption 2</h3>
@@ -444,12 +599,21 @@
                             <span class="game-size">109 GB</span>
                         </div>
                         <p class="game-description">Приключенческий вестерн от создателей GTA V.</p>
-                        <a href="torrents/red-dead-redemption-2-by-xatab.torrent" class="download-btn" download>Скачать торрент</a>
+                        <div class="game-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★★</span>
+                                <span>4.8/5</span>
+                            </div>
+                            <div class="downloads">
+                                <span>📥 <span id="downloads-reddead">0</span></span>
+                            </div>
+                        </div>
+                        <a href="torrents/red-dead-redemption-2-by-xatab.torrent" class="download-btn" onclick="downloadGame('reddead')">Скачать торрент</a>
                     </div>
                 </div>
 
                 <!-- Metal Gear Rising: Revengeance -->
-                <div class="game-card">
+                <div class="game-card" data-game="metalgear">
                     <img src="images/Metal_Gear_Rising_Revengeance_box_artwork.jpg" alt="Metal Gear Rising: Revengeance" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Metal Gear Rising: Revengeance</h3>
@@ -458,12 +622,21 @@
                             <span class="game-size">25 GB</span>
                         </div>
                         <p class="game-description">Экшен с механикой разрезания всего на части. РЕЖИ И РУБИ!</p>
-                        <a href="torrents/Metal-Gear-Rising-Revengeance-by-Igruha.torrent" class="download-btn" download>Скачать торрент</a>
+                        <div class="game-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★☆</span>
+                                <span>4.5/5</span>
+                            </div>
+                            <div class="downloads">
+                                <span>📥 <span id="downloads-metalgear">0</span></span>
+                            </div>
+                        </div>
+                        <a href="torrents/Metal-Gear-Rising-Revengeance-by-Igruha.torrent" class="download-btn" onclick="downloadGame('metalgear')">Скачать торрент</a>
                     </div>
                 </div>
 
                 <!-- Devil May Cry 5 -->
-                <div class="game-card">
+                <div class="game-card" data-game="devilmaycry">
                     <img src="images/DevilMayCry5.jpg" alt="Devil May Cry 5" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Devil May Cry 5</h3>
@@ -472,12 +645,21 @@
                             <span class="game-size">35 GB</span>
                         </div>
                         <p class="game-description">Культовый слэшер с тремя протагонистами. СТИЛЬНЫЕ КОМБО!</p>
-                        <a href="torrents/Devil-May-Cry-5-by-Igruha.torrent" class="download-btn" download>Скачать торрент</a>
+                        <div class="game-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★☆</span>
+                                <span>4.6/5</span>
+                            </div>
+                            <div class="downloads">
+                                <span>📥 <span id="downloads-devilmaycry">0</span></span>
+                            </div>
+                        </div>
+                        <a href="torrents/Devil-May-Cry-5-by-Igruha.torrent" class="download-btn" onclick="downloadGame('devilmaycry')">Скачать торрент</a>
                     </div>
                 </div>
 
                 <!-- Counter-Strike 1.6 -->
-                <div class="game-card">
+                <div class="game-card" data-game="counterstrike">
                     <img src="images/Counter-Strike_Box_1.jpg" alt="Counter-Strike 1.6" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Counter-Strike 1.6</h3>
@@ -486,12 +668,21 @@
                             <span class="game-size">0.5 GB</span>
                         </div>
                         <p class="game-description">Культовый тактический шутер. ЛЕГЕНДА КИБЕРСПОРТА!</p>
-                        <a href="torrents/Counter-strike-1.6.torrent" class="download-btn" download>Скачать торрент</a>
+                        <div class="game-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★☆</span>
+                                <span>4.3/5</span>
+                            </div>
+                            <div class="downloads">
+                                <span>📥 <span id="downloads-counterstrike">0</span></span>
+                            </div>
+                        </div>
+                        <a href="torrents/Counter-strike-1.6.torrent" class="download-btn" onclick="downloadGame('counterstrike')">Скачать торрент</a>
                     </div>
                 </div>
 
                 <!-- Left 4 Dead 2 -->
-                <div class="game-card">
+                <div class="game-card" data-game="left4dead">
                     <img src="images/capsule_616x353.jpg" alt="Left 4 Dead 2" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Left 4 Dead 2</h3>
@@ -500,35 +691,62 @@
                             <span class="game-size">8 GB</span>
                         </div>
                         <p class="game-description">Кооперативный зомби-шутер от Valve.</p>
-                        <a href="torrents/Left-4-Dead-2-by-Igruha.torrent" class="download-btn" download>Скачать торрент</a>
+                        <div class="game-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★☆</span>
+                                <span>4.4/5</span>
+                            </div>
+                            <div class="downloads">
+                                <span>📥 <span id="downloads-left4dead">0</span></span>
+                            </div>
+                        </div>
+                        <a href="torrents/Left-4-Dead-2-by-Igruha.torrent" class="download-btn" onclick="downloadGame('left4dead')">Скачать торрент</a>
                     </div>
                 </div>
 
                 <!-- Half-Life -->
-                <div class="game-card">
-                    <img src="images/HL2box.jpg" alt="Half-Life" class="game-img">
+                <div class="game-card" data-game="halflife">
+                    <img src="images/capsule_616x354.jpg" alt="Half-Life" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Half-Life</h3>
                         <div class="game-meta">
                             <span class="game-year">1998</span>
-                            <span class="game-size">0.3 GB</span>
+                            <span class="game-size">0.5 GB</span>
                         </div>
-                        <p class="game-description">ЛЕГЕНДАРНЫЙ ШУТЕР ОТ VALVE!</p>
-                        <a href="torrents/Half-Life.torrent" class="download-btn" download>Скачать торрент</a>
+                        <p class="game-description">ЛЕГЕНДАРНЫЙ ШУТЕР ОТ VALVE! Начало истории Гордона Фримена.</p>
+                        <div class="game-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★☆</span>
+                                <span>4.2/5</span>
+                            </div>
+                            <div class="downloads">
+                                <span>📥 <span id="downloads-halflife">0</span></span>
+                            </div>
+                        </div>
+                        <a href="torrents/Half-Life.torrent" class="download-btn" onclick="downloadGame('halflife')">Скачать торрент</a>
                     </div>
                 </div>
 
                 <!-- Half-Life 2 -->
-                <div class="game-card">
-                    <img src="images/capsule_616x354.jpg" alt="Half-Life 2" class="game-img">
+                <div class="game-card" data-game="halflife2">
+                    <img src="images/HL2box.jpg" alt="Half-Life 2" class="game-img">
                     <div class="game-info">
                         <h3 class="game-title">Half-Life 2</h3>
                         <div class="game-meta">
                             <span class="game-year">2004</span>
-                            <span class="game-size">4 GB</span>
+                            <span class="game-size">4.5 GB</span>
                         </div>
-                        <p class="game-description">ШЕДЕВР ОТ VALVE! Продолжение легенды.</p>
-                        <a href="torrents/Half-Life-2-Complete-Edition-by-Igruha.torrent" class="download-btn" download>Скачать торрент</a>
+                        <p class="game-description">ШЕДЕВР ОТ VALVE! Продолжение легенды с гравипушкой!</p>
+                        <div class="game-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★★</span>
+                                <span>4.8/5</span>
+                            </div>
+                            <div class="downloads">
+                                <span>📥 <span id="downloads-halflife2">0</span></span>
+                            </div>
+                        </div>
+                        <a href="torrents/Half-Life-2-Complete-Edition-by-Igruha.torrent" class="download-btn" onclick="downloadGame('halflife2')">Скачать торрент</a>
                     </div>
                 </div>
             </div>
@@ -586,47 +804,159 @@
     </footer>
 
     <script>
-        // Простой поиск
-        document.querySelector('.search-bar button').addEventListener('click', function() {
-            const searchTerm = document.querySelector('.search-bar input').value.toLowerCase();
-            const gameCards = document.querySelectorAll('.game-card');
-            let found = false;
-            
-            gameCards.forEach(card => {
-                const title = card.querySelector('.game-title').textContent.toLowerCase();
-                if (title.includes(searchTerm)) {
-                    card.style.display = 'block';
-                    found = true;
-                } else {
-                    card.style.display = 'none';
+        // Глобальные переменные для хранения данных
+        let siteStats = {
+            totalRating: 0,
+            voteCount: 0,
+            averageRating: 0,
+            hasRated: false
+        };
+
+        let gameDownloads = {
+            cyberpunk: 0,
+            elden: 0,
+            witcher: 0,
+            reddead: 0,
+            metalgear: 0,
+            devilmaycry: 0,
+            counterstrike: 0,
+            left4dead: 0,
+            halflife: 0,
+            halflife2: 0
+        };
+
+        // Инициализация данных
+        const initializeData = () => {
+            // Пробуем загрузить из localStorage
+            try {
+                const savedStats = localStorage.getItem('siteRating');
+                const savedDownloads = localStorage.getItem('gameDownloads');
+                
+                if (savedStats) {
+                    siteStats = JSON.parse(savedStats);
+                }
+                if (savedDownloads) {
+                    gameDownloads = JSON.parse(savedDownloads);
+                }
+            } catch (e) {
+                console.log('LocalStorage не доступен, используем данные по умолчанию');
+            }
+        };
+
+        // Сохранение данных
+        const saveData = () => {
+            try {
+                localStorage.setItem('siteRating', JSON.stringify(siteStats));
+                localStorage.setItem('gameDownloads', JSON.stringify(gameDownloads));
+            } catch (e) {
+                console.log('Не удалось сохранить в localStorage');
+            }
+        };
+
+        // Обновление статистики на странице
+        const updateStats = () => {
+            // Обновляем счетчики скачиваний
+            Object.keys(gameDownloads).forEach(game => {
+                const element = document.getElementById(`downloads-${game}`);
+                if (element) {
+                    element.textContent = gameDownloads[game];
                 }
             });
+
+            // Обновляем рейтинг сайта
+            document.getElementById('siteRating').textContent = siteStats.averageRating.toFixed(1);
+            document.getElementById('siteVotes').textContent = `${siteStats.voteCount} ${getVotesText(siteStats.voteCount)}`;
+            document.getElementById('siteStars').innerHTML = getStars(siteStats.averageRating);
+
+            // Блокируем кнопки если уже оценили
+            if (siteStats.hasRated) {
+                const buttons = document.querySelectorAll('.rate-btn');
+                buttons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.style.background = '#1a1a2e';
+                    btn.style.color = '#666687';
+                    btn.style.cursor = 'not-allowed';
+                });
+                document.getElementById('alreadyRated').style.display = 'block';
+            }
+        };
+
+        // Функция для получения правильного окончания для слова "голос"
+        const getVotesText = (count) => {
+            if (count === 0) return 'голосов';
+            if (count % 10 === 1 && count % 100 !== 11) return 'голос';
+            if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 10 || count % 100 >= 20)) return 'голоса';
+            return 'голосов';
+        };
+
+        // Генерация звезд рейтинга
+        const getStars = (rating) => {
+            if (rating === 0) return '☆☆☆☆☆';
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            let stars = '★'.repeat(fullStars);
+            if (hasHalfStar) stars += '½';
+            stars += '☆'.repeat(5 - fullStars - (hasHalfStar ? 1 : 0));
+            return stars;
+        };
+
+        // Функция скачивания игры
+        const downloadGame = (gameId) => {
+            // Увеличиваем счетчик скачиваний
+            gameDownloads[gameId]++;
             
-            if (!found && searchTerm) {
-                alert('Игра не найдена!');
-            }
-        });
+            // Сохраняем данные
+            saveData();
+            
+            // Обновляем отображение
+            updateStats();
 
-        // Обработка нажатия Enter в поиске
-        document.querySelector('.search-bar input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                document.querySelector('.search-bar button').click();
-            }
-        });
+            // Показываем уведомление
+            const gameName = document.querySelector(`[data-game="${gameId}"] .game-title`).textContent;
+            alert(`Начинается скачивание "${gameName}"! 🎮\nСкачано раз: ${gameDownloads[gameId]}`);
 
-        // Плавная прокрутка
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+            return false;
+        };
+
+        // Функция оценки сайта (ТОЛЬКО 1 РАЗ!)
+        const rateSite = (rating) => {
+            // Проверяем, не оценивал ли уже пользователь
+            if (siteStats.hasRated) {
+                alert('Вы уже оценили наш сайт! Спасибо! ❤️');
+                return;
+            }
+            
+            // Обновляем рейтинг
+            siteStats.totalRating += rating;
+            siteStats.voteCount++;
+            siteStats.averageRating = siteStats.totalRating / siteStats.voteCount;
+            siteStats.hasRated = true; // Помечаем, что пользователь уже оценил
+            
+            // Сохраняем данные
+            saveData();
+            
+            // Обновляем отображение
+            updateStats();
+            
+            // Показываем благодарность
+            alert(`Спасибо за вашу оценку ${rating} звезд! ⭐\nТеперь вы не сможете изменить оценку!`);
+        };
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeData();
+            updateStats();
+
+            // Простой поиск
+            document.querySelector('.search-bar button').addEventListener('click', function() {
+                const searchTerm = document.querySelector('.search-bar input').value.toLowerCase();
+                const gameCards = document.querySelectorAll('.game-card');
+                let found = false;
+                
+                gameCards.forEach(card => {
+                    const title = card.querySelector('.game-title').textContent.toLowerCase();
+                    if (title.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        found = true;
+                    } else {
+                        card.style.display =
