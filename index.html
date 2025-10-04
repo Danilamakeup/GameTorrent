@@ -344,6 +344,12 @@
             margin-top: 10px;
             font-size: 14px;
         }
+
+        .rating-info {
+            color: #a5a5c7;
+            font-size: 14px;
+            margin-top: 10px;
+        }
         
         /* Категории */
         .categories {
@@ -504,6 +510,9 @@
                 <div class="rating-number" id="siteRating">5.0</div>
                 <div class="rating-votes" id="siteVotes">0 голосов</div>
             </div>
+            <div class="rating-info" id="ratingInfo">
+                Общий рейтинг сайта от всех пользователей
+            </div>
             <div class="rate-buttons" id="rateButtons">
                 <button class="rate-btn" onclick="rateSite(5)">⭐ 5 - Отлично!</button>
                 <button class="rate-btn" onclick="rateSite(4)">⭐ 4 - Хорошо</button>
@@ -514,12 +523,16 @@
             <div class="already-rated" id="alreadyRated" style="display: none;">
                 Вы уже оценили наш сайт! Спасибо! ❤️
             </div>
+            <div class="rating-info" id="userRatingInfo" style="display: none;">
+                Ваша оценка: <span id="userRatingValue"></span>
+            </div>
         </section>
 
         <!-- Популярные игры -->
         <section class="popular-games" id="games">
             <h2 class="section-title">Популярные игры</h2>
             <div class="games-grid">
+                <!-- Все карточки игр остаются без изменений -->
                 <!-- Cyberpunk 2077 -->
                 <div class="game-card" data-game="cyberpunk">
                     <img src="images/Обложка_компьютерной_игры_Cyberpunk_2077.jpg" alt="Cyberpunk 2077" class="game-img">
@@ -543,6 +556,7 @@
                     </div>
                 </div>
                 
+                <!-- Остальные игры... -->
                 <!-- Elden Ring -->
                 <div class="game-card" data-game="elden">
                     <img src="images/Elden_Ring_-_cover.jpg" alt="Elden Ring" class="game-img">
@@ -809,7 +823,7 @@
             totalRating: 0,
             voteCount: 0,
             averageRating: 0,
-            hasRated: false
+            userRatings: {} // Храним оценки всех пользователей
         };
 
         let gameDownloads = {
@@ -824,6 +838,18 @@
             halflife: 0,
             halflife2: 0
         };
+
+        // Генерируем уникальный ID пользователя
+        const getUserId = () => {
+            let userId = localStorage.getItem('gameTorrentUserId');
+            if (!userId) {
+                userId = 'user_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('gameTorrentUserId', userId);
+            }
+            return userId;
+        };
+
+        const userId = getUserId();
 
         // Инициализация данных
         const initializeData = () => {
@@ -857,7 +883,7 @@
 
         // Обновление статистики на странице
         const updateStats = () => {
-            console.log('Обновление статистики...', gameDownloads);
+            console.log('Обновление статистики...', siteStats);
             
             // Обновляем счетчики скачиваний
             Object.keys(gameDownloads).forEach(game => {
@@ -867,7 +893,7 @@
                 }
             });
 
-            // Обновляем рейтинг сайта
+            // Обновляем рейтинг сайта (ОБЩИЙ для всех)
             const ratingElement = document.getElementById('siteRating');
             const votesElement = document.getElementById('siteVotes');
             const starsElement = document.getElementById('siteStars');
@@ -876,8 +902,9 @@
             if (votesElement) votesElement.textContent = `${siteStats.voteCount} ${getVotesText(siteStats.voteCount)}`;
             if (starsElement) starsElement.innerHTML = getStars(siteStats.averageRating);
 
-            // Блокируем кнопки если уже оценили
-            if (siteStats.hasRated) {
+            // Показываем оценку пользователя если он уже оценил
+            const userRating = siteStats.userRatings[userId];
+            if (userRating) {
                 const buttons = document.querySelectorAll('.rate-btn');
                 buttons.forEach(btn => {
                     btn.disabled = true;
@@ -886,7 +913,12 @@
                     btn.style.cursor = 'not-allowed';
                 });
                 const alreadyRated = document.getElementById('alreadyRated');
+                const userRatingInfo = document.getElementById('userRatingInfo');
+                const userRatingValue = document.getElementById('userRatingValue');
+                
                 if (alreadyRated) alreadyRated.style.display = 'block';
+                if (userRatingInfo) userRatingInfo.style.display = 'block';
+                if (userRatingValue) userRatingValue.textContent = userRating + ' звезд';
             }
         };
 
@@ -978,19 +1010,22 @@
 
         // Функция оценки сайта (ТОЛЬКО 1 РАЗ!)
         const rateSite = (rating) => {
-            console.log('Оценка сайта:', rating);
+            console.log('Оценка сайта пользователем:', userId, rating);
             
             // Проверяем, не оценивал ли уже пользователь
-            if (siteStats.hasRated) {
+            if (siteStats.userRatings[userId]) {
                 alert('Вы уже оценили наш сайт! Спасибо! ❤️');
                 return;
             }
             
-            // Обновляем рейтинг
-            siteStats.totalRating += rating;
-            siteStats.voteCount++;
+            // Сохраняем оценку пользователя
+            siteStats.userRatings[userId] = rating;
+            
+            // Пересчитываем общий рейтинг
+            const ratings = Object.values(siteStats.userRatings);
+            siteStats.totalRating = ratings.reduce((sum, r) => sum + r, 0);
+            siteStats.voteCount = ratings.length;
             siteStats.averageRating = siteStats.totalRating / siteStats.voteCount;
-            siteStats.hasRated = true; // Помечаем, что пользователь уже оценил
             
             // Сохраняем данные
             saveData();
@@ -999,12 +1034,12 @@
             updateStats();
             
             // Показываем благодарность
-            alert(`Спасибо за вашу оценку ${rating} звезд! ⭐\nТеперь вы не сможете изменить оценку!`);
+            alert(`Спасибо за вашу оценку ${rating} звезд! ⭐\nТеперь вы не сможете изменить оценку!\n\nОбщий рейтинг сайта: ${siteStats.averageRating.toFixed(1)}/5`);
         };
 
         // Инициализация при загрузке страницы
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Страница загружена, инициализация...');
+            console.log('Страница загружена, инициализация... ID пользователя:', userId);
             initializeData();
             updateStats();
 
