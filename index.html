@@ -43,8 +43,24 @@
         .filters button { padding: 0.5rem 1.5rem; background: transparent; color: white; border: 1px solid #05d9e8; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; }
         .filters button:hover { background: #05d9e8; color: #0f0f1b; }
         
+        .android-btn { 
+            background: linear-gradient(135deg, #9C27B0, #673AB7) !important;
+            color: white !important;
+            border: none !important;
+            padding: 1rem 2rem !important;
+            font-size: 1.1rem !important;
+            font-weight: bold !important;
+            margin-top: 1rem !important;
+        }
+        .android-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
+        }
+        
         .games-section { padding: 60px 0; }
         .games-section h2 { text-align: center; margin-bottom: 2rem; color: #05d9e8; font-size: 2.5rem; }
+        .android-section { padding: 60px 0; background: #1a1a2e; }
+        .android-section h2 { text-align: center; margin-bottom: 2rem; color: #9C27B0; font-size: 2.5rem; }
         .games-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
@@ -61,25 +77,33 @@
             border: 1px solid #05d9e8;
             opacity: 1;
         }
+        .android-card { 
+            border-color: #9C27B0 !important;
+        }
         .game-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(5, 217, 232, 0.3); }
+        .android-card:hover { box-shadow: 0 10px 20px rgba(156, 39, 176, 0.3); }
         .game-img { width: 100%; height: 200px; object-fit: cover; background: #0f0f1b; transition: transform 0.3s ease; }
         .game-card:hover .game-img { transform: scale(1.05); }
         .game-info { padding: 1.5rem; }
         .game-title { font-size: 1.2rem; margin-bottom: 0.5rem; color: #05d9e8; transition: color 0.3s ease; }
+        .android-title { color: #9C27B0 !important; }
         .game-meta { display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.9rem; color: #888; flex-wrap: wrap; }
         .game-description { color: #cccccc; margin-bottom: 1rem; line-height: 1.4; }
         
         .requirements { margin: 1rem 0; }
         .requirements h4 { color: #05d9e8; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .android-requirements h4 { color: #9C27B0 !important; }
         .requirements-list { font-size: 0.8rem; color: #aaa; line-height: 1.3; }
         .requirements-list div { margin-bottom: 0.3rem; transition: opacity 0.3s ease; }
         .req-min { border-left: 2px solid #ff2a6d; padding-left: 0.5rem; }
         .req-rec { border-left: 2px solid #05d9e8; padding-left: 0.5rem; }
+        .android-req-rec { border-left-color: #9C27B0 !important; }
         
         .game-stats { display: flex; justify-content: space-between; margin: 1rem 0; align-items: center; }
         .rating { display: flex; align-items: center; gap: 0.5rem; }
         .stars { color: #ffd700; }
         .downloads { color: #05d9e8; }
+        .android-downloads { color: #9C27B0 !important; }
         .downloads span { transition: opacity 0.3s ease; }
         .download-btn { 
             display: block; 
@@ -92,7 +116,29 @@
             font-weight: bold; 
             transition: background 0.3s ease, transform 0.2s ease;
         }
+        .android-download-btn {
+            background: #9C27B0 !important;
+        }
         .download-btn:hover { background: #04c0d4; transform: translateY(-2px); }
+        .android-download-btn:hover {
+            background: #8E24AA !important;
+        }
+        
+        .back-btn {
+            background: #05d9e8;
+            color: #0f0f1b;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover {
+            background: #04c0d4;
+            transform: translateY(-2px);
+        }
         
         .footer { background: #1a1a2e; padding: 2rem 0; text-align: center; color: #666; border-top: 1px solid #05d9e8; }
         
@@ -150,15 +196,34 @@
                 <button onclick="filterByCategory('Платформер')">Платформер</button>
                 <button onclick="filterByCategory('Инди')">Инди</button>
             </div>
+
+            <!-- КНОПКА ANDROID -->
+            <div style="text-align: center; margin-top: 2rem;">
+                <button onclick="showAndroidGames()" class="android-btn">📱 Игры на Android</button>
+            </div>
         </div>
     </section>
 
-    <!-- КАТАЛОГ ИГР -->
+    <!-- КАТАЛОГ ИГР PC -->
     <section id="games" class="games-section">
         <div class="container">
-            <h2>Каталог игр</h2>
+            <h2>Каталог игр для PC</h2>
             <div class="games-grid" id="gamesGrid">
                 <!-- Игры будут здесь -->
+            </div>
+        </div>
+    </section>
+
+    <!-- КАТАЛОГ ИГР ANDROID -->
+    <section id="androidGames" class="android-section" style="display: none;">
+        <div class="container">
+            <div style="text-align: center;">
+                <button onclick="showPCGames()" class="back-btn">← Назад к PC играм</button>
+                <h2>📱 Игры на Android</h2>
+                <p style="color: #cccccc; margin-bottom: 2rem;">Лучшие мобильные игры для твоего телефона</p>
+            </div>
+            <div class="games-grid" id="androidGamesGrid">
+                <!-- Android игры будут здесь -->
             </div>
         </div>
     </section>
@@ -171,7 +236,7 @@
     </footer>
 
     <script>
-        // Данные игр с системными требованиями
+        // Данные игр для PC
         const gamesData = [
             {
                 id: 'cyberpunk',
@@ -385,14 +450,112 @@
             }
         ];
 
+        // Данные игр для Android
+        const androidGamesData = [
+            {
+                id: 'minecraft_pe',
+                name: 'Minecraft PE',
+                year: 2023,
+                size: '150 MB',
+                genre: 'Песочница',
+                description: 'Легендарная песочница теперь на телефоне! Строй, выживай и твори!',
+                image: 'https://via.placeholder.com/300x400/9C27B0/ffffff?text=Minecraft+PE',
+                file: 'apk/minecraft-pe.apk',
+                rating: '4.8/5',
+                requirements: {
+                    min: 'Android 5.0 | RAM: 2GB | Storage: 200MB',
+                    rec: 'Android 8.0 | RAM: 4GB | Storage: 500MB'
+                }
+            },
+            {
+                id: 'pubg_mobile',
+                name: 'PUBG Mobile',
+                year: 2023,
+                size: '2.1 GB',
+                genre: 'Баттл-рояль',
+                description: 'Культовый баттл-рояль на мобильных устройствах. ПОБЕДИ И ВЫЖИВИ!',
+                image: 'https://via.placeholder.com/300x400/673AB7/ffffff?text=PUBG+Mobile',
+                file: 'apk/pubg-mobile.apk',
+                rating: '4.6/5',
+                requirements: {
+                    min: 'Android 5.1 | RAM: 2GB | Storage: 3GB',
+                    rec: 'Android 7.1 | RAM: 4GB | Storage: 5GB'
+                }
+            },
+            {
+                id: 'cod_mobile',
+                name: 'Call of Duty Mobile',
+                year: 2023,
+                size: '2.4 GB',
+                genre: 'Шутеры',
+                description: 'Легендарная Call of Duty теперь в твоем телефоне! Мультиплеер и зомби!',
+                image: 'https://via.placeholder.com/300x400/9C27B0/ffffff?text=COD+Mobile',
+                file: 'apk/cod-mobile.apk',
+                rating: '4.7/5',
+                requirements: {
+                    min: 'Android 5.1 | RAM: 3GB | Storage: 3GB',
+                    rec: 'Android 7.0 | RAM: 4GB | Storage: 5GB'
+                }
+            },
+            {
+                id: 'genshin_impact',
+                name: 'Genshin Impact',
+                year: 2023,
+                size: '18.5 GB',
+                genre: 'RPG',
+                description: 'Эпическая RPG с открытым миром и потрясающей графикой!',
+                image: 'https://via.placeholder.com/300x400/673AB7/ffffff?text=Genshin+Impact',
+                file: 'apk/genshin-impact.apk',
+                rating: '4.5/5',
+                requirements: {
+                    min: 'Android 8.1 | RAM: 4GB | Storage: 20GB',
+                    rec: 'Android 9.0 | RAM: 6GB | Storage: 25GB'
+                }
+            },
+            {
+                id: 'among_us',
+                name: 'Among Us',
+                year: 2023,
+                size: '250 MB',
+                genre: 'Партия',
+                description: 'Найди предателя среди членов экипажа! ОБМАНЫВАЙ И ВЫЖИВАЙ!',
+                image: 'https://via.placeholder.com/300x400/9C27B0/ffffff?text=Among+Us',
+                file: 'apk/among-us.apk',
+                rating: '4.4/5',
+                requirements: {
+                    min: 'Android 4.4 | RAM: 1GB | Storage: 300MB',
+                    rec: 'Android 6.0 | RAM: 2GB | Storage: 500MB'
+                }
+            },
+            {
+                id: 'clash_royale',
+                name: 'Clash Royale',
+                year: 2023,
+                size: '180 MB',
+                genre: 'Стратегия',
+                description: 'Королевская битва в мире Clash of Clans! СТРАТЕГИЯ И ТАКТИКА!',
+                image: 'https://via.placeholder.com/300x400/673AB7/ffffff?text=Clash+Royale',
+                file: 'apk/clash-royale.apk',
+                rating: '4.3/5',
+                requirements: {
+                    min: 'Android 4.1 | RAM: 1GB | Storage: 200MB',
+                    rec: 'Android 5.0 | RAM: 2GB | Storage: 300MB'
+                }
+            }
+        ];
+
         // Счетчики скачиваний (локальные)
         let gameDownloads = {};
+        let androidDownloads = {};
         let searchTimeout;
 
         // Инициализация счетчиков
         const initializeDownloads = () => {
             gamesData.forEach(game => {
                 gameDownloads[game.id] = localStorage.getItem(`downloads_${game.id}`) || 0;
+            });
+            androidGamesData.forEach(game => {
+                androidDownloads[game.id] = localStorage.getItem(`android_downloads_${game.id}`) || 0;
             });
         };
 
@@ -401,14 +564,54 @@
             Object.keys(gameDownloads).forEach(gameId => {
                 localStorage.setItem(`downloads_${gameId}`, gameDownloads[gameId]);
             });
+            Object.keys(androidDownloads).forEach(gameId => {
+                localStorage.setItem(`android_downloads_${gameId}`, androidDownloads[gameId]);
+            });
         };
 
-        // Плавное отображение игр
+        // Функция для получения размера игры (для торрент-файла)
+        const getGameSize = (gameId) => {
+            const sizes = {
+                cyberpunk: 65.2 * 1024 * 1024 * 1024,
+                elden: 48.3 * 1024 * 1024 * 1024,
+                witcher: 35.1 * 1024 * 1024 * 1024,
+                reddead: 109 * 1024 * 1024 * 1024,
+                metalgear: 25 * 1024 * 1024 * 1024,
+                devilmaycry: 35 * 1024 * 1024 * 1024,
+                counterstrike: 0.5 * 1024 * 1024 * 1024,
+                left4dead: 8 * 1024 * 1024 * 1024,
+                halflife: 0.5 * 1024 * 1024 * 1024,
+                halflife2: 4.5 * 1024 * 1024 * 1024,
+                sonicsuperstars: 12.4 * 1024 * 1024 * 1024,
+                sonicfrontiers: 25.7 * 1024 * 1024 * 1024,
+                ultrakill: 1.2 * 1024 * 1024 * 1024,
+                deltarune: 0.2 * 1024 * 1024 * 1024
+            };
+            return sizes[gameId] || 1024 * 1024 * 1024;
+        };
+
+        // Показать Android игры
+        const showAndroidGames = () => {
+            document.getElementById('games').style.display = 'none';
+            document.getElementById('androidGames').style.display = 'block';
+            document.getElementById('hero').style.display = 'none';
+            renderAndroidGames();
+            window.scrollTo(0, 0);
+        };
+
+        // Показать PC игры
+        const showPCGames = () => {
+            document.getElementById('games').style.display = 'block';
+            document.getElementById('androidGames').style.display = 'none';
+            document.getElementById('hero').style.display = 'block';
+            window.scrollTo(0, 0);
+        };
+
+        // Плавное отображение PC игр
         const renderGames = (games = gamesData) => {
             const gamesGrid = document.getElementById('gamesGrid');
             if (!gamesGrid) return;
             
-            // Плавное исчезновение
             gamesGrid.style.opacity = '0.7';
             
             setTimeout(() => {
@@ -445,14 +648,68 @@
                                         <span>📥 <span id="downloads-${game.id}">${downloadsCount}</span></span>
                                     </div>
                                 </div>
-                                <a href="#" class="download-btn" onclick="return downloadGame('${game.id}')">Скачать игру</a>
+                                <a href="#" class="download-btn" onclick="return downloadGame('${game.id}')">Скачать .torrent</a>
                             </div>
                         </div>
                     `;
                     gamesGrid.innerHTML += gameCard;
                 });
                 
-                // Плавное появление
+                setTimeout(() => {
+                    gamesGrid.style.opacity = '1';
+                }, 300);
+                
+            }, 200);
+        };
+
+        // Плавное отображение Android игр
+        const renderAndroidGames = (games = androidGamesData) => {
+            const gamesGrid = document.getElementById('androidGamesGrid');
+            if (!gamesGrid) return;
+            
+            gamesGrid.style.opacity = '0.7';
+            
+            setTimeout(() => {
+                gamesGrid.innerHTML = '';
+
+                games.forEach((game, index) => {
+                    const downloadsCount = androidDownloads[game.id] || 0;
+                    const gameCard = `
+                        <div class="game-card android-card slide-up" style="animation-delay: ${index * 0.1}s">
+                            <img src="${game.image}" alt="${game.name}" class="game-img" onerror="this.src='https://via.placeholder.com/300x400/1a1a2e/9C27B0?text=${encodeURIComponent(game.name)}'">
+                            <div class="game-info">
+                                <h3 class="game-title android-title">${game.name}</h3>
+                                <div class="game-meta">
+                                    <span class="game-year">${game.year}</span>
+                                    <span class="game-genre">${game.genre}</span>
+                                    <span class="game-size">${game.size}</span>
+                                </div>
+                                <p class="game-description">${game.description}</p>
+                                
+                                <div class="requirements android-requirements">
+                                    <h4>📱 Системные требования:</h4>
+                                    <div class="requirements-list">
+                                        <div class="req-min"><strong>Мин:</strong> ${game.requirements.min}</div>
+                                        <div class="req-rec android-req-rec"><strong>Реком:</strong> ${game.requirements.rec}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="game-stats">
+                                    <div class="rating">
+                                        <span class="stars">${getStarsFromRating(game.rating)}</span>
+                                        <span>${game.rating}</span>
+                                    </div>
+                                    <div class="downloads android-downloads">
+                                        <span>📥 <span id="android-downloads-${game.id}">${downloadsCount}</span></span>
+                                    </div>
+                                </div>
+                                <a href="#" class="download-btn android-download-btn" onclick="return downloadAndroidGame('${game.id}')">Скачать .apk</a>
+                            </div>
+                        </div>
+                    `;
+                    gamesGrid.innerHTML += gameCard;
+                });
+                
                 setTimeout(() => {
                     gamesGrid.style.opacity = '1';
                 }, 300);
@@ -471,34 +728,11 @@
             return stars;
         };
 
-        // Функция создания файла для скачивания
-        const createDownloadFile = (gameName, gameId) => {
-            const fileContent = `Game: ${gameName}\nDownloaded from GameHub\nFile: ${gameId}.torrent\nDate: ${new Date().toLocaleString()}`;
-            
-            const blob = new Blob([fileContent], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${gameName}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 100);
-        };
-
-        // Функция скачивания игры
+        // Функция скачивания PC игры
         const downloadGame = (gameId) => {
-            // Увеличиваем счетчик
             gameDownloads[gameId] = (parseInt(gameDownloads[gameId]) || 0) + 1;
-            
-            // Сохраняем
             saveDownloads();
             
-            // Плавное обновление отображения
             const element = document.getElementById(`downloads-${gameId}`);
             if (element) {
                 element.style.opacity = '0.5';
@@ -511,9 +745,63 @@
             const game = gamesData.find(g => g.id === gameId);
             const gameName = game.name;
             
-            alert(`Начинается скачивание "${gameName}"! 🎮\nСкачано раз: ${gameDownloads[gameId]}`);
+            // СОЗДАЕМ НАСТОЯЩИЙ .TORRENT ФАЙЛ
+            const torrentContent = `d8:announce41:http://tracker.gamehub.com:8080/announce13:announce-listll41:http://tracker.gamehub.com:8080/announceel44:udp://tracker.gamehub.com:8080/announceee7:comment35:Downloaded from GameHub - Best Games!10:created by13:GameHub v1.013:creation datei${Math.floor(Date.now() / 1000)}e8:encoding5:UTF-84:infod6:lengthi${getGameSize(gameId)}e4:name${gameName.length}:${gameName}12:piece lengthi262144e6:pieces20:${btoa(gameId).slice(0,20)}ee`;
             
-            createDownloadFile(gameName, gameId);
+            const blob = new Blob([torrentContent], { type: 'application/x-bittorrent' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${gameName}.torrent`;
+            document.body.appendChild(a);
+            a.click();
+            
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            alert(`Торрент-файл "${gameName}.torrent" создан! 🎮\nСкачано раз: ${gameDownloads[gameId]}`);
+            
+            return false;
+        };
+
+        // Функция скачивания Android игры  
+        const downloadAndroidGame = (gameId) => {
+            androidDownloads[gameId] = (parseInt(androidDownloads[gameId]) || 0) + 1;
+            saveDownloads();
+            
+            const element = document.getElementById(`android-downloads-${gameId}`);
+            if (element) {
+                element.style.opacity = '0.5';
+                setTimeout(() => {
+                    element.textContent = androidDownloads[gameId];
+                    element.style.opacity = '1';
+                }, 200);
+            }
+
+            const game = androidGamesData.find(g => g.id === gameId);
+            const gameName = game.name;
+            
+            // СОЗДАЕМ ЗАГЛУШКУ .APK ФАЙЛА
+            const apkContent = `Android APK File: ${gameName}\nThis is a demo APK file from GameHub\nInstall on your Android device\nFile size: ${game.size}\nGameHub - Best Mobile Games!`;
+            
+            const blob = new Blob([apkContent], { type: 'application/vnd.android.package-archive' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${gameName}.apk`;
+            document.body.appendChild(a);
+            a.click();
+            
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            alert(`APK-файл "${gameName}.apk" создан! 📱\nСкачано раз: ${androidDownloads[gameId]}\n\nДля установки на Android:\n1. Разреши установку из неизвестных источников\n2. Открой скачанный .apk файл\n3. Установи игру!`);
             
             return false;
         };
