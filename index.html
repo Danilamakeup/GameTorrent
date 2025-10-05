@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameHub - Лучшие игры</title>
+    <title>GameTorrent - Лучшие игры</title>
     <style>
         * {
             margin: 0;
@@ -123,6 +123,10 @@
             border-radius: 10px; 
             overflow: hidden; 
             border: 1px solid #05d9e8;
+            transition: transform 0.3s ease;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
         }
         .android-card { 
             border-color: #9C27B0;
@@ -151,6 +155,7 @@
             border-radius: 5px; 
             text-decoration: none; 
             font-weight: bold; 
+            transition: background 0.3s ease;
         }
         .android-download-btn {
             background: #9C27B0;
@@ -166,6 +171,10 @@
             cursor: pointer;
             font-weight: bold;
             margin-bottom: 2rem;
+            transition: background 0.3s ease;
+        }
+        .back-btn:hover {
+            background: #04c0d4;
         }
 
         .update-card {
@@ -174,6 +183,10 @@
             padding: 2rem;
             margin-bottom: 2rem;
             border-left: 4px solid #FF6B35;
+            transition: transform 0.3s ease;
+        }
+        .update-card:hover {
+            transform: translateX(5px);
         }
 
         .update-version {
@@ -197,8 +210,72 @@
             content: "✅ ";
             margin-right: 0.5rem;
         }
+
+        .audio-player {
+            background: #1a1a2e;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            border: 1px solid #05d9e8;
+            text-align: center;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .audio-btn {
+            background: #05d9e8;
+            color: #0f0f1b;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .audio-btn:hover {
+            background: #04c0d4;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .volume-slider {
+            width: 100px;
+        }
+
+        .audio-info {
+            color: #05d9e8;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .music-notice {
+            background: #ff6b35;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
         
-        .footer { background: #1a1a2e; padding: 2rem 0; text-align: center; color: #666; border-top: 1px solid #05d9e8; }
+        .footer { 
+            background: #1a1a2e; 
+            padding: 2rem 0; 
+            text-align: center; 
+            color: #666; 
+            border-top: 1px solid #05d9e8; 
+        }
         
         @media (max-width: 768px) {
             .nav { flex-direction: column; gap: 1rem; }
@@ -207,6 +284,7 @@
             .hero h1 { font-size: 2rem; }
             .games-grid { grid-template-columns: 1fr; }
             .filters { justify-content: flex-start; overflow-x: auto; padding-bottom: 1rem; }
+            .audio-controls { flex-direction: column; gap: 0.5rem; }
         }
     </style>
 </head>
@@ -214,12 +292,12 @@
     <header class="header">
         <nav class="nav container">
             <div class="logo">
-                <h2>🎮 GameHub</h2>
+                <h2>🎮 GameTorrent</h2>
             </div>
             <div class="nav-links">
-                <a href="#games">Игры</a>
-                <a href="#top">Топ игр</a>
-                <a href="#new">Новинки</a>
+                <a href="#games">Игры PC</a>
+                <a href="#android">Android</a>
+                <a href="#updates">Обновления</a>
             </div>
         </nav>
     </header>
@@ -274,7 +352,7 @@
             <div style="text-align: center;">
                 <button onclick="showPCGames()" class="back-btn">← Назад к играм</button>
                 <h2>🔄 История обновлений</h2>
-                <p style="color: #cccccc; margin-bottom: 2rem;">Эволюция GameHub от версии 0.1 до 1.5</p>
+                <p style="color: #cccccc; margin-bottom: 2rem;">Эволюция GameTorrent от версии 0.1 до 1.5</p>
             </div>
 
             <div class="update-card">
@@ -287,6 +365,7 @@
                     <li>Добавлен раздел с историей обновлений</li>
                     <li>Добавлена фоновая музыка</li>
                     <li>Улучшена производительность</li>
+                    <li>Добавлены анимации и плавные переходы</li>
                 </ul>
             </div>
 
@@ -296,6 +375,7 @@
                     <li>Добавлены игры на Android</li>
                     <li>Добавлены APK файлы для мобильных игр</li>
                     <li>Улучшен адаптивный дизайн</li>
+                    <li>Оптимизирована загрузка изображений</li>
                 </ul>
             </div>
 
@@ -306,6 +386,7 @@
                     <li>Добавлены новые игры</li>
                     <li>Рабочие торрент-файлы</li>
                     <li>Убран рейтинг игр</li>
+                    <li>Добавлена система поиска</li>
                 </ul>
             </div>
 
@@ -315,6 +396,7 @@
                     <li>Изменен дизайн</li>
                     <li>Добавлены некоторые игры</li>
                     <li>Не рабочие торрент-файлы</li>
+                    <li>Базовая фильтрация</li>
                 </ul>
             </div>
 
@@ -324,6 +406,7 @@
                     <li>Темно-фиолетовый дизайн</li>
                     <li>Базовая структура сайта</li>
                     <li>Минимальный функционал</li>
+                    <li>10 тестовых игр</li>
                 </ul>
             </div>
         </div>
@@ -331,14 +414,97 @@
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 GameHub. Версия 1.5</p>
+            <p>&copy; 2024 GameTorrent. Версия 1.5</p>
+            
+            <div class="audio-player">
+                <div class="audio-info">🎵 Фоновая музыка: Hotline Miami Soundtrack - "M.O.O.N. - Hydrogen"</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playMusic()">▶️ Включить</button>
+                    <button class="audio-btn" onclick="pauseMusic()">⏸️ Пауза</button>
+                    <button class="audio-btn" onclick="stopMusic()">⏹️ Стоп</button>
+                    <div class="volume-control">
+                        <span>🔊</span>
+                        <input type="range" min="0" max="1" step="0.1" value="0.5" class="volume-slider" id="volumeSlider" onchange="changeVolume(this.value)">
+                    </div>
+                </div>
+                <div class="music-notice">
+                    ⚠️ Если музыка не работает, нажмите "Включить" несколько раз или разрешите автовоспроизведение
+                </div>
+                <audio id="backgroundMusic" loop>
+                    <!-- Прямая ссылка на музыку Hotline Miami -->
+                    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/MOON/Hydrogen/MOON_-_01_-_Hydrogen.mp3" type="audio/mpeg">
+                    <source src="music/hotline-miami-hydrogen.mp3" type="audio/mpeg">
+                    Ваш браузер не поддерживает аудио элемент.
+                </audio>
+            </div>
         </div>
     </footer>
 
     <script>
-        // РЕАЛЬНЫЕ ДАННЫЕ PC ИГР
+        // АУДИО ФУНКЦИИ
+        const audio = document.getElementById('backgroundMusic');
+        const volumeSlider = document.getElementById('volumeSlider');
+        let isPlaying = false;
+
+        function playMusic() {
+            if (isPlaying) return;
+            
+            audio.play().then(() => {
+                isPlaying = true;
+                console.log('Музыка запущена');
+            }).catch(e => {
+                console.log('Автовоспроизведение заблокировано. Пользователь должен взаимодействовать со страницей.');
+                // Показываем уведомление
+                alert('Нажмите "Включить" еще раз чтобы запустить музыку');
+            });
+        }
+
+        function pauseMusic() {
+            audio.pause();
+            isPlaying = false;
+        }
+
+        function stopMusic() {
+            audio.pause();
+            audio.currentTime = 0;
+            isPlaying = false;
+        }
+
+        function changeVolume(volume) {
+            audio.volume = volume;
+        }
+
+        // Автоповтор музыки
+        audio.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        });
+
+        // Обработка ошибок загрузки музыки
+        audio.addEventListener('error', function(e) {
+            console.log('Ошибка загрузки музыки:', e);
+            // Альтернативный источник музыки
+            const alternativeSources = [
+                'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/MOON/Hydrogen/MOON_-_01_-_Hydrogen.mp3',
+                'https://ia802905.us.archive.org/11/items/hotline-miami-original-soundtrack/Hotline%20Miami%20Original%20Soundtrack%20-%2001%20-%20Hydrogen.mp3'
+            ];
+            
+            let currentSource = 0;
+            function tryNextSource() {
+                if (currentSource < alternativeSources.length) {
+                    audio.src = alternativeSources[currentSource];
+                    audio.load();
+                    currentSource++;
+                }
+            }
+            
+            tryNextSource();
+        });
+
+        audio.volume = volumeSlider.value;
+
+        // ВСЕ ИГРЫ ДЛЯ PC
         const gamesData = [
-            // СУЩЕСТВУЮЩИЕ ИГРЫ
             {
                 id: 'cyberpunk',
                 name: 'Cyberpunk 2077',
@@ -535,8 +701,6 @@
                     rec: 'OS: Any | CPU: Any | GPU: Any | RAM: 2GB'
                 }
             },
-
-            // НОВЫЕ ИГРЫ ВЕРСИИ 1.5
             {
                 id: 'hollowknight',
                 name: 'Hollow Knight',
@@ -586,7 +750,7 @@
                 size: '1 GB',
                 genre: 'Песочница',
                 description: 'Легендарная песочница без границ. Строй, выживай, твори!',
-                image: 'https://i.ytimg.com/vi/lq3tByr-48g/mqdefault.jpg',
+                image: 'images/m_a5fc0cc6ab1f4370e726b4dfa1c87f63.jpg',
                 torrent: 'torrents/minecraft.torrent',
                 requirements: {
                     min: 'OS: Win 7 | CPU: Intel Core i3 | GPU: Intel HD 4000 | RAM: 4GB',
@@ -615,7 +779,7 @@
                 genre: 'Шутеры',
                 description: 'КУЛЬТОВЫЙ ШУТЕР! Начало современной эры Call of Duty.',
                 image: 'images/Cod4.jpg',
-                torrent: 'torrents/936_Call_of_Duty_4-.torrent',
+                torrent: 'torrents/Call-of-Duty-4-Modern-Warfare.torrent',
                 requirements: {
                     min: 'OS: Win XP | CPU: Pentium 4 | GPU: GeForce 6600 | RAM: 512MB',
                     rec: 'OS: Win 7 | CPU: Core 2 Duo | GPU: GeForce 8600 | RAM: 1GB'
@@ -623,7 +787,7 @@
             }
         ];
 
-        // РЕАЛЬНЫЕ ANDROID ИГРЫ С GOOGLE ДИСКА
+        // ANDROID ИГРЫ
         const androidGamesData = [
             {
                 id: 'hollowknight_android',
@@ -669,14 +833,20 @@
             }
         ];
 
+        // ФУНКЦИИ ДЛЯ ОТОБРАЖЕНИЯ ИГР
         const renderGames = (games = gamesData) => {
             const gamesGrid = document.getElementById('gamesGrid');
             gamesGrid.innerHTML = '';
 
+            if (games.length === 0) {
+                gamesGrid.innerHTML = '<p style="text-align: center; color: #888; grid-column: 1/-1;">Игры не найдены</p>';
+                return;
+            }
+
             games.forEach((game) => {
                 const gameCard = `
                     <div class="game-card">
-                        <img src="${game.image}" alt="${game.name}" class="game-img">
+                        <img src="${game.image}" alt="${game.name}" class="game-img" onerror="this.src='https://via.placeholder.com/320x200/1a1a2e/05d9e8?text=No+Image'">
                         <div class="game-info">
                             <h3 class="game-title">${game.name}</h3>
                             <div class="game-meta">
@@ -706,10 +876,15 @@
             const gamesGrid = document.getElementById('androidGamesGrid');
             gamesGrid.innerHTML = '';
 
+            if (games.length === 0) {
+                gamesGrid.innerHTML = '<p style="text-align: center; color: #888; grid-column: 1/-1;">Игры не найдены</p>';
+                return;
+            }
+
             games.forEach((game) => {
                 const gameCard = `
                     <div class="game-card android-card">
-                        <img src="${game.image}" alt="${game.name}" class="game-img">
+                        <img src="${game.image}" alt="${game.name}" class="game-img" onerror="this.src='https://via.placeholder.com/320x200/1a1a2e/9C27B0?text=No+Image'">
                         <div class="game-info">
                             <h3 class="game-title android-title">${game.name}</h3>
                             <div class="game-meta">
@@ -788,6 +963,17 @@
         document.addEventListener('DOMContentLoaded', () => {
             renderGames();
             document.getElementById('searchInput').addEventListener('input', searchGames);
+            
+            // Плавная прокрутка для навигации
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#games') showPCGames();
+                    else if (targetId === '#android') showAndroidGames();
+                    else if (targetId === '#updates') showUpdates();
+                });
+            });
         });
     </script>
 </body>
