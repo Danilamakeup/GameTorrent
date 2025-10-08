@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameTorrent v2.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0c1b 0%, #1a0c2e 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header { 
+            background: rgba(26, 12, 46, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid #8b5cf6;
+        }
+
+        .nav { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+
+        .logo h2 { 
+            color: #8b5cf6;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .nav-links { 
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-links a { 
+            color: #d8b4fe;
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active { 
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+            border-color: #8b5cf6;
+        }
+        
+        .hero { 
+            padding: 160px 0 80px;
+            text-align: center;
+            background: linear-gradient(135deg, #1a0c2e 0%, #2d1b47 100%);
+        }
+
+        .hero h1 { 
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #8b5cf6, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p { 
+            font-size: 1.3rem;
+            color: #d8b4fe;
+            margin-bottom: 2rem;
+        }
+
+        .search-box { 
+            max-width: 600px;
+            margin: 2rem auto;
+            display: flex;
+            background: rgba(26, 12, 46, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid #8b5cf6;
+        }
+
+        .search-box input { 
+            flex: 1;
+            padding: 1.3rem;
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .search-box button { 
+            padding: 1.3rem 2.5rem;
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .filters { 
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filters button { 
+            padding: 0.9rem 2rem;
+            background: transparent;
+            color: #d8b4fe;
+            border: 2px solid #8b5cf6;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filters button:hover,
+        .filters button.active { 
+            background: #8b5cf6;
+            color: white;
+        }
+        
+        .games-section { 
+            padding: 100px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.8rem;
+            background: linear-gradient(45deg, #8b5cf6, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .games-grid { 
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .game-card { 
+            background: linear-gradient(135deg, #1a0c2e 0%, #2d1b47 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid #8b5cf6;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.3);
+        }
+        
+        .game-img { 
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .game-info { 
+            padding: 2rem;
+        }
+
+        .game-title { 
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #8b5cf6;
+            font-weight: bold;
+        }
+
+        .game-meta { 
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .game-meta span {
+            background: rgba(139, 92, 246, 0.2);
+            color: #d8b4fe;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+        }
+
+        .game-description { 
+            color: #c4b5fd;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .download-btn { 
+            display: block;
+            background: linear-gradient(45deg, #8b5cf6, #a855f7);
+            color: white;
+            text-align: center;
+            padding: 1.2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover { 
+            background: linear-gradient(45deg, #7c3aed, #9333ea);
+            transform: translateY(-2px);
+        }
+
+        .audio-player {
+            background: rgba(26, 12, 46, 0.8);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+            border: 2px solid #8b5cf6;
+            text-align: center;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .audio-btn {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .audio-btn:hover {
+            background: #7c3aed;
+        }
+
+        .update-card {
+            background: linear-gradient(135deg, #1a0c2e 0%, #2d1b47 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid #8b5cf6;
+            border: 2px solid #8b5cf6;
+        }
+
+        .update-version {
+            color: #8b5cf6;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .update-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .update-features li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #3a2a3e;
+            position: relative;
+            padding-left: 2rem;
+            color: #c4b5fd;
+        }
+
+        .update-features li:before {
+            content: "⚡";
+            position: absolute;
+            left: 0;
+            color: #8b5cf6;
+        }
+
+        .footer { 
+            background: rgba(26, 12, 46, 0.95);
+            padding: 3rem 0;
+            text-align: center;
+            color: #a78bfa;
+            border-top: 2px solid #8b5cf6;
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">
+                <h2>🎮 GameTorrent v2.0</h2>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="active" onclick="showSection('pc', event)">Игры PC</a>
+                <a href="#" onclick="showSection('android', event)">Android</a>
+                <a href="#" onclick="showSection('updates', event)">Обновления</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Фиолетовая коллекция игр</h1>
+            <p>30+ эксклюзивных игр в стильном фиолетовом дизайне</p>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Найди свою игру..." oninput="performSearch()">
+                <button onclick="performSearch()">Поиск</button>
+            </div>
+
+            <div class="filters">
+                <button class="active" onclick="setFilter('all')">Все игры</button>
+                <button onclick="setFilter('RPG')">RPG</button>
+                <button onclick="setFilter('Экшен')">Экшен</button>
+                <button onclick="setFilter('Шутеры')">Шутеры</button>
+                <button onclick="setFilter('Приключения')">Приключения</button>
+                <button onclick="setFilter('Инди')">Инди</button>
+                <button onclick="setFilter('Аркада')">Аркада</button>
+                <button onclick="setFilter('Хоррор')">Хоррор</button>
+                <button onclick="setFilter('Слешеры')">Слешеры</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="pcSection" class="games-section">
+        <div class="container">
+            <h2 class="section-title">🎮 Игры для PC</h2>
+            <div class="games-grid" id="gamesGrid"></div>
+        </div>
+    </section>
+
+    <section id="androidSection" class="games-section" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">📱 Игры на Android</h2>
+            <div class="games-grid" id="androidGrid"></div>
+        </div>
+    </section>
+
+    <section id="updatesSection" class="games-section" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">🔄 История обновлений</h2>
+            
+            <div class="update-card">
+                <div class="update-version">Версия 2.3 - Эпическое обновление</div>
+                <ul class="update-features">
+                    <li>Добавлены 3 новые игры: God of War, Dark Souls, Half-Life: Alyx</li>
+                    <li>Добавлен новый жанр: Слешеры</li>
+                    <li>Теперь 30+ игр в коллекции</li>
+                    <li>Обновлена система категорий</li>
+                </ul>
+            </div>
+
+            <div class="update-card">
+                <div class="update-version">Версия 2.2 - Medal of Honor</div>
+                <ul class="update-features">
+                    <li>Добавлены 2 новые игры: Medal of Honor и Medal of Honor: Warfighter</li>
+                    <li>Теперь 27+ игр в коллекции</li>
+                    <li>Обновлены категории шутеров</li>
+                </ul>
+            </div>
+
+            <div class="update-card">
+                <div class="update-version">Версия 2.1 - Новые игры</div>
+                <ul class="update-features">
+                    <li>Добавлены 3 новые игры: Geometry Dash, Silent Hill, Call of Duty Infinite Warfare</li>
+                    <li>Добавлены новые категории: Аркада и Хоррор</li>
+                    <li>Улучшена производительность поиска</li>
+                    <li>Теперь 25+ игр в коллекции</li>
+                </ul>
+            </div>
+
+            <div class="update-card">
+                <div class="update-version">Версия 2.0 - Фиолетовое обновление</div>
+                <ul class="update-features">
+                    <li>Полностью переработанный фиолетовый дизайн</li>
+                    <li>Добавлено 20+ игр для PC и Android</li>
+                    <li>Добавлена фоновая музыка с управлением</li>
+                    <li>Улучшенный поиск и фильтрация</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p style="font-size: 1.1rem; margin-bottom: 1rem;">&copy; 2024 GameTorrent. Версия 2.3</p>
+            
+            <div class="audio-player">
+                <div style="color: #8b5cf6; font-size: 1rem; margin-bottom: 1rem;">🎵 Фоновая музыка: Number Rampage</div>
+                <div class="audio-controls">
+                    <button class="audio-btn" onclick="playMusic()">▶️ Включить</button>
+                    <button class="audio-btn" onclick="pauseMusic()">⏸️ Пауза</button>
+                    <button class="audio-btn" onclick="stopMusic()">⏹️ Стоп</button>
+                    <div style="display: flex; align-items: center; gap: 0.8rem;">
+                        <span>🔊</span>
+                        <input type="range" min="0" max="1" step="0.1" value="0.5" style="width: 120px;" id="volumeSlider" onchange="changeVolume(this.value)">
+                    </div>
+                </div>
+                <audio id="backgroundMusic" loop>
+                    <source src="music/number-rampage.mp3" type="audio/mpeg">
+                    Ваш браузер не поддерживает аудио элемент.
+                </audio>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ДАННЫЕ ИГР PC
+        const gamesData = [
+            {
+                name: 'Cyberpunk 2077',
+                year: 2020,
+                size: '65.2 GB',
+                genre: 'RPG',
+                description: 'Футуристическая RPG в открытом мире Найт-Сити. Стань киберпанком и измени судьбу города.',
+                image: 'images/Обложка_компьютерной_игры_Cyberpunk_2077.jpg',
+                torrent: 'torrents/cyberpunk-2077.torrent'
+            },
+            {
+                name: 'Elden Ring',
+                year: 2022,
+                size: '48.3 GB',
+                genre: 'RPG',
+                description: 'Эпическая фэнтези RPG от создателей Dark Souls. Исследуй мир Межземья и стань Владыкой Колец.',
+                image: 'images/Elden_Ring_-_cover.jpg',
+                torrent: 'torrents/Elden-Ring-by-Igruha.torrent'
+            },
+            {
+                name: 'Hollow Knight',
+                year: 2017,
+                size: '9 GB',
+                genre: 'Инди',
+                description: 'Исследуй таинственный подземный мир насекомых в этой культовой метроидвании.',
+                image: 'images/HK_poster_st.jpg',
+                torrent: 'torrents/hollow-knight.torrent'
+            },
+            {
+                name: 'Hollow Knight: Silksong',
+                year: 2024,
+                size: '12 GB',
+                genre: 'Инди',
+                description: 'Продолжение культовой метроидвании. Новые приключения Хорнета!',
+                image: 'images/1757001489_56fg.jpg',
+                torrent: 'torrents/hollow-knight-silksong-2025.torrent'
+            },
+            {
+                name: 'Grand Theft Auto: San Andreas',
+                year: 2004,
+                size: '4.7 GB',
+                genre: 'Экшен',
+                description: 'КУЛЬТОВАЯ ИГРА ОТ ROCKSTAR! Свободный мир, банды Лос-Сантоса и эпическая история.',
+                image: 'images/Grand_Theft_Auto_San_Andreas.jpg',
+                torrent: 'torrents/GTA-San-Andreas-Original.torrent'
+            },
+            {
+                name: 'The Witcher 3: Wild Hunt',
+                year: 2015,
+                size: '35.1 GB',
+                genre: 'RPG',
+                description: 'Эпическая ролевая игра в фэнтезийном мире.',
+                image: 'images/The_Witcher_3-_Wild_Hunt_Cover.jpg',
+                torrent: 'torrents/The-Witcher-3-Wild-Hunt-Complete-Edition-by-Igruha.torrent'
+            },
+            {
+                name: 'Red Dead Redemption 2',
+                year: 2019,
+                size: '109 GB',
+                genre: 'Приключения',
+                description: 'Приключенческий вестерн от создателей GTA V.',
+                image: 'images/Red_Dead_Redemption_2_coverart.jpg',
+                torrent: 'torrents/red-dead-redemption-2-by-xatab.torrent'
+            },
+            {
+                name: 'Metal Gear Rising: Revengeance',
+                year: 2013,
+                size: '25 GB',
+                genre: 'Слешеры',
+                description: 'Экшен с механикой разрезания всего на части. РЕЖИ И РУБИ!',
+                image: 'images/Metal_Gear_Rising_Revengeance_box_artwork.jpg',
+                torrent: 'torrents/Metal-Gear-Rising-Revengeance-by-Igruha.torrent'
+            },
+            {
+                name: 'Devil May Cry 5',
+                year: 2019,
+                size: '35 GB',
+                genre: 'Слешеры',
+                description: 'Культовый слэшер с тремя протагонистами. СТИЛЬНЫЕ КОМБО!',
+                image: 'images/DevilMayCry5.jpg',
+                torrent: 'torrents/Devil-May-Cry-5-by-Igruha.torrent'
+            },
+            {
+                name: 'Counter-Strike 1.6',
+                year: 2003,
+                size: '0.5 GB',
+                genre: 'Шутеры',
+                description: 'Культовый тактический шутер. ЛЕГЕНДА КИБЕРСПОРТА!',
+                image: 'images/Counter-Strike_Box_1.jpg',
+                torrent: 'torrents/Counter-strike-1.6.torrent'
+            },
+            {
+                name: 'Left 4 Dead 2',
+                year: 2009,
+                size: '8 GB',
+                genre: 'Шутеры',
+                description: 'Кооперативный зомби-шутер от Valve.',
+                image: 'images/capsule_616x353.jpg',
+                torrent: 'torrents/Left-4-Dead-2-by-Igruha.torrent'
+            },
+            {
+                name: 'Half-Life',
+                year: 1998,
+                size: '0.5 GB',
+                genre: 'Шутеры',
+                description: 'ЛЕГЕНДАРНЫЙ ШУТЕР ОТ VALVE! Начало истории Гордона Фримена.',
+                image: 'images/capsule_616x354.jpg',
+                torrent: 'torrents/Half-Life.torrent'
+            },
+            {
+                name: 'Half-Life 2',
+                year: 2004,
+                size: '4.5 GB',
+                genre: 'Шутеры',
+                description: 'ШЕДЕВР ОТ VALVE! Продолжение легенды с гравипушкой!',
+                image: 'images/HL2box.jpg',
+                torrent: 'torrents/Half-Life-2-Complete-Edition-by-Igruha.torrent'
+            },
+            {
+                name: 'Sonic Superstars',
+                year: 2023,
+                size: '12.4 GB',
+                genre: 'Приключения',
+                description: 'Новейшая игра про Соника в классическом 2.5D стиле. НОВЫЕ СПОСОБНОСТИ!',
+                image: 'images/Sonic_Superstars_Cover_Art_Square.jpg',
+                torrent: 'torrents/sonic-superstars.torrent'
+            },
+            {
+                name: 'Sonic Frontiers',
+                year: 2022,
+                size: '25.7 GB',
+                genre: 'Приключения',
+                description: 'СОНИК В ОТКРЫТОМ МИРЕ! Исследуй огромные локации и сражайся с гигантскими боссами.',
+                image: 'images/1667950646_56fg.jpg',
+                torrent: 'torrents/sonic-frontiers-digital-deluxe.torrent'
+            },
+            {
+                name: 'ULTRAKILL',
+                year: 2020,
+                size: '1.2 GB',
+                genre: 'Шутеры',
+                description: 'БЕШЕНЫЙ ШУТЕР С СТИЛЕ RETRO! Убей всех демонов в аду. СТИЛЬ И СКОРОСТЬ!',
+                image: 'images/header-82.jpg',
+                torrent: 'torrents/ULTRAKILL.__.torrent'
+            },
+            {
+                name: 'Deltarune',
+                year: 2018,
+                size: '0.2 GB',
+                genre: 'Инди',
+                description: 'НОВАЯ ИГРА ОТ СОЗДАТЕЛЯ UNDERTALE! Загадочное приключение в темном мире.',
+                image: 'images/300px-DeltaruneLogo.jpg',
+                torrent: 'torrents/Deltarune_1.04..torrent'
+            },
+            {
+                name: 'Atomic Heart',
+                year: 2023,
+                size: '90 GB',
+                genre: 'Шутеры',
+                description: 'Альтернативная история СССР с роботами и безумием!',
+                image: 'images/Atomic_Heart_Vol.1_Original_Game_Soundtrack.jpg',
+                torrent: 'torrents/Atomic-Heart.torrent'
+            },
+            {
+                name: 'Hotline Miami 2: Wrong Number',
+                year: 2015,
+                size: '2 GB',
+                genre: 'Экшен',
+                description: 'Жестокая и быстрая бойня в стиле ретро. КРОВАВЫЙ ХАОС!',
+                image: 'images/Hotline_Miami_2_cover.jpg',
+                torrent: 'torrents/Hotline-Miami-2-Wrong-Number-by-Igruha.torrent'
+            },
+            {
+                name: 'Call of Duty 4: Modern Warfare',
+                year: 2007,
+                size: '8 GB',
+                genre: 'Шутеры',
+                description: 'КУЛЬТОВЫЙ ШУТЕР! Начало современной эры Call of Duty.',
+                image: 'images/Cod4.jpg',
+                torrent: 'torrents/Call-of-Duty-4-Modern-Warfare.torrent'
+            },
+            {
+                name: 'Geometry Dash',
+                year: 2013,
+                size: '150 MB',
+                genre: 'Аркада',
+                description: 'Безумно адская аркада с ритм-геймплеем. Пройди все уровни если сможешь!',
+                image: 'images/capsule_616x353.jpg',
+                torrent: 'torrents/Geometry-Dash-by-Igruha.torrent'
+            },
+            {
+                name: 'Silent Hill F',
+                year: 2024,
+                size: '45 GB', 
+                genre: 'Хоррор',
+                description: 'НОВАЯ ЧАСТЬ КУЛЬТОВОГО ХОРРОРА! Silent Hill возвращается с новой историей ужасов в Японии.',
+                image: 'images/Silent_Hill_f.jpg',
+                torrent: 'torrents/SILENT-HILL-f-by-Igruha.torrent'
+            },
+            {
+                name: 'Call of Duty: Infinite Warfare',
+                year: 2016,
+                size: '70 GB',
+                genre: 'Шутеры',
+                description: 'КОСМИЧЕСКИЙ ШУТЕР! Сражайся за пределами Земли в будущем.',
+                image: 'images/CoD_Infinite_Warfare.jpg',
+                torrent: 'torrents/Call-of-Duty-Infinite-Warfare-RiP-ot-xatab.torrent'
+            },
+            {
+                name: 'Minecraft',
+                year: 2011,
+                size: '1 GB',
+                genre: 'Инди',
+                description: 'Легендарная песочница без границ. Строй, выживай, твори!',
+                image: 'images/m_a5fc0cc6ab1f4370e726b4dfa1c87f63.jpg',
+                torrent: 'https://www.youtube.com/watch?v=DIN8hYTbv9g'
+            },
+            {
+                name: 'Medal of Honor',
+                year: 2010,
+                size: '12.5 GB',
+                genre: 'Шутеры',
+                description: 'Тактический шутер о подвигах солдат во Второй мировой войне. Реалистичные сражения и захватывающий сюжет.',
+                image: 'images/Moh_ps3.jpg',
+                torrent: 'torrents/710_Medal_of_Honor.torrent'
+            },
+            {
+                name: 'Medal of Honor: Warfighter',
+                year: 2012,
+                size: '15.3 GB',
+                genre: 'Шутеры',
+                description: 'Продолжение культового шутера. Современные боевые действия и экшен от первого лица.',
+                image: 'images/Warfighter.jpg',
+                torrent: 'torrents/711_Medal_of_Honor_Warfighter.torrent'
+            },
+            {
+                name: 'God of War',
+                year: 2018,
+                size: '45 GB',
+                genre: 'Слешеры',
+                description: 'ЭПИЧЕСКИЙ СЛЕШЕР ОТ SONY! Кратос в скандинавской мифологии. БИТВЫ С БОГАМИ!',
+                image: 'images/God_of_War_2018_cover.jpg',
+                torrent: 'torrents/god-of-war.torrent'
+            },
+            {
+                name: 'Dark Souls: Remastered',
+                year: 2018,
+                size: '7 GB',
+                genre: 'RPG',
+                description: 'КУЛЬТОВАЯ RPG С ВЫСОКОЙ СЛОЖНОСТЬЮ. Подготовься умирать снова и снова!',
+                image: 'images/Dark_Souls_Cover_Art.jpg',
+                torrent: 'torrents/[gofrag.ru]DarkSoulsRemastered.torrent'
+            },
+            {
+                name: 'Half-Life: Alyx',
+                year: 2020,
+                size: '67 GB',
+                genre: 'Шутеры',
+                description: 'VR-ШЕДЕВР ОТ VALVE! Приключения Аликс Вэнс между Half-Life 1 и 2.',
+                image: 'images/Half-Life_Alyx_Coverart.jpg',
+                torrent: 'torrents/Half_Life_Alyx.torrent'
+            }
+        ];
+
+        const androidGamesData = [
+            {
+                name: 'Hollow Knight',
+                year: 2022,
+                size: '850 MB',
+                genre: 'Инди',
+                description: 'Увлекательное приключение в загадочном подземном мире насекомых. Исследуй, сражайся, выживай!',
+                image: 'android/images/Hollow_Knight.jpg',
+                file: 'https://drive.google.com/uc?export=download&id=1jxjmbdptosfvj5oEOvArdeM7jV1hLJdS'
+            },
+            {
+                name: 'Hollow Knight: Silksong',
+                year: 2024,
+                size: '1.2 GB',
+                genre: 'Инди',
+                description: 'ДОЛГОЖДАННОЕ ПРОДОЛЖЕНИЕ НА ANDROID! Новые приключения Хорнета в загадочном мире.',
+                image: 'images/1757001489_56fg.jpg',
+                file: 'https://drive.google.com/uc?export=download&id=1laPHKJvfK_q_t08lIrD9NY3eYezsbIyh'
+            },
+            {
+                name: 'Hotline Miami',
+                year: 2023,
+                size: '120 MB',
+                genre: 'Экшен',
+                description: 'БЕШЕНЫЙ ТОП-ДАУН ШУТЕР! Быстрая и жестокая бойня в стиле ретро. УБИВАЙ ВСЕХ!',
+                image: 'android/images/Hotline_Miami_cover.jpg',
+                file: 'https://drive.google.com/uc?export=download&id=1_FC7SeOzFTrEol_2kd_6gzBMguUEgnSv'
+            },
+            {
+                name: 'ULTRAKILL Mobile',
+                year: 2023,
+                size: '280 MB',
+                genre: 'Шутеры',
+                description: 'ЗАХВАТЫВАЮЩИЙ ШУТЕР НА ТЕЛЕФОН! Уничтожай демонов с безумной скоростью. СТИЛЬ И ХАОС!',
+                image: 'android/images/Ultrakill_cover.jpg',
+                file: 'https://drive.google.com/uc?export=download&id=1ZBevkpCbDKH0WOrYsca6Ks8mmwiO-gl2'
+            }
+        ];
+
+        // АУДИО ФУНКЦИИ
+        const audio = document.getElementById('backgroundMusic');
+        const volumeSlider = document.getElementById('volumeSlider');
+        let isPlaying = false;
+
+        function playMusic() {
+            if (isPlaying) return;
+            audio.play().then(() => {
+                isPlaying = true;
+            }).catch(e => {
+                console.log('Нажмите "Включить" еще раз');
+            });
+        }
+
+        function pauseMusic() {
+            audio.pause();
+            isPlaying = false;
+        }
+
+        function stopMusic() {
+            audio.pause();
+            audio.currentTime = 0;
+            isPlaying = false;
+        }
+
+        function changeVolume(volume) {
+            audio.volume = volume;
+        }
+
+        audio.volume = volumeSlider.value;
+
+        // СИСТЕМА ИГР
+        let currentFilter = 'all';
+        let currentSearch = '';
+
+        function renderGames(games, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            games.forEach(game => {
+                const isAndroid = containerId === 'androidGrid';
+                const isMinecraft = game.name === 'Minecraft';
+                
+                let downloadBtn;
+                if (isAndroid) {
+                    downloadBtn = `<a href="${game.file}" download class="download-btn">📥 Скачать APK</a>`;
+                } else if (isMinecraft) {
+                    downloadBtn = `<a href="${game.torrent}" target="_blank" class="download-btn">🎮 YouTube</a>`;
+                } else {
+                    downloadBtn = `<a href="${game.torrent}" download class="download-btn">⚡ Скачать торрент</a>`;
+                }
+
+                const gameCard = `
+                    <div class="game-card">
+                        <img src="${game.image}" alt="${game.name}" class="game-img">
+                        <div class="game-info">
+                            <h3 class="game-title">${game.name}</h3>
+                            <div class="game-meta">
+                                <span>📅 ${game.year}</span>
+                                <span>🎯 ${game.genre}</span>
+                                <span>💾 ${game.size}</span>
+                            </div>
+                            <p class="game-description">${game.description}</p>
+                            ${downloadBtn}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += gameCard;
+            });
+        }
+
+        function performSearch() {
+            currentSearch = document.getElementById('searchInput').value.toLowerCase();
+            updateGamesDisplay();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filters button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            updateGamesDisplay();
+        }
+
+        function updateGamesDisplay() {
+            let filteredGames = gamesData;
+            
+            if (currentFilter !== 'all') {
+                filteredGames = filteredGames.filter(game => game.genre === currentFilter);
+            }
+            
+            if (currentSearch) {
+                filteredGames = filteredGames.filter(game => 
+                    game.name.toLowerCase().includes(currentSearch)
+                );
+            }
+            
+            renderGames(filteredGames, 'gamesGrid');
+        }
+
+        function showSection(section, event) {
+            event.preventDefault();
+            
+            document.getElementById('pcSection').style.display = 'none';
+            document.getElementById('androidSection').style.display = 'none';
+            document.getElementById('updatesSection').style.display = 'none';
+            
+            document.getElementById(section + 'Section').style.display = 'block';
+            
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            if (section === 'android') {
+                renderGames(androidGamesData, 'androidGrid');
+            }
+        }
+
+        // ЗАПУСК
+        document.addEventListener('DOMContentLoaded', function() {
+            renderGames(gamesData, 'gamesGrid');
+        });
+    </script>
+</body>
+</html>
