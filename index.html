@@ -139,6 +139,30 @@
             background: #8b5cf6;
             color: white;
         }
+
+        .android-filters { 
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .android-filters button { 
+            padding: 0.9rem 2rem;
+            background: transparent;
+            color: #d8b4fe;
+            border: 2px solid #8b5cf6;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .android-filters button:hover,
+        .android-filters button.active { 
+            background: #8b5cf6;
+            color: white;
+        }
         
         .games-section { 
             padding: 100px 0;
@@ -336,16 +360,23 @@
                 <button onclick="performSearch()">Поиск</button>
             </div>
 
-            <div class="filters">
-                <button class="active" onclick="setFilter('all')">Все игры</button>
-                <button onclick="setFilter('RPG')">RPG</button>
-                <button onclick="setFilter('Экшен')">Экшен</button>
-                <button onclick="setFilter('Шутеры')">Шутеры</button>
-                <button onclick="setFilter('Приключения')">Приключения</button>
-                <button onclick="setFilter('Инди')">Инди</button>
-                <button onclick="setFilter('Аркада')">Аркада</button>
-                <button onclick="setFilter('Хоррор')">Хоррор</button>
-                <button onclick="setFilter('Слешеры')">Слешеры</button>
+            <div class="filters" id="pcFilters">
+                <button class="active" onclick="setFilter('all', 'pc')">Все игры</button>
+                <button onclick="setFilter('RPG', 'pc')">RPG</button>
+                <button onclick="setFilter('Экшен', 'pc')">Экшен</button>
+                <button onclick="setFilter('Шутеры', 'pc')">Шутеры</button>
+                <button onclick="setFilter('Приключения', 'pc')">Приключения</button>
+                <button onclick="setFilter('Инди', 'pc')">Инди</button>
+                <button onclick="setFilter('Аркада', 'pc')">Аркада</button>
+                <button onclick="setFilter('Хоррор', 'pc')">Хоррор</button>
+                <button onclick="setFilter('Слешеры', 'pc')">Слешеры</button>
+            </div>
+
+            <div class="android-filters" id="androidFilters" style="display: none;">
+                <button class="active" onclick="setFilter('all', 'android')">Все игры</button>
+                <button onclick="setFilter('Инди', 'android')">Инди</button>
+                <button onclick="setFilter('Экшен', 'android')">Экшен</button>
+                <button onclick="setFilter('Шутеры', 'android')">Шутеры</button>
             </div>
         </div>
     </section>
@@ -369,41 +400,14 @@
             <h2 class="section-title">🔄 История обновлений</h2>
             
             <div class="update-card">
-                <div class="update-version">Версия 2.3 - Эпическое обновление</div>
-                <ul class="update-features">
-                    <li>Добавлены 3 новые игры: God of War, Dark Souls, Half-Life: Alyx</li>
-                    <li>Добавлен новый жанр: Слешеры</li>
-                    <li>Теперь 30+ игр в коллекции</li>
-                    <li>Обновлена система категорий</li>
-                </ul>
-            </div>
-
-            <div class="update-card">
-                <div class="update-version">Версия 2.2 - Medal of Honor</div>
-                <ul class="update-features">
-                    <li>Добавлены 2 новые игры: Medal of Honor и Medal of Honor: Warfighter</li>
-                    <li>Теперь 27+ игр в коллекции</li>
-                    <li>Обновлены категории шутеров</li>
-                </ul>
-            </div>
-
-            <div class="update-card">
-                <div class="update-version">Версия 2.1 - Новые игры</div>
-                <ul class="update-features">
-                    <li>Добавлены 3 новые игры: Geometry Dash, Silent Hill, Call of Duty Infinite Warfare</li>
-                    <li>Добавлены новые категории: Аркада и Хоррор</li>
-                    <li>Улучшена производительность поиска</li>
-                    <li>Теперь 25+ игр в коллекции</li>
-                </ul>
-            </div>
-
-            <div class="update-card">
                 <div class="update-version">Версия 2.0 - Фиолетовое обновление</div>
                 <ul class="update-features">
                     <li>Полностью переработанный фиолетовый дизайн</li>
-                    <li>Добавлено 20+ игр для PC и Android</li>
+                    <li>Добавлено 30+ игр для PC и Android</li>
                     <li>Добавлена фоновая музыка с управлением</li>
-                    <li>Улучшенный поиск и фильтрация</li>
+                    <li>Улучшенный поиск и фильтрация по жанрам</li>
+                    <li>Отдельные системы фильтрации для PC и Android</li>
+                    <li>Все игры с описаниями и метаданными</li>
                 </ul>
             </div>
         </div>
@@ -411,7 +415,7 @@
 
     <footer class="footer">
         <div class="container">
-            <p style="font-size: 1.1rem; margin-bottom: 1rem;">&copy; 2024 GameTorrent. Версия 2.3</p>
+            <p style="font-size: 1.1rem; margin-bottom: 1rem;">&copy; 2025 GameTorrent. Версия 2.0</p>
             
             <div class="audio-player">
                 <div style="color: #8b5cf6; font-size: 1rem; margin-bottom: 1rem;">🎵 Фоновая музыка: Number Rampage</div>
@@ -464,7 +468,7 @@
             },
             {
                 name: 'Hollow Knight: Silksong',
-                year: 2024,
+                year: 2025,
                 size: '12 GB',
                 genre: 'Инди',
                 description: 'Продолжение культовой метроидвании. Новые приключения Хорнета!',
@@ -621,7 +625,7 @@
                 size: '150 MB',
                 genre: 'Аркада',
                 description: 'Безумно адская аркада с ритм-геймплеем. Пройди все уровни если сможешь!',
-                image: 'images/capsule_616x353.jpg',
+                image: 'images/capsule_616x355.jpg',
                 torrent: 'torrents/Geometry-Dash-by-Igruha.torrent'
             },
             {
@@ -770,6 +774,7 @@
 
         // СИСТЕМА ИГР
         let currentFilter = 'all';
+        let currentPlatform = 'pc';
         let currentSearch = '';
 
         function renderGames(games, containerId) {
@@ -813,17 +818,28 @@
             updateGamesDisplay();
         }
 
-        function setFilter(filter) {
+        function setFilter(filter, platform) {
             currentFilter = filter;
-            document.querySelectorAll('.filters button').forEach(btn => {
+            currentPlatform = platform;
+            
+            // Сбрасываем активные кнопки на обеих панелях фильтров
+            document.querySelectorAll('.filters button, .android-filters button').forEach(btn => {
                 btn.classList.remove('active');
             });
+            
+            // Активируем только кнопку текущей платформы
             event.target.classList.add('active');
             updateGamesDisplay();
         }
 
         function updateGamesDisplay() {
-            let filteredGames = gamesData;
+            let filteredGames;
+            
+            if (currentPlatform === 'pc') {
+                filteredGames = gamesData;
+            } else {
+                filteredGames = androidGamesData;
+            }
             
             if (currentFilter !== 'all') {
                 filteredGames = filteredGames.filter(game => game.genre === currentFilter);
@@ -835,7 +851,11 @@
                 );
             }
             
-            renderGames(filteredGames, 'gamesGrid');
+            if (currentPlatform === 'pc') {
+                renderGames(filteredGames, 'gamesGrid');
+            } else {
+                renderGames(filteredGames, 'androidGrid');
+            }
         }
 
         function showSection(section, event) {
@@ -844,17 +864,25 @@
             document.getElementById('pcSection').style.display = 'none';
             document.getElementById('androidSection').style.display = 'none';
             document.getElementById('updatesSection').style.display = 'none';
+            document.getElementById('pcFilters').style.display = 'none';
+            document.getElementById('androidFilters').style.display = 'none';
             
             document.getElementById(section + 'Section').style.display = 'block';
+            
+            if (section === 'pc') {
+                document.getElementById('pcFilters').style.display = 'flex';
+                currentPlatform = 'pc';
+            } else if (section === 'android') {
+                document.getElementById('androidFilters').style.display = 'flex';
+                currentPlatform = 'android';
+            }
             
             document.querySelectorAll('.nav-links a').forEach(link => {
                 link.classList.remove('active');
             });
             event.target.classList.add('active');
             
-            if (section === 'android') {
-                renderGames(androidGamesData, 'androidGrid');
-            }
+            updateGamesDisplay();
         }
 
         // ЗАПУСК
