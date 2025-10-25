@@ -3,19 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameTorrent v2.0</title>
+    <title>GameTorrent v3.0</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Courier New', 'Segoe UI', monospace;
         }
         
         body {
-            background: linear-gradient(135deg, #0c0c1b 0%, #1a0c2e 100%);
-            color: white;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 157, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 100, 255, 0.1) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0d0d0d 100%);
+            color: #00ff9d;
             min-height: 100vh;
+            background-attachment: fixed;
+        }
+
+        .cyber-glow {
+            text-shadow: 
+                0 0 10px currentColor,
+                0 0 20px currentColor,
+                0 0 40px currentColor;
+        }
+
+        .blood-splatter {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(255, 0, 0, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(139, 0, 0, 0.02) 0%, transparent 50%);
+            z-index: -1;
         }
         
         .container {
@@ -25,14 +49,17 @@
         }
 
         .header { 
-            background: rgba(26, 12, 46, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
             padding: 1rem 0;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            border-bottom: 2px solid #8b5cf6;
+            border-bottom: 2px solid #00ff9d;
+            box-shadow: 
+                0 0 20px #00ff9d,
+                0 5px 30px rgba(0, 0, 0, 0.8);
         }
 
         .nav { 
@@ -42,9 +69,14 @@
         }
 
         .logo h2 { 
-            color: #8b5cf6;
+            color: #00ff9d;
             font-size: 1.8rem;
             font-weight: bold;
+            text-shadow: 
+                0 0 10px #00ff9d,
+                0 0 20px #00ff9d,
+                0 0 40px #00ff9d;
+            letter-spacing: 2px;
         }
 
         .nav-links { 
@@ -53,49 +85,87 @@
         }
 
         .nav-links a { 
-            color: #d8b4fe;
+            color: #00ff9d;
             text-decoration: none;
             padding: 0.7rem 1.5rem;
-            border-radius: 25px;
+            border-radius: 4px;
             transition: all 0.3s ease;
-            border: 2px solid transparent;
+            border: 1px solid transparent;
+            background: rgba(0, 255, 157, 0.05);
+            font-weight: bold;
+            letter-spacing: 1px;
         }
 
         .nav-links a:hover,
         .nav-links a.active { 
-            background: rgba(139, 92, 246, 0.2);
-            color: #8b5cf6;
-            border-color: #8b5cf6;
+            background: rgba(0, 255, 157, 0.2);
+            color: #00ff9d;
+            border: 1px solid #00ff9d;
+            box-shadow: 
+                0 0 15px #00ff9d,
+                inset 0 0 15px rgba(0, 255, 157, 0.1);
+            text-shadow: 0 0 10px #00ff9d;
         }
         
         .hero { 
-            padding: 160px 0 80px;
+            padding: 180px 0 100px;
             text-align: center;
-            background: linear-gradient(135deg, #1a0c2e 0%, #2d1b47 100%);
+            background: 
+                linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 26, 0.8) 100%);
+            border-bottom: 3px solid #ff003c;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 157, 0.1), transparent);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
         .hero h1 { 
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #8b5cf6, #c4b5fd);
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #00ff9d, #0099ff, #ff003c);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 
+                0 0 30px #00ff9d,
+                0 0 60px #0099ff;
+            letter-spacing: 3px;
+            font-weight: 900;
+            text-transform: uppercase;
         }
 
         .hero p { 
-            font-size: 1.3rem;
-            color: #d8b4fe;
+            font-size: 1.4rem;
+            color: #00ff9d;
             margin-bottom: 2rem;
+            text-shadow: 0 0 10px #00ff9d;
+            letter-spacing: 1px;
         }
 
         .search-box { 
             max-width: 600px;
             margin: 2rem auto;
             display: flex;
-            background: rgba(26, 12, 46, 0.8);
-            border-radius: 15px;
+            background: rgba(10, 10, 10, 0.8);
+            border-radius: 8px;
             overflow: hidden;
-            border: 2px solid #8b5cf6;
+            border: 2px solid #00ff9d;
+            box-shadow: 
+                0 0 20px #00ff9d,
+                inset 0 0 20px rgba(0, 255, 157, 0.1);
         }
 
         .search-box input { 
@@ -103,17 +173,31 @@
             padding: 1.3rem;
             border: none;
             background: transparent;
-            color: white;
+            color: #00ff9d;
             font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .search-box input::placeholder {
+            color: #00ff9d;
+            opacity: 0.7;
         }
 
         .search-box button { 
             padding: 1.3rem 2.5rem;
-            background: #8b5cf6;
-            color: white;
+            background: linear-gradient(45deg, #00ff9d, #0099ff);
+            color: #0a0a0a;
             border: none;
             cursor: pointer;
             font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box button:hover { 
+            background: linear-gradient(45deg, #0099ff, #00ff9d);
+            box-shadow: 0 0 20px #00ff9d;
         }
         
         .filters { 
@@ -126,18 +210,25 @@
 
         .filters button { 
             padding: 0.9rem 2rem;
-            background: transparent;
-            color: #d8b4fe;
-            border: 2px solid #8b5cf6;
-            border-radius: 25px;
+            background: rgba(0, 255, 157, 0.1);
+            color: #00ff9d;
+            border: 1px solid #00ff9d;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .filters button:hover,
         .filters button.active { 
-            background: #8b5cf6;
-            color: white;
+            background: rgba(0, 255, 157, 0.3);
+            color: #00ff9d;
+            box-shadow: 
+                0 0 15px #00ff9d,
+                inset 0 0 15px rgba(0, 255, 157, 0.2);
+            text-shadow: 0 0 10px #00ff9d;
         }
 
         .android-filters { 
@@ -150,51 +241,96 @@
 
         .android-filters button { 
             padding: 0.9rem 2rem;
-            background: transparent;
-            color: #d8b4fe;
-            border: 2px solid #8b5cf6;
-            border-radius: 25px;
+            background: rgba(0, 255, 157, 0.1);
+            color: #00ff9d;
+            border: 1px solid #00ff9d;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .android-filters button:hover,
         .android-filters button.active { 
-            background: #8b5cf6;
-            color: white;
+            background: rgba(0, 255, 157, 0.3);
+            color: #00ff9d;
+            box-shadow: 
+                0 0 15px #00ff9d,
+                inset 0 0 15px rgba(0, 255, 157, 0.2);
+            text-shadow: 0 0 10px #00ff9d;
         }
         
         .games-section { 
-            padding: 100px 0;
+            padding: 120px 0;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 3rem;
-            font-size: 2.8rem;
-            background: linear-gradient(45deg, #8b5cf6, #c4b5fd);
+            margin-bottom: 4rem;
+            font-size: 3.5rem;
+            background: linear-gradient(45deg, #00ff9d, #ff003c, #0099ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 
+                0 0 30px #00ff9d,
+                0 0 60px #ff003c;
+            letter-spacing: 3px;
+            font-weight: 900;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff9d, #ff003c);
+            box-shadow: 0 0 20px #ff003c;
         }
         
         .games-grid { 
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2.5rem;
+            gap: 3rem;
         }
 
         .game-card { 
-            background: linear-gradient(135deg, #1a0c2e 0%, #2d1b47 100%);
-            border-radius: 20px;
+            background: 
+                linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 26, 0.8) 100%);
+            border-radius: 8px;
             overflow: hidden;
-            border: 2px solid #8b5cf6;
+            border: 1px solid #00ff9d;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 
+                0 0 20px rgba(0, 255, 157, 0.3),
+                inset 0 0 20px rgba(0, 255, 157, 0.1);
+            position: relative;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff9d, #ff003c);
+            box-shadow: 0 0 10px #ff003c;
         }
 
         .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.3);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 
+                0 0 40px #00ff9d,
+                0 20px 40px rgba(0, 0, 0, 0.8),
+                inset 0 0 30px rgba(0, 255, 157, 0.2);
+            border-color: #ff003c;
         }
         
         .game-img { 
@@ -202,6 +338,7 @@
             height: 220px;
             object-fit: cover;
             display: block;
+            border-bottom: 2px solid #00ff9d;
         }
         
         .game-info { 
@@ -211,8 +348,12 @@
         .game-title { 
             font-size: 1.4rem;
             margin-bottom: 1rem;
-            color: #8b5cf6;
+            color: #00ff9d;
             font-weight: bold;
+            text-shadow: 0 0 10px #00ff9d;
+            letter-spacing: 1px;
+            border-left: 3px solid #ff003c;
+            padding-left: 1rem;
         }
 
         .game-meta { 
@@ -224,25 +365,28 @@
         }
 
         .game-meta span {
-            background: rgba(139, 92, 246, 0.2);
-            color: #d8b4fe;
+            background: rgba(0, 255, 157, 0.1);
+            color: #00ff9d;
             padding: 0.4rem 1rem;
-            border-radius: 20px;
+            border-radius: 4px;
+            border: 1px solid #00ff9d;
+            font-weight: bold;
         }
 
         .game-description { 
-            color: #c4b5fd;
+            color: #00ff9d;
             margin-bottom: 1.5rem;
             line-height: 1.6;
+            opacity: 0.9;
         }
 
         .download-btn { 
             display: block;
-            background: linear-gradient(45deg, #8b5cf6, #a855f7);
-            color: white;
+            background: linear-gradient(45deg, #00ff9d, #0099ff);
+            color: #0a0a0a;
             text-align: center;
             padding: 1.2rem;
-            border-radius: 12px;
+            border-radius: 4px;
             text-decoration: none;
             font-weight: bold;
             margin-top: 1rem;
@@ -250,20 +394,27 @@
             border: none;
             width: 100%;
             transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 900;
         }
 
         .download-btn:hover { 
-            background: linear-gradient(45deg, #7c3aed, #9333ea);
+            background: linear-gradient(45deg, #0099ff, #00ff9d);
+            box-shadow: 0 0 30px #00ff9d;
             transform: translateY(-2px);
         }
 
         .audio-player {
-            background: rgba(26, 12, 46, 0.8);
+            background: rgba(10, 10, 10, 0.9);
             padding: 1.5rem;
-            border-radius: 15px;
+            border-radius: 8px;
             margin-top: 2rem;
-            border: 2px solid #8b5cf6;
+            border: 2px solid #00ff9d;
             text-align: center;
+            box-shadow: 
+                0 0 20px #00ff9d,
+                inset 0 0 20px rgba(0, 255, 157, 0.1);
         }
 
         .audio-controls {
@@ -276,34 +427,72 @@
         }
 
         .audio-btn {
-            background: #8b5cf6;
-            color: white;
+            background: linear-gradient(45deg, #00ff9d, #0099ff);
+            color: #0a0a0a;
             border: none;
             padding: 0.8rem 1.5rem;
-            border-radius: 8px;
+            border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .audio-btn:hover {
-            background: #7c3aed;
+            background: linear-gradient(45deg, #0099ff, #00ff9d);
+            box-shadow: 0 0 20px #00ff9d;
+        }
+
+        .custom-music {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(0, 255, 157, 0.05);
+            border-radius: 8px;
+            border: 1px solid #00ff9d;
+        }
+
+        .custom-music input {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid #00ff9d;
+            border-radius: 4px;
+            color: #00ff9d;
+            font-weight: bold;
         }
 
         .update-card {
-            background: linear-gradient(135deg, #1a0c2e 0%, #2d1b47 100%);
-            border-radius: 20px;
+            background: 
+                linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 26, 0.8) 100%);
+            border-radius: 8px;
             padding: 2.5rem;
             margin-bottom: 2rem;
-            border-left: 5px solid #8b5cf6;
-            border: 2px solid #8b5cf6;
+            border: 2px solid #00ff9d;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 157, 0.3),
+                inset 0 0 30px rgba(0, 255, 157, 0.1);
+            position: relative;
+        }
+
+        .update-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, #00ff9d, #ff003c);
         }
 
         .update-version {
-            color: #8b5cf6;
-            font-size: 1.8rem;
+            color: #00ff9d;
+            font-size: 2rem;
             font-weight: bold;
             margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px #00ff9d;
+            letter-spacing: 2px;
         }
 
         .update-features {
@@ -313,101 +502,132 @@
 
         .update-features li {
             padding: 0.8rem 0;
-            border-bottom: 1px solid #3a2a3e;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.3);
             position: relative;
             padding-left: 2rem;
-            color: #c4b5fd;
+            color: #00ff9d;
         }
 
         .update-features li:before {
             content: "⚡";
             position: absolute;
             left: 0;
-            color: #8b5cf6;
+            color: #ff003c;
+            text-shadow: 0 0 10px #ff003c;
         }
 
         .footer { 
-            background: rgba(26, 12, 46, 0.95);
+            background: rgba(10, 10, 10, 0.95);
             padding: 3rem 0;
             text-align: center;
-            color: #a78bfa;
-            border-top: 2px solid #8b5cf6;
+            color: #00ff9d;
+            border-top: 3px solid #ff003c;
             margin-top: 4rem;
+            box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.8);
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .flicker {
+            animation: flicker 2s infinite;
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #00ff9d, #ff003c);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #ff003c, #00ff9d);
         }
     </style>
 </head>
 <body>
+    <div class="blood-splatter"></div>
+    
     <header class="header">
         <nav class="nav container">
             <div class="logo">
-                <h2>🎮 GameTorrent v2.0</h2>
+                <h2 class="cyber-glow">🎮 GAME_TORRENT_v3.0</h2>
             </div>
             <div class="nav-links">
-                <a href="#" class="active" onclick="showSection('pc', event)">Игры PC</a>
-                <a href="#" onclick="showSection('android', event)">Android</a>
-                <a href="#" onclick="showSection('updates', event)">Обновления</a>
+                <a href="#" class="active flicker" onclick="showSection('pc', event)">PC_GAMES</a>
+                <a href="#" class="flicker" onclick="showSection('android', event)">ANDROID</a>
+                <a href="#" class="flicker" onclick="showSection('updates', event)">UPDATES</a>
             </div>
         </nav>
     </header>
 
     <section class="hero">
         <div class="container">
-            <h1>Фиолетовая коллекция игр</h1>
-            <p>30+ эксклюзивных игр в стильном фиолетовом дизайне</p>
+            <h1>CYBER_HORROR COLLECTION</h1>
+            <p>38+ PREMIUM GAMES IN CYBERPUNK x RESIDENT EVIL STYLE</p>
             
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Найди свою игру..." oninput="performSearch()">
-                <button onclick="performSearch()">Поиск</button>
+                <input type="text" id="searchInput" placeholder="SEARCH_GAMES..." oninput="performSearch()">
+                <button onclick="performSearch()">SEARCH</button>
             </div>
 
             <div class="filters" id="pcFilters">
-                <button class="active" onclick="setFilter('all', 'pc')">Все игры</button>
-                <button onclick="setFilter('RPG', 'pc')">RPG</button>
-                <button onclick="setFilter('Экшен', 'pc')">Экшен</button>
-                <button onclick="setFilter('Шутеры', 'pc')">Шутеры</button>
-                <button onclick="setFilter('Приключения', 'pc')">Приключения</button>
-                <button onclick="setFilter('Инди', 'pc')">Инди</button>
-                <button onclick="setFilter('Аркада', 'pc')">Аркада</button>
-                <button onclick="setFilter('Хоррор', 'pc')">Хоррор</button>
-                <button onclick="setFilter('Слешеры', 'pc')">Слешеры</button>
+                <button class="active flicker" onclick="setFilter('all', 'pc')">ALL_GAMES</button>
+                <button class="flicker" onclick="setFilter('RPG', 'pc')">RPG</button>
+                <button class="flicker" onclick="setFilter('Экшен', 'pc')">ACTION</button>
+                <button class="flicker" onclick="setFilter('Шутеры', 'pc')">SHOOTERS</button>
+                <button class="flicker" onclick="setFilter('Приключения', 'pc')">ADVENTURE</button>
+                <button class="flicker" onclick="setFilter('Инди', 'pc')">INDI</button>
+                <button class="flicker" onclick="setFilter('Аркада', 'pc')">ARCADE</button>
+                <button class="flicker" onclick="setFilter('Хоррор', 'pc')">HORROR</button>
+                <button class="flicker" onclick="setFilter('Слешеры', 'pc')">SLASHERS</button>
             </div>
 
             <div class="android-filters" id="androidFilters" style="display: none;">
-                <button class="active" onclick="setFilter('all', 'android')">Все игры</button>
-                <button onclick="setFilter('Инди', 'android')">Инди</button>
-                <button onclick="setFilter('Экшен', 'android')">Экшен</button>
-                <button onclick="setFilter('Шутеры', 'android')">Шутеры</button>
+                <button class="active flicker" onclick="setFilter('all', 'android')">ALL_GAMES</button>
+                <button class="flicker" onclick="setFilter('Инди', 'android')">INDI</button>
+                <button class="flicker" onclick="setFilter('Экшен', 'android')">ACTION</button>
+                <button class="flicker" onclick="setFilter('Шутеры', 'android')">SHOOTERS</button>
             </div>
         </div>
     </section>
 
     <section id="pcSection" class="games-section">
         <div class="container">
-            <h2 class="section-title">🎮 Игры для PC</h2>
+            <h2 class="section-title">🎮 PC_GAMES</h2>
             <div class="games-grid" id="gamesGrid"></div>
         </div>
     </section>
 
     <section id="androidSection" class="games-section" style="display: none;">
         <div class="container">
-            <h2 class="section-title">📱 Игры на Android</h2>
+            <h2 class="section-title">📱 ANDROID_GAMES</h2>
             <div class="games-grid" id="androidGrid"></div>
         </div>
     </section>
 
     <section id="updatesSection" class="games-section" style="display: none;">
         <div class="container">
-            <h2 class="section-title">🔄 История обновлений</h2>
+            <h2 class="section-title">🔄 SYSTEM_UPDATES</h2>
             
             <div class="update-card">
-                <div class="update-version">Версия 2.0 - Фиолетовое обновление</div>
+                <div class="update-version">VERSION_3.0 - CYBER_HORROR_UPDATE</div>
                 <ul class="update-features">
-                    <li>Полностью переработанный фиолетовый дизайн</li>
-                    <li>Добавлено 30+ игр для PC и Android</li>
-                    <li>Добавлена фоновая музыка с управлением</li>
-                    <li>Улучшенный поиск и фильтрация по жанрам</li>
-                    <li>Отдельные системы фильтрации для PC и Android</li>
-                    <li>Все игры с описаниями и метаданными</li>
+                    <li>COMPLETE DESIGN OVERHAUL - CYBERPUNK x RESIDENT EVIL STYLE</li>
+                    <li>38+ PREMIUM GAMES FOR PC AND ANDROID</li>
+                    <li>NEON GLOW EFFECTS AND HORROR ELEMENTS</li>
+                    <li>ENHANCED SEARCH AND FILTERING SYSTEM</li>
+                    <li>BACKGROUND MUSIC WITH AUTO-PLAY</li>
+                    <li>CUSTOM MUSIC UPLOAD FEATURE</li>
+                    <li>RESIDENT EVIL & FAR CRY COLLECTIONS ADDED</li>
                 </ul>
             </div>
         </div>
@@ -415,23 +635,31 @@
 
     <footer class="footer">
         <div class="container">
-            <p style="font-size: 1.1rem; margin-bottom: 1rem;">&copy; 2025 GameTorrent. Версия 2.0</p>
+            <p style="font-size: 1.1rem; margin-bottom: 1rem;">&copy; 2025 GAME_TORRENT. VERSION_3.0</p>
             
             <div class="audio-player">
-                <div style="color: #8b5cf6; font-size: 1rem; margin-bottom: 1rem;">🎵 Фоновая музыка: Number Rampage</div>
+                <div style="color: #00ff9d; font-size: 1rem; margin-bottom: 1rem;">🎵 BACKGROUND_MUSIC: NUMBER_RAMPAGE</div>
                 <div class="audio-controls">
-                    <button class="audio-btn" onclick="playMusic()">▶️ Включить</button>
-                    <button class="audio-btn" onclick="pauseMusic()">⏸️ Пауза</button>
-                    <button class="audio-btn" onclick="stopMusic()">⏹️ Стоп</button>
+                    <button class="audio-btn" onclick="playMusic()">▶️ PLAY</button>
+                    <button class="audio-btn" onclick="pauseMusic()">⏸️ PAUSE</button>
+                    <button class="audio-btn" onclick="stopMusic()">⏹️ STOP</button>
                     <div style="display: flex; align-items: center; gap: 0.8rem;">
                         <span>🔊</span>
                         <input type="range" min="0" max="1" step="0.1" value="0.5" style="width: 120px;" id="volumeSlider" onchange="changeVolume(this.value)">
                     </div>
                 </div>
+                
+                <div class="custom-music">
+                    <div style="color: #00ff9d; margin-bottom: 0.5rem;">🎧 UPLOAD_CUSTOM_MUSIC:</div>
+                    <input type="file" id="musicUpload" accept="audio/*" onchange="loadCustomMusic(this.files)">
+                    <button class="audio-btn" onclick="playCustomMusic()" style="margin-top: 0.5rem;">🎵 PLAY_CUSTOM_TRACK</button>
+                </div>
+                
                 <audio id="backgroundMusic" loop>
                     <source src="music/number-rampage.mp3" type="audio/mpeg">
-                    Ваш браузер не поддерживает аудио элемент.
+                    YOUR_BROWSER_DOES_NOT_SUPPORT_THE_AUDIO_ELEMENT.
                 </audio>
+                <audio id="customMusic" loop style="display: none;"></audio>
             </div>
         </div>
     </footer>
@@ -699,6 +927,78 @@
                 description: 'VR-ШЕДЕВР ОТ VALVE! Приключения Аликс Вэнс между Half-Life 1 и 2.',
                 image: 'images/Half-Life_Alyx_Coverart.jpg',
                 torrent: 'torrents/Half_Life_Alyx.torrent'
+            },
+            {
+                name: 'Resident Evil 4 Remake',
+                year: 2023,
+                size: '55 GB',
+                genre: 'Хоррор',
+                description: 'РЕМЕЙК КУЛЬТОВОГО ХОРРОРА! Леон Кеннеди против зомби и культистов в обновленной графике.',
+                image: 'images/Resident_Evil_4_remake.jpg',
+                torrent: 'torrents/resident-evil-4_v_1_0_build_11025382_2023-decepticon-repack.torrent'
+            },
+            {
+                name: 'Resident Evil 2 Remake',
+                year: 2019,
+                size: '25 GB',
+                genre: 'Хоррор',
+                description: 'ПЕРЕЗАПУСК ЛЕГЕНДЫ! Леон и Клэр в зараженном Раккун-Сити. УЖАС В 4K!',
+                image: 'images/Resident evil 2 deluxe edition.jpg',
+                torrent: 'torrents/resident-evil-2_v_1_05u7_build_7551512_2019-decepticon-repack.torrent'
+            },
+            {
+                name: 'Resident Evil HD Remaster',
+                year: 2015,
+                size: '15 GB',
+                genre: 'Хоррор',
+                description: 'РЕМАСТЕР ПЕРВОЙ ЧАСТИ! Особняк Спенсера в HD. НАЧАЛО УЖАСА!',
+                image: 'images/1c3ef2d1-9f8b-4cf0-881d-905f83378934.jpg',
+                torrent: 'torrents/resident-evil-hd-remaster-1996-2015.torrent'
+            },
+            {
+                name: 'Far Cry 5',
+                year: 2018,
+                size: '40 GB',
+                genre: 'Шутеры',
+                description: 'СРАЖЕНИЕ С КУЛЬТОМ В МОНТАНЕ! Откройте мир свободы и хаоса в захватывающем шутере.',
+                image: 'images/Far_Cry_5_cover.jpg',
+                torrent: 'torrents/570_Cry_5_by_xatab.torrent'
+            },
+            {
+                name: 'Far Cry 4',
+                year: 2014,
+                size: '30 GB',
+                genre: 'Шутеры',
+                description: 'ПРИКЛЮЧЕНИЕ В ГИМАЛАЯХ! Сразитесь за свободу Кирата в экзотической стране.',
+                image: 'images/Far_Cry_4_Box_Art_PC.jpg',
+                torrent: 'torrents/far-cry-4-2014.torrent'
+            },
+            {
+                name: 'Far Cry 3',
+                year: 2012,
+                size: '15 GB',
+                genre: 'Шутеры',
+                description: 'ВЫЖИВАНИЕ НА ТРОПИЧЕСКОМ ОСТРОВЕ! Станьте воином и сразитесь с пиратами.',
+                image: 'images/Far_Cry_3_Box_Art_PC.jpg',
+                torrent: 'torrents/515_Far_Cry_3_by_xa.torrent'
+            },
+            {
+                name: 'Far Cry 2',
+                year: 2008,
+                size: '8 GB',
+                genre: 'Шутеры',
+                description: 'ВОЙНА В АФРИКЕ! Реалистичный шутер с динамическим миром и огнестрельным безумием.',
+                image: 'images/Far_Cry_2_cover_art.jpg',
+                torrent: 'torrents/far-cry-2-v_1_03-gog-2008.torrent'
+            },
+            {
+                name: 'Far Cry',
+                year: 2004,
+                size: '4 GB',
+                genre: 'Шутеры',
+                description: 'НАЧАЛО ЛЕГЕНДЫ! Тропический остров, мутанты и невероятная графика для своего времени.',
+                image: 'images/Far_Cry_coverart.jpg',
+                torrent: 'torrents/962_20619Far_Cry-20.torrent'
             }
         ];
 
@@ -743,34 +1043,72 @@
 
         // АУДИО ФУНКЦИИ
         const audio = document.getElementById('backgroundMusic');
+        const customAudio = document.getElementById('customMusic');
         const volumeSlider = document.getElementById('volumeSlider');
         let isPlaying = false;
+        let currentAudio = audio;
+
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                playMusic();
+            }, 1000);
+        });
 
         function playMusic() {
             if (isPlaying) return;
-            audio.play().then(() => {
+            currentAudio.play().then(() => {
                 isPlaying = true;
             }).catch(e => {
-                console.log('Нажмите "Включить" еще раз');
+                console.log('Автовоспроизведение заблокировано. Нажмите "Включить"');
             });
         }
 
         function pauseMusic() {
-            audio.pause();
+            currentAudio.pause();
             isPlaying = false;
         }
 
         function stopMusic() {
-            audio.pause();
-            audio.currentTime = 0;
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
             isPlaying = false;
         }
 
         function changeVolume(volume) {
             audio.volume = volume;
+            customAudio.volume = volume;
         }
 
         audio.volume = volumeSlider.value;
+        customAudio.volume = volumeSlider.value;
+
+        function loadCustomMusic(files) {
+            if (files.length > 0) {
+                const file = files[0];
+                const objectURL = URL.createObjectURL(file);
+                customAudio.src = objectURL;
+                
+                if (isPlaying) {
+                    pauseMusic();
+                    currentAudio = customAudio;
+                    playMusic();
+                } else {
+                    currentAudio = customAudio;
+                }
+                
+                alert('Музыка загружена! Нажми "Включить свою музыку"');
+            }
+        }
+
+        function playCustomMusic() {
+            if (customAudio.src) {
+                if (isPlaying) pauseMusic();
+                currentAudio = customAudio;
+                playMusic();
+            } else {
+                alert('Сначала загрузи музыку!');
+            }
+        }
 
         // СИСТЕМА ИГР
         let currentFilter = 'all';
@@ -822,12 +1160,10 @@
             currentFilter = filter;
             currentPlatform = platform;
             
-            // Сбрасываем активные кнопки на обеих панелях фильтров
             document.querySelectorAll('.filters button, .android-filters button').forEach(btn => {
                 btn.classList.remove('active');
             });
             
-            // Активируем только кнопку текущей платформы
             event.target.classList.add('active');
             updateGamesDisplay();
         }
