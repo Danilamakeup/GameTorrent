@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games With Torrents (GWT)</title>
+    <style>
+        /* === БАЗОВЫЕ СТИЛИ === */
+        :root {
+            /* ТЁМНАЯ ТЕМА (по умолчанию) */
+            --bg-primary: #0a0a12;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8d1;
+            --accent-blue: #0099ff;
+            --accent-purple: #8b5cf6;
+            --accent-neon: #00eeff;
+            --border-color: #2d2d4d;
+            --shadow-color: rgba(0, 153, 255, 0.3);
+            --theme-toggle: '🌙';
+        }
+
+        .light-theme {
+            /* СВЕТЛАЯ ТЕМА */
+            --bg-primary: #f0f2f5;
+            --bg-secondary: #ffffff;
+            --bg-card: #e6e9ef;
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a4a6d;
+            --accent-blue: #0066cc;
+            --accent-purple: #7c3aed;
+            --accent-neon: #0088aa;
+            --border-color: #d1d5db;
+            --shadow-color: rgba(0, 102, 204, 0.2);
+            --theme-toggle: '☀️';
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* === ТЕХНО-ЭФФЕКТЫ === */
+        .tech-grid {
+            background-image: 
+                linear-gradient(rgba(0, 153, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 153, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .neon-text {
+            text-shadow: 
+                0 0 10px var(--accent-blue),
+                0 0 20px var(--accent-purple);
+        }
+
+        .neon-border {
+            border: 2px solid var(--accent-blue);
+            box-shadow: 
+                0 0 15px var(--accent-blue),
+                inset 0 0 15px rgba(0, 153, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* === ПЕРЕКЛЮЧАТЕЛЬ ТЕМ === */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+        }
+
+        .theme-btn {
+            background: var(--bg-card);
+            color: var(--accent-blue);
+            border: 2px solid var(--accent-blue);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px var(--shadow-color);
+            transition: all 0.3s;
+        }
+
+        .theme-btn:hover {
+            transform: rotate(15deg);
+            box-shadow: 0 0 25px var(--accent-blue);
+        }
+
+        .theme-btn::after {
+            content: var(--theme-toggle);
+        }
+
+        /* === ШАПКА === */
+        .header {
+            background: var(--bg-secondary);
+            padding: 1.5rem 0;
+            border-bottom: 3px solid var(--accent-purple);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .logo {
+            text-align: center;
+        }
+
+        .logo h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 30px;
+            font-weight: 600;
+            background: var(--bg-card);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 20px var(--shadow-color);
+            transform: translateY(-2px);
+        }
+
+        /* === ПОИСК И ФИЛЬТРЫ === */
+        .search-section {
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .search-box {
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            display: flex;
+            background: var(--bg-card);
+            border-radius: 50px;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 1.2rem 2rem;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        .search-box button {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            padding: 0 2.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .search-box button:hover {
+            opacity: 0.9;
+            padding: 0 3rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.8rem;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 15px var(--shadow-color);
+        }
+
+        /* === КАРТОЧКИ ИГР === */
+        .games-section {
+            padding: 2rem 0 4rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 2px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .game-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-blue);
+            box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.4),
+                0 0 30px var(--shadow-color);
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+        }
+
+        .game-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .game-info {
+            padding: 1.5rem;
+        }
+
+        .game-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .game-meta {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .game-meta span {
+            background: rgba(0, 153, 255, 0.1);
+            color: var(--accent-blue);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(0, 153, 255, 0.3);
+        }
+
+        .game-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .game-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .detail-btn {
+            flex: 1;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--accent-blue);
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .detail-btn:hover {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* === МОДАЛЬНОЕ ОКНО === */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            max-width: 900px;
+            margin: 50px auto;
+            border-radius: 15px;
+            border: 3px solid var(--accent-purple);
+            position: relative;
+            animation: modalSlide 0.3s ease-out;
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+
+        /* === ПОДВАЛ === */
+        .footer {
+            background: var(--bg-secondary);
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 3px solid var(--accent-purple);
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* === АДАПТИВНОСТЬ === */
+        @media (max-width: 768px) {
+            .logo h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                gap: 0.5rem;
+            }
+            
+            .nav-links a {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-box {
+                flex-direction: column;
+                border-radius: 15px;
+            }
+            
+            .search-box input,
+            .search-box button {
+                width: 100%;
+                border-radius: 0;
+            }
+            
+            .theme-toggle {
+                top: 10px;
+                left: 10px;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* === УТИЛИТЫ === */
+        .hidden {
+            display: none !important;
+        }
+
+        .active {
+            display: block !important;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <!-- ТЕХНО-СЕТКА ФОНА -->
+    <div class="tech-grid"></div>
+    
+    <!-- ПЕРЕКЛЮЧАТЕЛЬ ТЕМ -->
+    <div class="theme-toggle">
+        <button class="theme-btn" onclick="toggleTheme()"></button>
+    </div>
+    
+    <!-- ШАПКА -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    <h1 class="gradient-text neon-text">🎮 GAMES WITH TORRENTS</h1>
+                    <p>GWT • v4.0 • TECHNO-NEON EDITION</p>
+                </div>
+                <div class="nav-links">
+                    <a href="#" class="active" onclick="showSection('pc', event)">PC GAMES</a>
+                    <a href="#" onclick="showSection('android', event)">ANDROID</a>
+                    <a href="#" onclick="showSection('updates', event)">UPDATES</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- ГЛАВНЫЙ КОНТЕНТ -->
+    <main>
+        <!-- ПОИСК И ФИЛЬТРЫ -->
+        <section class="search-section">
+            <div class="container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search games by name, genre, or year..." 
+                           oninput="performSearch()">
+                    <button onclick="performSearch()">SEARCH</button>
+                </div>
+                
+                <div class="filters" id="pcFilters">
+                    <button class="filter-btn active" onclick="setFilter('all', 'pc')">ALL GAMES</button>
+                    <button class="filter-btn" onclick="setFilter('RPG', 'pc')">RPG</button>
+                    <button class="filter-btn" onclick="setFilter('Экшен', 'pc')">ACTION</button>
+                    <button class="filter-btn" onclick="setFilter('Шутеры', 'pc')">SHOOTERS</button>
+                    <button class="filter-btn" onclick="setFilter('Приключения', 'pc')">ADVENTURE</button>
+                    <button class="filter-btn" onclick="setFilter('Инди', 'pc')">INDI</button>
+                    <button class="filter-btn" onclick="setFilter('Аркада', 'pc')">ARCADE</button>
+                    <button class="filter-btn" onclick="setFilter('Хоррор', 'pc')">HORROR</button>
+                    <button class="filter-btn" onclick="setFilter('Слешеры', 'pc')">SLASHERS</button>
+                    <button class="filter-btn" onclick="setFilter('Стелс', 'pc')">STEALTH</button>
+                    <button class="filter-btn" onclick="setFilter('Симулятор', 'pc')">SIMULATOR</button>
+                </div>
+                
+                <div class="filters hidden" id="androidFilters">
+                    <button class="filter-btn active" onclick="setFilter('all', 'android')">ALL GAMES</button>
+                    <button class="filter-btn" onclick="setFilter('Инди', 'android')">INDI</button>
+                    <button class="filter-btn" onclick="setFilter('Экшен', 'android')">ACTION</button>
+                    <button class="filter-btn" onclick="setFilter('Шутеры', 'android')">SHOOTERS</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- PC ИГРЫ -->
+        <section id="pcSection" class="games-section">
+            <div class="container">
+                <h2 class="section-title gradient-text">🎮 PC GAMES COLLECTION</h2>
+                <div class="games-grid" id="gamesGrid">
+                    <!-- PC игры будут тут -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- ANDROID ИГРЫ -->
+        <section id="androidSection" class="games-section hidden">
+            <div class="container">
+                <h2 class="section-title gradient-text">📱 ANDROID GAMES</h2>
+                <div class="games-grid" id="androidGrid">
+                    <!-- Android игры будут тут -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- ОБНОВЛЕНИЯ -->
+        <section id="updatesSection" class="games-section hidden">
+            <div class="container">
+                <h2 class="section-title gradient-text">🔄 GWT UPDATES</h2>
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <div style="background: var(--bg-card); padding: 2rem; border-radius: 15px; margin-bottom: 2rem; border: 2px solid var(--border-color);">
+                        <h3 style="color: var(--accent-blue); margin-bottom: 1rem; font-size: 1.8rem;">Version 4.1 - Massive Update</h3>
+                        <ul style="color: var(--text-secondary); list-style: none; padding-left: 1rem;">
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">🎮 +15 NEW GAMES ADDED! Now 55+ premium games</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">🔫 Call of Duty: Black Ops 6 & Modern Warfare series</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">🕵️ Complete Hitman World of Assassination trilogy</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">🎮 GTA IV & GTA V Enhanced Edition added</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">🐌 Slime Rancher 1 & 2 - cute simulation games</li>
+                            <li style="padding: 0.5rem 0;">🆕 New categories: Stealth & Simulator</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- ПОДВАЛ -->
+    <footer class="footer">
+        <div class="container">
+            <p>🎮 GAMES WITH TORRENTS (GWT) • Version 4.1</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
+                Techno-Neon Edition • Created with 💙 for gamers
+            </p>
+        </div>
+    </footer>
+
+    <!-- МОДАЛЬНОЕ ОКНО -->
+    <div id="gameModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div style="padding: 3rem;">
+                <h2 id="modalTitle" class="gradient-text" style="font-size: 2.5rem; margin-bottom: 1rem;"></h2>
+                <div id="modalMeta" class="game-meta" style="margin-bottom: 2rem;"></div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; margin-bottom: 2rem;">
+                    <div>
+                        <h3 style="color: var(--accent-blue); margin-bottom: 1rem;">📖 GAME DESCRIPTION</h3>
+                        <p id="modalDesc" style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 2rem;"></p>
+                        
+                        <h3 id="requirementsTitle" style="color: var(--accent-purple); margin-bottom: 1rem;">⚙️ SYSTEM REQUIREMENTS</h3>
+                        <div id="requirementsContainer">
+                            <!-- Требования будут вставлены тут -->
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <img id="modalImage" src="" alt="" style="width: 100%; border-radius: 10px; border: 3px solid var(--accent-blue); margin-bottom: 1.5rem;">
+                        
+                        <div style="text-align: center;">
+                            <button id="modalDownload" onclick="downloadGame()" style="
+                                background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+                                color: white;
+                                border: none;
+                                padding: 1rem 2rem;
+                                border-radius: 10px;
+                                font-size: 1.1rem;
+                                font-weight: bold;
+                                cursor: pointer;
+                                width: 100%;
+                                margin-bottom: 1rem;
+                            ">
+                                ⚡ DOWNLOAD TORRENT
+                            </button>
+                            
+                            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                                📦 File size: <span id="modalSize"></span><br>
+                                📅 Release year: <span id="modalYear"></span><br>
+                                🎯 Genre: <span id="modalGenre"></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: rgba(0, 153, 255, 0.05); padding: 1.5rem; border-radius: 10px; margin-top: 2rem;">
+                    <h3 style="color: var(--accent-neon); margin-bottom: 1rem;">🎬 TRAILER & MEDIA</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Official game trailer:</p>
+                    <div id="trailerContainer" style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0;">
+                        <iframe id="modalTrailer" 
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 10px; border: 2px solid var(--accent-purple);"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div id="trailerWarning" style="display: none; color: #ff9900; margin-top: 10px; font-size: 0.9rem;">
+                        ⚠️ Video may be blocked. <a href="#" id="trailerLink" target="_blank" style="color: var(--accent-blue);">Open on YouTube</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== ДАННЫЕ ИГР ==========
+        const gamesData = [
+            // RPG
+            {
+                name: 'Cyberpunk 2077',
+                year: 2020,
+                size: '65.2 GB',
+                genre: 'RPG',
+                description: 'Футуристическая RPG в открытом мире Найт-Сити. Стань киберпанком и измени судьбу города.',
+                image: 'images/Cyberpunk 2077 Image.jpg',
+                torrent: 'torrents/cyberpunk-2077.torrent',
+                trailer: 'qIcTM8WXFjk'
+            },
+            {
+                name: 'Elden Ring',
+                year: 2022,
+                size: '48.3 GB',
+                genre: 'RPG',
+                description: 'Эпическая фэнтези RPG от создателей Dark Souls. Исследуй мир Межземья и стань Владыкой Колец.',
+                image: 'images/Elden_Ring_-_Image.jpg',
+                torrent: 'torrents/Elden-Ring-by-Igruha.torrent',
+                trailer: 'gGtKJ_5ZOYg'
+            },
+            {
+                name: 'The Witcher 3: Wild Hunt',
+                year: 2015,
+                size: '35.1 GB',
+                genre: 'RPG',
+                description: 'Эпическая ролевая игра в фэнтезийном мире. История Геральта из Ривии.',
+                image: 'images/The Witcher 3 Image.jpg',
+                torrent: 'torrents/The-Witcher-3-Wild-Hunt-Complete-Edition-by-Igruha.torrent',
+                trailer: 'c0i88t0Kacs'
+            },
+            {
+                name: 'Dark Souls: Remastered',
+                year: 2018,
+                size: '7 GB',
+                genre: 'RPG',
+                description: 'КУЛЬТОВАЯ RPG С ВЫСОКОЙ СЛОЖНОСТЬЮ. Подготовься умирать снова и снова!',
+                image: 'images/Dark_Souls_Cover_Art.jpg',
+                torrent: 'torrents/[gofrag.ru]DarkSoulsRemastered.torrent',
+                trailer: 'Woe0PYZPxRw'
+            },
+            // Хоррор
+            {
+                name: 'Resident Evil 4 Remake',
+                year: 2023,
+                size: '55 GB',
+                genre: 'Хоррор',
+                description: 'РЕМЕЙК КУЛЬТОВОГО ХОРРОРА! Леон Кеннеди против зомби и культистов в обновленной графике.',
+                image: 'images/Resident Evil 4 Image.jpg',
+                torrent: 'torrents/resident-evil-4_v_1_0_build_11025382_2023-decepticon-repack.torrent',
+                trailer: '9iE1ZKsPkC4'
+            },
+            {
+                name: 'Resident Evil 2 Remake',
+                year: 2019,
+                size: '25 GB',
+                genre: 'Хоррор',
+                description: 'ПЕРЕЗАПУСК ЛЕГЕНДЫ! Леон и Клэр в зараженном Раккун-Сити. УЖАС В 4K!',
+                image: 'images/Resident evil 2 deluxe edition Image.jpg',
+                torrent: 'torrents/resident-evil-2_v_1_05u7_build_7551512_2019-decepticon-repack.torrent',
+                trailer: 'u3wS-Q2KBpk'
+            },
+            {
+                name: 'Resident Evil HD Remaster',
+                year: 2015,
+                size: '15 GB',
+                genre: 'Хоррор',
+                description: 'РЕМАСТЕР ПЕРВОЙ ЧАСТИ! Особняк Спенсера в HD. НАЧАЛО УЖАСА!',
+                image: 'images/Resident Evil Image.jpg',
+                torrent: 'torrents/resident-evil-hd-remaster-1996-2015.torrent',
+                trailer: 'L4Q3EO2Uf3g'
+            },
+            {
+                name: 'Silent Hill F',
+                year: 2024,
+                size: '45 GB', 
+                genre: 'Хоррор',
+                description: 'НОВАЯ ЧАСТЬ КУЛЬТОВОГО ХОРРОРА! Silent Hill возвращается с новой историей ужасов в Японии.',
+                image: 'images/Silent_Hill_f Image.jpg',
+                torrent: 'torrents/SILENT-HILL-f-by-Igruha.torrent',
+                trailer: 'Wk6AQ8zTkGY'
+            },
+            // Шутеры
+            {
+                name: 'Call of Duty: Black Ops 6',
+                year: 2024,
+                size: '160 GB',
+                genre: 'Шутеры',
+                description: 'НОВЕЙШАЯ ЧАСТЬ КУЛЬТОВОЙ СЕРИИ! Шпионские операции, холодная война, экшен в стиле 90-х!',
+                image: 'images/Call of Duty Black Ops 6 Image.jpg',
+                torrent: 'torrents/call-of-duty-black-ops-6-campaign_v_11_1_build_19241323_2024-decepticon-repack.torrent',
+                trailer: 's4w4GpP7xU8'
+            },
+            {
+                name: 'Call of Duty: Modern Warfare II',
+                year: 2022,
+                size: '125 GB',
+                genre: 'Шутеры',
+                description: 'Продолжение перезапуска Modern Warfare. Современные спецоперации и реалистичные сражения.',
+                image: 'images/Call of Duty Modern Warfare 2 Image.jpg',
+                torrent: 'torrents/call-of-duty-modern-warfare-ii-campaign_v_9_7_2022-decepticon-repack.torrent',
+                trailer: 'r72GP1PIZa0'
+            },
+            {
+                name: 'Call of Duty: Modern Warfare III',
+                year: 2023,
+                size: '140 GB',
+                genre: 'Шутеры',
+                description: 'Прямое продолжение MWII. Максим возвращается! Самый масштабный COD в истории.',
+                image: 'images/Call of Duty Modern Warfare 3 Image.jpg',
+                torrent: 'torrents/call-of-duty-modern-warfare-iii-campaigni_v_10_4_2023-decepticon-repack.torrent',
+                trailer: 'mHDEDDrGYvo'
+            },
+            {
+                name: 'Far Cry 5',
+                year: 2018,
+                size: '40 GB',
+                genre: 'Шутеры',
+                description: 'СРАЖЕНИЕ С КУЛЬТОМ В МОНТАНЕ! Откройте мир свободы и хаоса в захватывающем шутере.',
+                image: 'images/Far_Cry_5_Image.jpg',
+                torrent: 'torrents/570_Cry_5_by_xatab.torrent',
+                trailer: '-bQJ0pN2oPw'
+            },
+            {
+                name: 'Far Cry 4',
+                year: 2014,
+                size: '30 GB',
+                genre: 'Шутеры',
+                description: 'ПРИКЛЮЧЕНИЕ В ГИМАЛАЯХ! Сразитесь за свободу Кирата в экзотической стране.',
+                image: 'images/Far_Cry_4_Box_Art_Image.jpg',
+                torrent: 'torrents/far-cry-4-2014.torrent',
+                trailer: 'H1Il8u-zbS8'
+            },
+            {
+                name: 'Far Cry 3',
+                year: 2012,
+                size: '15 GB',
+                genre: 'Шутеры',
+                description: 'ВЫЖИВАНИЕ НА ТРОПИЧЕСКОМ ОСТРОВЕ! Станьте воином и сразитесь с пиратами.',
+                image: 'images/Far_Cry_3_Box_Art_Image.jpg',
+                torrent: 'torrents/515_Far_Cry_3_by_xa.torrent',
+                trailer: 'JqylkLWRZcY'
+            },
+            {
+                name: 'Far Cry 2',
+                year: 2008,
+                size: '8 GB',
+                genre: 'Шутеры',
+                description: 'ВОЙНА В АФРИКЕ! Реалистичный шутер с динамическим миром и огнестрельным безумием.',
+                image: 'images/Far_Cry_2_cover_Image.jpg',
+                torrent: 'torrents/far-cry-2-v_1_03-gog-2008.torrent',
+                trailer: 'WhE6M8p3a6c'
+            },
+            {
+                name: 'Far Cry',
+                year: 2004,
+                size: '4 GB',
+                genre: 'Шутеры',
+                description: 'НАЧАЛО ЛЕГЕНДЫ! Тропический остров, мутанты и невероятная графика для своего времени.',
+                image: 'images/Far_Cry_Image.jpg',
+                torrent: 'torrents/962_20619Far_Cry-20.torrent',
+                trailer: 'TGeXyTGvBVU'
+            },
+            {
+                name: 'Call of Duty 4: Modern Warfare',
+                year: 2007,
+                size: '8 GB',
+                genre: 'Шутеры',
+                description: 'КУЛЬТОВЫЙ ШУТЕР! Начало современной эры Call of Duty.',
+                image: 'images/Cod4 Image.jpg',
+                torrent: 'torrents/Call-of-Duty-4-Modern-Warfare.torrent',
+                trailer: 'bH1lHCiCFC0'
+            },
+            {
+                name: 'Call of Duty: Infinite Warfare',
+                year: 2016,
+                size: '70 GB',
+                genre: 'Шутеры',
+                description: 'КОСМИЧЕСКИЙ ШУТЕР! Сражайся за пределами Земли в будущем.',
+                image: 'images/CoD_Infinite_Warfare Image.jpg',
+                torrent: 'torrents/Call-of-Duty-Infinite-Warfare-RiP-ot-xatab.torrent',
+                trailer: 'xuBhZPwXwdU'
+            },
+            {
+                name: 'Atomic Heart',
+                year: 2023,
+                size: '90 GB',
+                genre: 'Шутеры',
+                description: 'Альтернативная история СССР с роботами и безумием!',
+                image: 'images/Atomic Heart Image.jpg',
+                torrent: 'torrents/Atomic-Heart.torrent',
+                trailer: 'd6FCy_EPFkI'
+            },
+            {
+                name: 'ULTRAKILL',
+                year: 2020,
+                size: '1.2 GB',
+                genre: 'Шутеры',
+                description: 'БЕШЕНЫЙ ШУТЕР С СТИЛЕ RETRO! Убей всех демонов в аду. СТИЛЬ И СКОРОСТЬ!',
+                image: 'images/Ultrakill Image.jpg',
+                torrent: 'torrents/ULTRAKILL.__.torrent',
+                trailer: 'EOCMlHnNPK8'
+            },
+            {
+                name: 'Counter-Strike 1.6',
+                year: 2003,
+                size: '0.5 GB',
+                genre: 'Шутеры',
+                description: 'Культовый тактический шутер. ЛЕГЕНДА КИБЕРСПОРТА!',
+                image: 'images/Counter-Strike_Box_1 Image.jpg',
+                torrent: 'torrents/Counter-strike-1.6.torrent',
+                trailer: 'edYCtaNueQY'
+            },
+            {
+                name: 'Left 4 Dead 2',
+                year: 2009,
+                size: '8 GB',
+                genre: 'Шутеры',
+                description: 'Кооперативный зомби-шутер от Valve.',
+                image: 'images/L4D2 Image.jpg',
+                torrent: 'torrents/Left-4-Dead-2-by-Igruha.torrent',
+                trailer: 'XUf5WjB-2cs'
+            },
+            {
+                name: 'Left 4 Dead',
+                year: 2008,
+                size: '7.5 GB',
+                genre: 'Шутеры',
+                description: 'Классический кооперативный зомби-шутер. Сражайся за выживание с друзьями!',
+                image: 'images/L4D1 Image.jpg',
+                torrent: 'torrents/Left-4-Dead-by-Igruha.torrent',
+                trailer: 'Nf8LbCbU1_s'
+            },
+            {
+                name: 'Half-Life',
+                year: 1998,
+                size: '0.5 GB',
+                genre: 'Шутеры',
+                description: 'ЛЕГЕНДАРНЫЙ ШУТЕР ОТ VALVE! Начало истории Гордона Фримена.',
+                image: 'images/Half-Life Image.jpg',
+                torrent: 'torrents/Half-Life.torrent',
+                trailer: 'O2rm9MeL5f0'
+            },
+            {
+                name: 'Half-Life 2',
+                year: 2004,
+                size: '4.5 GB',
+                genre: 'Шутеры',
+                description: 'ШЕДЕВР ОТ VALVE! Продолжение легенды с гравипушкой!',
+                image: 'images/HL2 Image.jpg',
+                torrent: 'torrents/Half-Life-2-Complete-Edition-by-Igruha.torrent',
+                trailer: 'id1N9-KFmhQ'
+            },
+            {
+                name: 'Half-Life: Alyx',
+                year: 2020,
+                size: '67 GB',
+                genre: 'Шутеры',
+                description: 'VR-ШЕДЕВР ОТ VALVE! Приключения Аликс Вэнс между Half-Life 1 и 2.',
+                image: 'images/Half-Life_Alyx_Image.jpg',
+                torrent: 'torrents/Half_Life_Alyx.torrent',
+                trailer: 'O2W0N3uKXmo'
+            },
+            {
+                name: 'Medal of Honor',
+                year: 2010,
+                size: '12.5 GB',
+                genre: 'Шутеры',
+                description: 'Тактический шутер о подвигах солдат во Второй мировой войне.',
+                image: 'images/Medal Of Honor Image.jpg',
+                torrent: 'torrents/710_Medal_of_Honor-.torrent',
+                trailer: 'K4zm30y7l0I'
+            },
+            {
+                name: 'Medal of Honor: Warfighter',
+                year: 2012,
+                size: '15.3 GB',
+                genre: 'Шутеры',
+                description: 'Продолжение культового шутера. Современные боевые действия и экшен.',
+                image: 'images/Warfighter Image.jpg',
+                torrent: 'torrents/711_Medal_of_Honor_Warfighter.torrent',
+                trailer: 'aQHGsm1Cm_M'
+            },
+            // Экшен
+            {
+                name: 'Grand Theft Auto V',
+                year: 2015,
+                size: '95 GB',
+                genre: 'Экшен',
+                description: 'ЛЕГЕНДАРНАЯ ИГРА ОТ ROCKSTAR! Три протагониста, Лос-Сантос и бесконечные возможности.',
+                image: 'images/Gta 5 Image.jpg', // ← ТВОЯ НОВАЯ КАРТИНКА
+                torrent: 'torrents/grand-theft-auto-v-steam-enhanced-2015-2025.torrent',
+                trailer: 'QkkoHAzjnUs'
+            },
+            {
+                name: 'Grand Theft Auto IV',
+                year: 2008,
+                size: '18 GB',
+                genre: 'Экшен',
+                description: 'Эмигрант Нико Белик в Либерти-Сити. Самая реалистичная и драматичная часть серии.',
+                image: 'images/GTA4 Image.jpg', // ← ТВОЯ НОВАЯ КАРТИНКА
+                torrent: 'torrents/grand-theft-auto-iv-by-xatab.torrent',
+                trailer: 'bqJ9KJYufUY'
+            },
+            {
+                name: 'Grand Theft Auto: San Andreas',
+                year: 2004,
+                size: '4.7 GB',
+                genre: 'Экшен',
+                description: 'КУЛЬТОВАЯ ИГРА ОТ ROCKSTAR! Свободный мир, банды Лос-Сантоса и эпическая история.',
+                image: 'images/GTA san andreas Image.jpg',
+                torrent: 'torrents/GTA-San-Andreas-Original.torrent',
+                trailer: 'hBvMSP7cI-Q'
+            },
+            {
+                name: 'Red Dead Redemption 2',
+                year: 2019,
+                size: '109 GB',
+                genre: 'Экшен',
+                description: 'Приключенческий вестерн от создателей GTA V. Эпическая история Артура Моргана.',
+                image: 'images/RDR2 Image.jpg',
+                torrent: 'torrents/red-dead-redemption-2-by-xatab.torrent',
+                trailer: 'gmA6MrX81z4'
+            },
+            {
+                name: 'Hotline Miami 2: Wrong Number',
+                year: 2015,
+                size: '2 GB',
+                genre: 'Экшен',
+                description: 'Жестокая и быстрая бойня в стиле ретро. КРОВАВЫЙ ХАОС!',
+                image: 'images/Hotline Miami 2 Image.jpg',
+                torrent: 'torrents/Hotline-Miami-2-Wrong-Number-by-Igruha.torrent',
+                trailer: 'r5JaeCpkV8g'
+            },
+            // Слешеры
+            {
+                name: 'Metal Gear Rising: Revengeance',
+                year: 2013,
+                size: '25 GB',
+                genre: 'Слешеры',
+                description: 'Экшен с механикой разрезания всего на части. РЕЖИ И РУБИ!',
+                image: 'images/Metal_Gear_Rising_Revengeance_Image.jpg',
+                torrent: 'torrents/Metal-Gear-Rising-Revengeance-by-Igruha.torrent',
+                trailer: 'QjVTi7YQZzA'
+            },
+            {
+                name: 'Devil May Cry 5',
+                year: 2019,
+                size: '35 GB',
+                genre: 'Слешеры',
+                description: 'Культовый слэшер с тремя протагонистами. СТИЛЬНЫЕ КОМБО!',
+                image: 'images/DevilMayCry5 Image.jpg',
+                torrent: 'torrents/Devil-May-Cry-5-by-Igruha.torrent',
+                trailer: '_0mFyM_OVb0'
+            },
+            {
+                name: 'God of War',
+                year: 2018,
+                size: '45 GB',
+                genre: 'Слешеры',
+                description: 'ЭПИЧЕСКИЙ СЛЕШЕР ОТ SONY! Кратос в скандинавской мифологии. БИТВЫ С БОГАМИ!',
+                image: 'images/God_of_War_2018_Image.jpg',
+                torrent: 'torrents/god-of-war.torrent',
+                trailer: 'K0u_kAWLJOA'
+            },
+            // Стелс
+            {
+                name: 'Hitman: World of Assassination',
+                year: 2021,
+                size: '80 GB',
+                genre: 'Стелс',
+                description: 'КОМПЛЕКСНАЯ ТРИЛОГИЯ! Все три части новой трилогии Хитмана в одном издании.',
+                image: 'images/Hitman world assasins Image.jpg',
+                torrent: 'torrents/hitman-world-of-assassination-2016-2018-2021.torrent',
+                trailer: 'avAXN4c7QdY'
+            },
+            {
+                name: 'Hitman 3: Contracts',
+                year: 2004,
+                size: '4 GB',
+                genre: 'Стелс',
+                description: 'ВТОРАЯ ЧАСТЬ КУЛЬТОВОЙ СЕРИИ! Хитман вспоминает свои прошлые контракты.',
+                image: 'images/Hitman 3 Image.jpg',
+                torrent: 'torrents/hitman_3_contracts_2_0_0_11_win_gog.torrent',
+                trailer: 'zsYjsnBCF7c'
+            },
+            {
+                name: 'Hitman 2: Silent Assassin',
+                year: 2002,
+                size: '3 GB',
+                genre: 'Стелс',
+                description: 'ПЕРВАЯ 3D-ЧАСТЬ СЕРИИ! Хитман выходит из отставки, чтобы спасти своего друга.',
+                image: 'images/Hitman 2 Image.jpg',
+                torrent: 'torrents/hitman_2_silent_assassin_1_01_21780_win_gog.torrent',
+                trailer: 'URqN2K5b2_s'
+            },
+            // Симулятор
+            {
+                name: 'Slime Rancher 2',
+                year: 2025,
+                size: '8 GB',
+                genre: 'Симулятор',
+                description: 'Продолжение очаровательного симулятора ранчо! Исследуй новый остров и собирай слаймов.',
+                image: 'images/Slime Rancher 2 Image.jpg',
+                torrent: 'torrents/slime-rancher-2-2025.torrent',
+                trailer: '2PRgIRr7mqc'
+            },
+            {
+                name: 'Slime Rancher',
+                year: 2017,
+                size: '3 GB',
+                genre: 'Симулятор',
+                description: 'МИЛЫЙ СИМУЛЯТОР РАНЧО! Собирай, корми и разводи забавных слаймов на далекой планете.',
+                image: 'images/Slime Rancher Image.jpg',
+                torrent: 'torrents/slime_rancher_1_4_4_51882_win_gog.torrent',
+                trailer: 'Kqll7qL_HBE'
+            },
+            // Приключения
+            {
+                name: 'Sonic Superstars',
+                year: 2023,
+                size: '12.4 GB',
+                genre: 'Приключения',
+                description: 'Новейшая игра про Соника в классическом 2.5D стиле. НОВЫЕ СПОСОБНОСТИ!',
+                image: 'images/Sonic_Superstars_Image.jpg',
+                torrent: 'torrents/sonic-superstars.torrent',
+                trailer: 'X8cPmT6P-qA'
+            },
+            {
+                name: 'Sonic Frontiers',
+                year: 2022,
+                size: '25.7 GB',
+                genre: 'Приключения',
+                description: 'СОНИК В ОТКРЫТОМ МИРЕ! Исследуй огромные локации и сражайся с гигантскими боссами.',
+                image: 'images/Sonic Frontiers Image.jpg',
+                torrent: 'torrents/sonic-frontiers-digital-deluxe.torrent',
+                trailer: 'CGyfo3O92cU'
+            },
+            // Инди
+            {
+                name: 'Hollow Knight',
+                year: 2017,
+                size: '9 GB',
+                genre: 'Инди',
+                description: 'Исследуй таинственный подземный мир насекомых в этой культовой метроидвании.',
+                image: 'images/Hollow Knight Image.jpg',
+                torrent: 'torrents/hollow-knight.torrent',
+                trailer: 'UAO2urG23S4'
+            },
+            {
+                name: 'Hollow Knight: Silksong',
+                year: 2025,
+                size: '12 GB',
+                genre: 'Инди',
+                description: 'Продолжение культовой метроидвании. Новые приключения Хорнета!',
+                image: 'images/Silksong Image.jpg',
+                torrent: 'torrents/hollow-knight-silksong-2025.torrent',
+                trailer: 'rS_mgYpXp4A'
+            },
+            {
+                name: 'Deltarune',
+                year: 2018,
+                size: '0.2 GB',
+                genre: 'Инди',
+                description: 'НОВАЯ ИГРА ОТ СОЗДАТЕЛЯ UNDERTALE! Загадочное приключение в темном мире.',
+                image: 'images/Deltarune Image.jpg',
+                torrent: 'torrents/Deltarune_1.04..torrent',
+                trailer: 'GvYlKGy-tvw'
+            },
+            // Аркада
+            {
+                name: 'Geometry Dash',
+                year: 2013,
+                size: '150 MB',
+                genre: 'Аркада',
+                description: 'Безумно адская аркада с ритм-геймплеем. Пройди все уровни если сможешь!',
+                image: 'images/Geometry Dash Image.jpg',
+                torrent: 'torrents/Geometry-Dash-by-Igruha.torrent',
+                trailer: 'X1H8h2MWh8s'
+            },
+            // Особый случай
+            {
+                name: 'Minecraft',
+                year: 2011,
+                size: '1 GB',
+                genre: 'Инди',
+                description: 'Легендарная песочница без границ. Строй, выживай, твори!',
+                image: 'images/Minecraft Image.jpg',
+                torrent: 'https://www.youtube.com/watch?v=DIN8hYTbv9g',
+                trailer: 'MmB9b5njVbA'
+            }
+        ];
+
+        const androidGamesData = [
+            {
+                name: 'Hollow Knight (Android)',
+                year: 2022,
+                size: '850 MB',
+                genre: 'Инди',
+                description: 'Увлекательное приключение в загадочном подземном мире насекомых.',
+                image: 'android/images/Hollow_Knight.jpg', // ← ТВОЯ НОВАЯ КАРТИНКА
+                file: 'https://drive.google.com/uc?export=download&id=1jxjmbdptosfvj5oEOvArdeM7jV1hLJdS'
+            },
+            {
+                name: 'Hollow Knight: Silksong (Android)',
+                year: 2024,
+                size: '1.2 GB',
+                genre: 'Инди',
+                description: 'ДОЛГОЖДАННОЕ ПРОДОЛЖЕНИЕ НА ANDROID! Новые приключения Хорнета в загадочном мире.',
+                image: 'images/Silksong Image.jpg',
+                file: 'https://drive.google.com/uc?export=download&id=1laPHKJvfK_q_t08lIrD9NY3eYezsbIyh'
+            },
+            {
+                name: 'Hotline Miami (Android)',
+                year: 2023,
+                size: '120 MB',
+                genre: 'Экшен',
+                description: 'БЕШЕНЫЙ ТОП-ДАУН ШУТЕР! Быстрая и жестокая бойня в стиле ретро. УБИВАЙ ВСЕХ!',
+                image: 'android/images/Hotline_Miami_cover.jpg', // ← ТВОЯ НОВАЯ КАРТИНКА
+                file: 'https://drive.google.com/uc?export=download&id=1_FC7SeOzFTrEol_2kd_6gzBMguUEgnSv'
+            },
+            {
+                name: 'ULTRAKILL Mobile',
+                year: 2023,
+                size: '280 MB',
+                genre: 'Шутеры',
+                description: 'ЗАХВАТЫВАЮЩИЙ ШУТЕР НА ТЕЛЕФОН! Уничтожай демонов с безумной скоростью. СТИЛЬ И ХАОС!',
+                image: 'android/images/Ultrakill_cover.jpg', // ← ТВОЯ НОВАЯ КАРТИНКА
+                file: 'https://drive.google.com/uc?export=download&id=1ZBevkpCbDKH0WOrYsca6Ks8mmwiO-gl2'
+            }
+        ];
+
+        // ========== ПЕРЕМЕННЫЕ ==========
+        let currentFilter = 'all';
+        let currentPlatform = 'pc';
+        let currentSearch = '';
+        let currentGameForDownload = null;
+
+        // ========== ФУНКЦИЯ ДЛЯ ВИДЕО ==========
+        function loadYouTubeVideo(videoId) {
+            const iframe = document.getElementById('modalTrailer');
+            const warning = document.getElementById('trailerWarning');
+            const trailerLink = document.getElementById('trailerLink');
+            
+            // Обновляем iframe с правильными атрибутами безопасности
+            iframe.src = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
+            
+            // Устанавливаем ссылку для открытия на YouTube
+            trailerLink.href = `https://www.youtube.com/watch?v=${videoId}`;
+            
+            // Показываем предупреждение если видео заблокировано
+            iframe.onerror = function() {
+                warning.style.display = 'block';
+            };
+            
+            // Скрываем предупреждение если видео загрузилось
+            iframe.onload = function() {
+                warning.style.display = 'none';
+            };
+        }
+
+        // ========== ФУНКЦИЯ СКАЧИВАНИЯ ==========
+        function downloadTorrentFile(game) {
+            if (!game || !game.torrent) return;
+            
+            // Создаем временную ссылку для скачивания
+            const link = document.createElement('a');
+            link.href = game.torrent;
+            link.download = game.name + '.torrent';
+            
+            // Создаем событие клика для ссылки
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Показываем сообщение
+            alert(`✅ Torrent file "${game.name}.torrent" is downloading!\n\nOnce downloaded, open it with your torrent client (uTorrent, qBittorrent, etc.) to start downloading the game.`);
+            
+            // Закрываем модальное окно если оно открыто
+            closeModal();
+        }
+
+        // ========== ПЕРЕКЛЮЧАТЕЛЬ ТЕМ ==========
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.classList.contains('dark-theme');
+            
+            if (isDark) {
+                body.classList.remove('dark-theme');
+                body.classList.add('light-theme');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.remove('light-theme');
+                body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Загружаем сохранённую тему
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.body.classList.add(savedTheme + '-theme');
+        }
+
+        // ========== ФУНКЦИЯ ДЛЯ ТРЕБОВАНИЙ ==========
+        function showRequirements(game) {
+            const requirementsContainer = document.getElementById('requirementsContainer');
+            const requirementsTitle = document.getElementById('requirementsTitle');
+            
+            // Проверяем, Android ли это игра
+            const isAndroidGame = game.name.includes('(Android)') || game.file;
+            
+            if (isAndroidGame) {
+                // Требования для Android игр
+                requirementsTitle.textContent = '📱 ANDROID REQUIREMENTS';
+                requirementsContainer.innerHTML = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div style="background: rgba(0, 153, 255, 0.1); padding: 1.5rem; border-radius: 10px;">
+                            <h4 style="color: var(--accent-blue); margin-bottom: 0.8rem;">MINIMUM</h4>
+                            <ul style="color: var(--text-secondary); list-style: none; padding-left: 0;">
+                                <li>Android: 8.0+</li>
+                                <li>RAM: 3 GB</li>
+                                <li>Storage: ${game.size}</li>
+                                <li>GPU: Adreno 506</li>
+                                <li>Screen: 720p+</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(139, 92, 246, 0.1); padding: 1.5rem; border-radius: 10px;">
+                            <h4 style="color: var(--accent-purple); margin-bottom: 0.8rem;">RECOMMENDED</h4>
+                            <ul style="color: var(--text-secondary); list-style: none; padding-left: 0;">
+                                <li>Android: 11.0+</li>
+                                <li>RAM: 6 GB</li>
+                                <li>Storage: ${game.size}</li>
+                                <li>GPU: Adreno 650</li>
+                                <li>Screen: 1080p+</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Требования для PC игр
+                requirementsTitle.textContent = '⚙️ SYSTEM REQUIREMENTS';
+                
+                let minRam = '8 GB';
+                let recRam = '16 GB';
+                let minGpu = 'NVIDIA GTX 1060';
+                let recGpu = 'NVIDIA RTX 3060';
+                
+                // Для требовательных игр
+                if (game.name.includes('Call of Duty') || game.name.includes('Black Ops 6') || 
+                    game.name.includes('Modern Warfare') || game.name.includes('GTA V')) {
+                    minRam = '16 GB';
+                    recRam = '32 GB';
+                    minGpu = 'NVIDIA GTX 1660';
+                    recGpu = 'NVIDIA RTX 4070';
+                }
+                
+                requirementsContainer.innerHTML = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div style="background: rgba(0, 153, 255, 0.1); padding: 1.5rem; border-radius: 10px;">
+                            <h4 style="color: var(--accent-blue); margin-bottom: 0.8rem;">MINIMUM</h4>
+                            <ul style="color: var(--text-secondary); list-style: none; padding-left: 0;">
+                                <li>OS: Windows 10/11</li>
+                                <li>CPU: Intel Core i5</li>
+                                <li>RAM: ${minRam}</li>
+                                <li>GPU: ${minGpu}</li>
+                                <li>Storage: ${game.size}</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(139, 92, 246, 0.1); padding: 1.5rem; border-radius: 10px;">
+                            <h4 style="color: var(--accent-purple); margin-bottom: 0.8rem;">RECOMMENDED</h4>
+                            <ul style="color: var(--text-secondary); list-style: none; padding-left: 0;">
+                                <li>OS: Windows 11</li>
+                                <li>CPU: Intel Core i7</li>
+                                <li>RAM: ${recRam}</li>
+                                <li>GPU: ${recGpu}</li>
+                                <li>Storage: ${game.size} SSD</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // ========== РЕНДЕР ИГР ==========
+        function renderGames(games, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = '';
+
+            games.forEach(game => {
+                const isAndroid = containerId === 'androidGrid';
+                const isMinecraft = game.name === 'Minecraft';
+                
+                let downloadBtn;
+                if (isAndroid) {
+                    downloadBtn = `<a href="${game.file}" download class="detail-btn" onclick="event.stopPropagation(); window.open('${game.file}', '_blank')">📥 Download APK</a>`;
+                } else if (isMinecraft) {
+                    downloadBtn = `<a href="${game.torrent}" target="_blank" class="detail-btn" onclick="event.stopPropagation()">🎮 YouTube</a>`;
+                } else {
+                    downloadBtn = `<button class="detail-btn" onclick="event.stopPropagation(); downloadGame('${game.name}')">⚡ Download</button>`;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.onclick = () => openModal(game);
+                
+                card.innerHTML = `
+                    <img src="${game.image}" alt="${game.name}" class="game-img">
+                    <div class="game-info">
+                        <h3 class="game-title">${game.name}</h3>
+                        <div class="game-meta">
+                            <span>📅 ${game.year}</span>
+                            <span>🎯 ${game.genre}</span>
+                            <span>💾 ${game.size}</span>
+                        </div>
+                        <p class="game-description">${game.description}</p>
+                        <div class="game-actions">
+                            <button class="detail-btn" onclick="event.stopPropagation(); openModal(${JSON.stringify(game).replace(/"/g, '&quot;')})">
+                                📖 Details
+                            </button>
+                            ${downloadBtn}
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // ========== ПОИСК И ФИЛЬТРЫ ==========
+        function performSearch() {
+            currentSearch = document.getElementById('searchInput').value.toLowerCase();
+            updateGamesDisplay();
+        }
+
+        function setFilter(filter, platform) {
+            currentFilter = filter;
+            currentPlatform = platform;
+            
+            // Обновляем активные кнопки
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateGamesDisplay();
+        }
+
+        function updateGamesDisplay() {
+            let filteredGames;
+            
+            if (currentPlatform === 'pc') {
+                filteredGames = gamesData;
+            } else {
+                filteredGames = androidGamesData;
+            }
+            
+            if (currentFilter !== 'all') {
+                filteredGames = filteredGames.filter(game => game.genre === currentFilter);
+            }
+            
+            if (currentSearch) {
+                filteredGames = filteredGames.filter(game => 
+                    game.name.toLowerCase().includes(currentSearch) ||
+                    game.description.toLowerCase().includes(currentSearch) ||
+                    game.genre.toLowerCase().includes(currentSearch)
+                );
+            }
+            
+            if (currentPlatform === 'pc') {
+                renderGames(filteredGames, 'gamesGrid');
+            } else {
+                renderGames(filteredGames, 'androidGrid');
+            }
+        }
+
+        // ========== ПЕРЕКЛЮЧЕНИЕ СЕКЦИЙ ==========
+        function showSection(section, event) {
+            event.preventDefault();
+            
+            // Скрываем все секции
+            document.getElementById('pcSection').classList.add('hidden');
+            document.getElementById('androidSection').classList.add('hidden');
+            document.getElementById('updatesSection').classList.add('hidden');
+            document.getElementById('pcFilters').classList.add('hidden');
+            document.getElementById('androidFilters').classList.add('hidden');
+            
+            // Показываем выбранную
+            document.getElementById(section + 'Section').classList.remove('hidden');
+            
+            if (section === 'pc') {
+                document.getElementById('pcFilters').classList.remove('hidden');
+                currentPlatform = 'pc';
+            } else if (section === 'android') {
+                document.getElementById('androidFilters').classList.remove('hidden');
+                currentPlatform = 'android';
+            }
+            
+            // Обновляем активные ссылки
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateGamesDisplay();
+        }
+
+        // ========== МОДАЛЬНОЕ ОКНО ==========
+        function openModal(game) {
+            currentGameForDownload = game;
+            
+            // Заполняем данные
+            document.getElementById('modalTitle').textContent = game.name;
+            document.getElementById('modalMeta').innerHTML = `
+                <span>📅 ${game.year}</span>
+                <span>🎯 ${game.genre}</span>
+                <span>💾 ${game.size}</span>
+            `;
+            document.getElementById('modalDesc').textContent = game.description;
+            document.getElementById('modalImage').src = game.image;
+            document.getElementById('modalSize').textContent = game.size;
+            document.getElementById('modalYear').textContent = game.year;
+            document.getElementById('modalGenre').textContent = game.genre;
+            
+            // Показываем правильные требования (Android или PC)
+            showRequirements(game);
+            
+            // Загружаем видео YouTube
+            if (game.trailer) {
+                loadYouTubeVideo(game.trailer);
+            }
+            
+            // Кнопка скачивания
+            const downloadBtn = document.getElementById('modalDownload');
+            if (game.name === 'Minecraft') {
+                downloadBtn.innerHTML = '🎮 WATCH ON YOUTUBE';
+                downloadBtn.onclick = () => window.open(game.torrent, '_blank');
+            } else if (game.file) {
+                downloadBtn.innerHTML = '📥 DOWNLOAD APK';
+                downloadBtn.onclick = () => window.open(game.file, '_blank');
+            } else {
+                downloadBtn.innerHTML = '⚡ DOWNLOAD TORRENT';
+                downloadBtn.onclick = () => downloadGame();
+            }
+            
+            // Показываем модальное окно
+            document.getElementById('gameModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('gameModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Останавливаем видео при закрытии
+            const iframe = document.getElementById('modalTrailer');
+            iframe.src = '';
+            
+            // Скрываем предупреждение
+            document.getElementById('trailerWarning').style.display = 'none';
+            
+            currentGameForDownload = null;
+        }
+
+        function downloadGame(gameName) {
+            let game;
+            if (gameName) {
+                game = gamesData.find(g => g.name === gameName) || 
+                       androidGamesData.find(g => g.name === gameName);
+            } else {
+                game = currentGameForDownload;
+            }
+            
+            if (game) {
+                if (game.file) {
+                    // Для Android игр
+                    window.open(game.file, '_blank');
+                } else if (game.name === 'Minecraft') {
+                    // Особый случай
+                    window.open(game.torrent, '_blank');
+                } else {
+                    // Для PC игр - скачиваем торрент-файл
+                    downloadTorrentFile(game);
+                }
+            }
+        }
+
+        // Закрытие модального окна при клике вне его
+        window.onclick = function(event) {
+            const modal = document.getElementById('gameModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Закрытие по Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTheme();
+            updateGamesDisplay();
+            
+            // Инициализируем кнопки фильтров
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.onclick = function() {
+                    const filter = this.textContent.split(' ')[0];
+                    setFilter(filter === 'ALL' ? 'all' : filter, currentPlatform);
+                };
+            });
+            
+            // Инициализируем ссылки навигации
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.onclick = function(e) {
+                    const section = this.textContent.split(' ')[0].toLowerCase();
+                    showSection(section === 'pc' ? 'pc' : section, e);
+                };
+            });
+        });
+    </script>
+</body>
+</html>
