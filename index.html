@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>GWT · Игры с торрентами | Техно-неон база</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GWT · Игры с торрентами | Полная коллекция</title>
     <style>
         * {
             margin: 0;
@@ -11,7 +11,6 @@
             box-sizing: border-box;
         }
 
-        /* ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ — ТЁМНАЯ БАЗА */
         :root {
             --bg-primary: #0b0b14;
             --bg-secondary: #0f0f1a;
@@ -26,7 +25,6 @@
             --card-radius: 24px;
         }
 
-        /* СВЕТЛАЯ ТЕМА (КИБЕРПАНК-ЛАЙТ) */
         body.light {
             --bg-primary: #eef2ff;
             --bg-secondary: #ffffff;
@@ -41,12 +39,11 @@
         body {
             background: var(--bg-primary);
             color: var(--text-primary);
-            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
             transition: background 0.25s ease, color 0.2s;
             scroll-behavior: smooth;
         }
 
-        /* фоновый глитч-эффект */
         body::before {
             content: "";
             position: fixed;
@@ -63,7 +60,6 @@
             padding: 0 24px;
         }
 
-        /* ТЕХНО-СЕТКА */
         .tech-grid {
             position: fixed;
             inset: 0;
@@ -76,19 +72,10 @@
             z-index: 0;
         }
 
-        /* КАСТОМНЫЙ СКРОЛЛ */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent-cyan);
-            border-radius: 10px;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 10px; }
 
-        /* ШАПКА с блёстками */
         .header {
             background: rgba(15,15,26,0.8);
             backdrop-filter: blur(12px);
@@ -98,9 +85,7 @@
             z-index: 100;
             padding: 16px 0;
         }
-        body.light .header {
-            background: rgba(255,255,255,0.9);
-        }
+        body.light .header { background: rgba(255,255,255,0.9); }
         .nav {
             display: flex;
             justify-content: space-between;
@@ -114,17 +99,9 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.5px;
         }
-        .logo p {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            letter-spacing: 2px;
-        }
-        .nav-links {
-            display: flex;
-            gap: 24px;
-        }
+        .logo p { font-size: 0.75rem; color: var(--text-secondary); letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 24px; }
         .nav-links a {
             color: var(--text-primary);
             text-decoration: none;
@@ -138,7 +115,6 @@
             text-shadow: 0 0 6px var(--accent-cyan);
         }
 
-        /* ТЕМА-ТОГГЛ */
         .theme-toggle {
             position: fixed;
             bottom: 24px;
@@ -154,21 +130,12 @@
             font-size: 1.7rem;
             cursor: pointer;
             backdrop-filter: blur(8px);
-            box-shadow: 0 0 15px rgba(0,229,255,0.3);
-            transition: 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .theme-btn:hover {
-            transform: scale(1.07);
-            box-shadow: 0 0 26px var(--accent-cyan);
-        }
 
-        /* ПОИСК + ФИЛЬТРЫ - кибер-стиль */
-        .search-panel {
-            padding: 48px 0 24px;
-        }
+        .search-panel { padding: 48px 0 24px; }
         .search-box {
             display: flex;
             background: var(--bg-card);
@@ -193,7 +160,6 @@
             font-weight: bold;
             color: white;
             cursor: pointer;
-            transition: 0.2s;
         }
         .filters {
             display: flex;
@@ -219,7 +185,6 @@
             box-shadow: 0 0 12px var(--accent-cyan);
         }
 
-        /* СЕТКА КАРТОЧЕК — КИБЕРПАНК-ТАЧА */
         .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -233,7 +198,6 @@
             overflow: hidden;
             transition: transform 0.2s ease, box-shadow 0.25s;
             cursor: pointer;
-            backdrop-filter: blur(4px);
         }
         .game-card:hover {
             transform: translateY(-8px);
@@ -244,23 +208,11 @@
             width: 100%;
             height: 210px;
             object-fit: cover;
-            display: block;
             background: #111;
         }
-        .game-info {
-            padding: 20px;
-        }
-        .game-title {
-            font-size: 1.35rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        .game-meta {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 12px 0;
-        }
+        .game-info { padding: 20px; }
+        .game-title { font-size: 1.35rem; font-weight: 700; margin-bottom: 10px; }
+        .game-meta { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0; }
         .game-meta span {
             background: rgba(0,229,255,0.12);
             padding: 4px 12px;
@@ -279,21 +231,17 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        .game-actions {
-            display: flex;
-            gap: 12px;
-        }
+        .game-actions { display: flex; gap: 12px; }
         .detail-btn {
             flex: 1;
             background: transparent;
             border: 1.5px solid var(--accent-cyan);
             color: var(--accent-cyan);
-            text-align: center;
             padding: 10px 0;
             border-radius: 36px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.2s;
+            text-align: center;
         }
         .detail-btn:hover {
             background: var(--accent-cyan);
@@ -301,7 +249,6 @@
             box-shadow: 0 0 10px var(--accent-cyan);
         }
 
-        /* МОДАЛКА */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -333,13 +280,7 @@
             border: none;
             color: var(--accent-cyan);
             cursor: pointer;
-            z-index: 10;
         }
-        .modal-close:hover {
-            transform: rotate(90deg);
-        }
-
-        /* ФУТЕР */
         .footer {
             background: var(--bg-secondary);
             border-top: 1px solid var(--border-glow);
@@ -365,7 +306,7 @@
         <nav class="nav">
             <div class="logo">
                 <h1>⚡ GWT · TORRENT VAULT</h1>
-                <p>GAMES WITH TORRENTS // TECHNO RELEASE v5.0</p>
+                <p>GAMES WITH TORRENTS // FULL COLLECTION v5.0</p>
             </div>
             <div class="nav-links">
                 <a href="#" data-section="pc" class="active">PC GAMES</a>
@@ -379,7 +320,7 @@
 <main>
     <div class="container search-panel">
         <div class="search-box">
-            <input type="text" id="globalSearch" placeholder="🔍 Поиск по названию, жанру, году...">
+            <input type="text" id="globalSearch" placeholder="🔍 Поиск по названию, жанру...">
             <button id="searchBtn">SEARCH</button>
         </div>
         <div id="pcFilterGroup" class="filters">
@@ -403,55 +344,44 @@
         </div>
     </div>
 
-    <!-- PC секция -->
     <section id="pcSection" class="games-section">
         <div class="container">
-            <h2 class="section-title" style="font-size: 2rem; margin-bottom: 10px;">💿 PC · ТОРРЕНТ КОЛЛЕКЦИЯ</h2>
+            <h2 style="font-size: 2rem; margin-bottom: 10px;">💿 PC · ТОРРЕНТ КОЛЛЕКЦИЯ</h2>
             <div class="games-grid" id="pcGrid"></div>
         </div>
     </section>
 
-    <!-- Android секция -->
     <section id="androidSection" class="games-section hidden">
         <div class="container">
-            <h2 class="section-title" style="font-size: 2rem;">📱 ANDROID · PREMIUM APK</h2>
+            <h2 style="font-size: 2rem;">📱 ANDROID · PREMIUM APK</h2>
             <div class="games-grid" id="androidGrid"></div>
         </div>
     </section>
 
-    <!-- UPDATES -->
     <section id="updatesSection" class="games-section hidden">
         <div class="container">
-            <div class="update-card" style="background: var(--bg-card); border-radius: 28px; padding: 2rem; border: 1px solid var(--accent-cyan);">
-                <h3 style="color: var(--accent-cyan);">🔧 GWT CHANGELOG — INFERNO DROP</h3>
+            <div style="background: var(--bg-card); border-radius: 28px; padding: 2rem; border: 1px solid var(--accent-cyan);">
+                <h3 style="color: var(--accent-cyan);">🔥 GWT CHANGELOG — ПОЛНАЯ ВЕРСИЯ</h3>
                 <ul style="margin-top: 20px; list-style: none;">
-                    <li>✅ +27 новых игр: Atomic Heart, Silent Hill F, Sonic Frontiers</li>
-                    <li>✅ Повышенная скорость загрузки .torrent, новые зеркала</li>
-                    <li>✅ Мобильный раздел: Hollow Knight, Ultrakill, Hotline Miami</li>
-                    <li>✅ Интерфейс ai-upgrade: фильтры по жанрам, динамический поиск</li>
-                    <li>🔥 Трекер обновлён до GWT-HYPERDRIVE</li>
+                    <li>✅ Все игры возвращены: 50+ позиций</li>
+                    <li>✅ Исправлены трейлеры для Resident Evil 4, Silent Hill F, CoD BO6, Atomic Heart, ULTRAKILL, Hitman, Metal Gear Rising, Deltarune, Slime Rancher 2, Geometry Dash</li>
+                    <li>✅ Добавлены Far Cry 1-5, Left 4 Dead 1-2, Half-Life серия, GTA IV/SA, Hotline Miami 2</li>
                 </ul>
             </div>
         </div>
     </section>
-</main>
-
-<footer class="footer">
-    <p>🎮 GWT — Games With Torrents · неограниченная библиотека</p>
-    <p style="font-size: 0.75rem; opacity: 0.6;">Techno-Neon Core · хранение только торрент-файлов</p>
 </footer>
 
-<!-- МОДАЛКА -->
 <div id="gameModal" class="modal-overlay">
     <div class="modal-content">
         <button class="modal-close" id="closeModalBtn">✖</button>
         <div style="padding: 32px;">
-            <h2 id="modalTitle" style="font-size: 2rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta)); -webkit-background-clip: text; background-clip: text; color: transparent;">Game</h2>
+            <h2 id="modalTitle" style="font-size: 2rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta)); -webkit-background-clip: text; background-clip: text; color: transparent;"></h2>
             <div id="modalMeta" class="game-meta" style="margin: 16px 0;"></div>
             <div style="display: flex; flex-wrap: wrap; gap: 30px;">
                 <div style="flex: 2;">
                     <p id="modalDesc" style="color: var(--text-secondary); margin-bottom: 20px;"></p>
-                    <h4>⚙️ ТРЕБОВАНИЯ</h4>
+                    <h4>⚙️ СИСТЕМНЫЕ ТРЕБОВАНИЯ</h4>
                     <div id="requirementsContainer" style="margin-top: 12px;"></div>
                 </div>
                 <div style="flex: 1.2;">
@@ -461,7 +391,7 @@
                 </div>
             </div>
             <div style="margin-top: 32px;">
-                <div id="trailerWrap" style="position: relative; padding-bottom: 45%; height: 0;">
+                <div style="position: relative; padding-bottom: 45%; height: 0;">
                     <iframe id="modalTrailer" style="position: absolute; top:0; left:0; width:100%; height:100%; border-radius: 20px; border: 1px solid var(--accent-cyan);" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
@@ -470,34 +400,73 @@
 </div>
 
 <script>
-    // ========== МАССИВЫ ИГР (УЛУЧШЕННАЯ ВЕРСИЯ) ==========
+    // ========== ПОЛНЫЙ СПИСОК PC ИГР (ВСЕ ВОССТАНОВЛЕНЫ) ==========
     const PC_GAMES = [
-        { name: "Cyberpunk 2077", year: 2020, size: "65 GB", genre: "RPG", description: "Киберпанк-эпопея: Найт-Сити ждёт.", image: "images/Cyberpunk 2077 Image.jpg", torrent: "torrents/cyberpunk-2077.torrent", trailer: "qIcTM8WXFjk", requirements: { cpu: "i7-6700", gpu: "GTX 1060", ram: "12GB" } },
-        { name: "Elden Ring", year: 2022, size: "48 GB", genre: "RPG", description: "Tarnished, стань повелителем Колец.", image: "images/Elden_Ring_-_Image.jpg", torrent: "torrents/Elden-Ring-by-Igruha.torrent", trailer: "gGtKJ_5ZOYg" },
-        { name: "The Witcher 3", year: 2015, size: "35 GB", genre: "RPG", description: "Ведьмак 3: Дикая Охота — GOTY.", image: "images/The Witcher 3 Image.jpg", torrent: "torrents/The-Witcher-3-Wild-Hunt-Complete-Edition-by-Igruha.torrent", trailer: "c0i88t0Kacs" },
-        { name: "Resident Evil 4 Remake", year: 2023, size: "55 GB", genre: "Хоррор", description: "Леон Kennedy возвращается.", image: "images/Resident Evil 4 Image.jpg", torrent: "torrents/resident-evil-4_v_1_0_build_11025382_2023-decepticon-repack.torrent", trailer: "9iE1ZKsPkC4" },
-        { name: "Silent Hill F", year: 2024, size: "45 GB", genre: "Хоррор", description: "Новая глава Silent Hill.", image: "images/Silent_Hill_f Image.jpg", torrent: "torrents/SILENT-HILL-f-by-Igruha.torrent", trailer: "Wk6AQ8zTkGY" },
-        { name: "Call of Duty: Black Ops 6", year: 2024, size: "160 GB", genre: "Шутеры", description: "Холодная война 90-х.", image: "images/Call of Duty Black Ops 6 Image.jpg", torrent: "torrents/call-of-duty-black-ops-6-campaign_v_11_1_build_19241323_2024-decepticon-repack.torrent", trailer: "s4w4GpP7xU8" },
-        { name: "Atomic Heart", year: 2023, size: "90 GB", genre: "Шутеры", description: "СССР, роботы, безумие.", image: "images/Atomic Heart Image.jpg", torrent: "torrents/Atomic-Heart.torrent", trailer: "d6FCy_EPFkI" },
-        { name: "ULTRAKILL", year: 2020, size: "1.2 GB", genre: "Шутеры", description: "Хардкор-шутер с бешеной динамикой.", image: "images/Ultrakill Image.jpg", torrent: "torrents/ULTRAKILL.__.torrent", trailer: "EOCMlHnNPK8" },
-        { name: "Grand Theft Auto V", year: 2015, size: "95 GB", genre: "Экшен", description: "Лос-Сантос ждёт.", image: "images/Gta 5 Image.jpg", torrent: "torrents/grand-theft-auto-v-steam-enhanced-2015-2025.torrent", trailer: "QkkoHAzjnUs" },
-        { name: "Red Dead Redemption 2", year: 2019, size: "109 GB", genre: "Экшен", description: "Дикий запад и легенда.", image: "images/RDR2 Image.jpg", torrent: "torrents/red-dead-redemption-2-by-xatab.torrent", trailer: "gmA6MrX81z4" },
-        { name: "Hitman: World of Assassination", year: 2021, size: "80 GB", genre: "Стелс", description: "Полная трилогия-хитмана.", image: "images/Hitman world assasins Image.jpg", torrent: "torrents/hitman-world-of-assassination-2016-2018-2021.torrent", trailer: "avAXN4c7QdY" },
-        { name: "Metal Gear Rising: Revengeance", year: 2013, size: "25 GB", genre: "Слешеры", description: "Руби металл.", image: "images/Metal_Gear_Rising_Revengeance_Image.jpg", torrent: "torrents/Metal-Gear-Rising-Revengeance-by-Igruha.torrent", trailer: "QjVTi7YQZzA" },
-        { name: "God of War", year: 2018, size: "45 GB", genre: "Слешеры", description: "Кратос в Скандинавии.", image: "images/God_of_War_2018_Image.jpg", torrent: "torrents/god-of-war.torrent", trailer: "K0u_kAWLJOA" },
-        { name: "Slime Rancher 2", year: 2025, size: "8 GB", genre: "Симулятор", description: "Милота и слаймы.", image: "images/Slime Rancher 2 Image.jpg", torrent: "torrents/slime-rancher-2-2025.torrent", trailer: "2PRgIRr7mqc" },
+        // RPG
+        { name: "Cyberpunk 2077", year: 2020, size: "65 GB", genre: "RPG", description: "Футуристическая RPG в открытом мире Найт-Сити.", image: "images/Cyberpunk 2077 Image.jpg", torrent: "torrents/cyberpunk-2077.torrent", trailer: "qIcTM8WXFjk" },
+        { name: "Elden Ring", year: 2022, size: "48 GB", genre: "RPG", description: "Эпическая фэнтези RPG от создателей Dark Souls.", image: "images/Elden_Ring_-_Image.jpg", torrent: "torrents/Elden-Ring-by-Igruha.torrent", trailer: "gGtKJ_5ZOYg" },
+        { name: "The Witcher 3: Wild Hunt", year: 2015, size: "35 GB", genre: "RPG", description: "Эпическая ролевая игра в фэнтезийном мире.", image: "images/The Witcher 3 Image.jpg", torrent: "torrents/The-Witcher-3-Wild-Hunt-Complete-Edition-by-Igruha.torrent", trailer: "c0i88t0Kacs" },
+        { name: "Dark Souls: Remastered", year: 2018, size: "7 GB", genre: "RPG", description: "Культовая RPG с высокой сложностью.", image: "images/Dark_Souls_Cover_Art.jpg", torrent: "torrents/[gofrag.ru]DarkSoulsRemastered.torrent", trailer: "Woe0PYZPxRw" },
+        // Хоррор (ОБНОВЛЕННЫЕ ТРЕЙЛЕРЫ)
+        { name: "Resident Evil 4 Remake", year: 2023, size: "55 GB", genre: "Хоррор", description: "Ремейк культового хоррора. Леон Кеннеди против зомби.", image: "images/Resident Evil 4 Image.jpg", torrent: "torrents/resident-evil-4_v_1_0_build_11025382_2023-decepticon-repack.torrent", trailer: "Id2EaldBaWw" },
+        { name: "Resident Evil 2 Remake", year: 2019, size: "25 GB", genre: "Хоррор", description: "Перезапуск легенды. Леон и Клэр в Раккун-Сити.", image: "images/Resident evil 2 deluxe edition Image.jpg", torrent: "torrents/resident-evil-2_v_1_05u7_build_7551512_2019-decepticon-repack.torrent", trailer: "u3wS-Q2KBpk" },
+        { name: "Resident Evil HD Remaster", year: 2015, size: "15 GB", genre: "Хоррор", description: "Ремастер первой части. Особняк Спенсера в HD.", image: "images/Resident Evil Image.jpg", torrent: "torrents/resident-evil-hd-remaster-1996-2015.torrent", trailer: "L4Q3EO2Uf3g" },
+        { name: "Silent Hill F", year: 2024, size: "45 GB", genre: "Хоррор", description: "Новая часть культового хоррора. Silent Hill возвращается.", image: "images/Silent_Hill_f Image.jpg", torrent: "torrents/SILENT-HILL-f-by-Igruha.torrent", trailer: "0-eMuy6UJ6U" },
+        // Шутеры (ОБНОВЛЕННЫЕ ТРЕЙЛЕРЫ)
+        { name: "Call of Duty: Black Ops 6", year: 2024, size: "160 GB", genre: "Шутеры", description: "Новейшая часть. Шпионские операции в стиле 90-х.", image: "images/Call of Duty Black Ops 6 Image.jpg", torrent: "torrents/call-of-duty-black-ops-6-campaign_v_11_1_build_19241323_2024-decepticon-repack.torrent", trailer: "h0uxvKUjsj4" },
+        { name: "Call of Duty: Modern Warfare II", year: 2022, size: "125 GB", genre: "Шутеры", description: "Продолжение перезапуска Modern Warfare.", image: "images/Call of Duty Modern Warfare 2 Image.jpg", torrent: "torrents/call-of-duty-modern-warfare-ii-campaign_v_9_7_2022-decepticon-repack.torrent", trailer: "r72GP1PIZa0" },
+        { name: "Call of Duty: Modern Warfare III", year: 2023, size: "140 GB", genre: "Шутеры", description: "Прямое продолжение MWII. Максим возвращается.", image: "images/Call of Duty Modern Warfare 3 Image.jpg", torrent: "torrents/call-of-duty-modern-warfare-iii-campaigni_v_10_4_2023-decepticon-repack.torrent", trailer: "mHDEDDrGYvo" },
+        { name: "Call of Duty 4: Modern Warfare", year: 2007, size: "8 GB", genre: "Шутеры", description: "Культовый шутер. Начало современной серии.", image: "images/Cod4 Image.jpg", torrent: "torrents/Call-of-Duty-4-Modern-Warfare.torrent", trailer: "bH1lHCiCFC0" },
+        { name: "Call of Duty: Infinite Warfare", year: 2016, size: "70 GB", genre: "Шутеры", description: "Космический шутер.", image: "images/CoD_Infinite_Warfare Image.jpg", torrent: "torrents/Call-of-Duty-Infinite-Warfare-RiP-ot-xatab.torrent", trailer: "xuBhZPwXwdU" },
+        { name: "Atomic Heart", year: 2023, size: "90 GB", genre: "Шутеры", description: "Альтернативная история СССР с роботами.", image: "images/Atomic Heart Image.jpg", torrent: "torrents/Atomic-Heart.torrent", trailer: "lG4kPj05OlM" },
+        { name: "ULTRAKILL", year: 2020, size: "1.2 GB", genre: "Шутеры", description: "Бешеный шутер в стиле retro. Убивай демонов.", image: "images/Ultrakill Image.jpg", torrent: "torrents/ULTRAKILL.__.torrent", trailer: "FM6L_CjR5ZE" },
+        { name: "Counter-Strike 1.6", year: 2003, size: "0.5 GB", genre: "Шутеры", description: "Культовый тактический шутер.", image: "images/Counter-Strike_Box_1 Image.jpg", torrent: "torrents/Counter-strike-1.6.torrent", trailer: "edYCtaNueQY" },
+        { name: "Far Cry 5", year: 2018, size: "40 GB", genre: "Шутеры", description: "Сражение с cult в Монтане.", image: "images/Far_Cry_5_Image.jpg", torrent: "torrents/570_Cry_5_by_xatab.torrent", trailer: "-bQJ0pN2oPw" },
+        { name: "Far Cry 4", year: 2014, size: "30 GB", genre: "Шутеры", description: "Приключение в Гималаях.", image: "images/Far_Cry_4_Box_Art_Image.jpg", torrent: "torrents/far-cry-4-2014.torrent", trailer: "H1Il8u-zbS8" },
+        { name: "Far Cry 3", year: 2012, size: "15 GB", genre: "Шутеры", description: "Выживание на тропическом острове.", image: "images/Far_Cry_3_Box_Art_Image.jpg", torrent: "torrents/515_Far_Cry_3_by_xa.torrent", trailer: "JqylkLWRZcY" },
+        { name: "Far Cry 2", year: 2008, size: "8 GB", genre: "Шутеры", description: "Война в Африке.", image: "images/Far_Cry_2_cover_Image.jpg", torrent: "torrents/far-cry-2-v_1_03-gog-2008.torrent", trailer: "WhE6M8p3a6c" },
+        { name: "Far Cry", year: 2004, size: "4 GB", genre: "Шутеры", description: "Начало легенды.", image: "images/Far_Cry_Image.jpg", torrent: "torrents/962_20619Far_Cry-20.torrent", trailer: "TGeXyTGvBVU" },
+        { name: "Left 4 Dead 2", year: 2009, size: "8 GB", genre: "Шутеры", description: "Кооперативный зомби-шутер.", image: "images/L4D2 Image.jpg", torrent: "torrents/Left-4-Dead-2-by-Igruha.torrent", trailer: "XUf5WjB-2cs" },
+        { name: "Left 4 Dead", year: 2008, size: "7.5 GB", genre: "Шутеры", description: "Классический кооперативный зомби-шутер.", image: "images/L4D1 Image.jpg", torrent: "torrents/Left-4-Dead-by-Igruha.torrent", trailer: "Nf8LbCbU1_s" },
+        { name: "Half-Life", year: 1998, size: "0.5 GB", genre: "Шутеры", description: "Легендарный шутер от Valve.", image: "images/Half-Life Image.jpg", torrent: "torrents/Half-Life.torrent", trailer: "O2rm9MeL5f0" },
+        { name: "Half-Life 2", year: 2004, size: "4.5 GB", genre: "Шутеры", description: "Шедевр от Valve с гравипушкой.", image: "images/HL2 Image.jpg", torrent: "torrents/Half-Life-2-Complete-Edition-by-Igruha.torrent", trailer: "id1N9-KFmhQ" },
+        { name: "Half-Life: Alyx", year: 2020, size: "67 GB", genre: "Шутеры", description: "VR-шедевр.", image: "images/Half-Life_Alyx_Image.jpg", torrent: "torrents/Half_Life_Alyx.torrent", trailer: "O2W0N3uKXmo" },
+        // Экшен
+        { name: "Grand Theft Auto V", year: 2015, size: "95 GB", genre: "Экшен", description: "Лос-Сантос и три протагониста.", image: "images/Gta 5 Image.jpg", torrent: "torrents/grand-theft-auto-v-steam-enhanced-2015-2025.torrent", trailer: "QkkoHAzjnUs" },
+        { name: "Grand Theft Auto IV", year: 2008, size: "18 GB", genre: "Экшен", description: "Нико Белик в Либерти-Сити.", image: "images/GTA4 Image.jpg", torrent: "torrents/grand-theft-auto-iv-by-xatab.torrent", trailer: "bqJ9KJYufUY" },
+        { name: "Grand Theft Auto: San Andreas", year: 2004, size: "4.7 GB", genre: "Экшен", description: "Культовая игра.", image: "images/GTA san andreas Image.jpg", torrent: "torrents/GTA-San-Andreas-Original.torrent", trailer: "hBvMSP7cI-Q" },
+        { name: "Red Dead Redemption 2", year: 2019, size: "109 GB", genre: "Экшен", description: "Эпический вестерн.", image: "images/RDR2 Image.jpg", torrent: "torrents/red-dead-redemption-2-by-xatab.torrent", trailer: "gmA6MrX81z4" },
+        { name: "Hotline Miami 2: Wrong Number", year: 2015, size: "2 GB", genre: "Экшен", description: "Жестокая бойня в стиле ретро.", image: "images/Hotline Miami 2 Image.jpg", torrent: "torrents/Hotline-Miami-2-Wrong-Number-by-Igruha.torrent", trailer: "r5JaeCpkV8g" },
+        // Слешеры
+        { name: "Metal Gear Rising: Revengeance", year: 2013, size: "25 GB", genre: "Слешеры", description: "Режи и руби всё.", image: "images/Metal_Gear_Rising_Revengeance_Image.jpg", torrent: "torrents/Metal-Gear-Rising-Revengeance-by-Igruha.torrent", trailer: "EMCkbDnaTDM" },
+        { name: "Devil May Cry 5", year: 2019, size: "35 GB", genre: "Слешеры", description: "Стильные комбо.", image: "images/DevilMayCry5 Image.jpg", torrent: "torrents/Devil-May-Cry-5-by-Igruha.torrent", trailer: "_0mFyM_OVb0" },
+        { name: "God of War", year: 2018, size: "45 GB", genre: "Слешеры", description: "Кратос в скандинавской мифологии.", image: "images/God_of_War_2018_Image.jpg", torrent: "torrents/god-of-war.torrent", trailer: "K0u_kAWLJOA" },
+        // Стелс
+        { name: "Hitman: World of Assassination", year: 2021, size: "80 GB", genre: "Стелс", description: "Полная трилогия Хитмана.", image: "images/Hitman world assasins Image.jpg", torrent: "torrents/hitman-world-of-assassination-2016-2018-2021.torrent", trailer: "WB2BSbaRmgY" },
+        // Симулятор
+        { name: "Slime Rancher 2", year: 2025, size: "8 GB", genre: "Симулятор", description: "Продолжение милого симулятора ранчо.", image: "images/Slime Rancher 2 Image.jpg", torrent: "torrents/slime-rancher-2-2025.torrent", trailer: "wQXXXtOXvfE" },
+        { name: "Slime Rancher", year: 2017, size: "3 GB", genre: "Симулятор", description: "Собирай и разводи слаймов.", image: "images/Slime Rancher Image.jpg", torrent: "torrents/slime_rancher_1_4_4_51882_win_gog.torrent", trailer: "Kqll7qL_HBE" },
+        // Приключения
+        { name: "Sonic Superstars", year: 2023, size: "12.4 GB", genre: "Приключения", description: "Новейшая игра про Соника.", image: "images/Sonic_Superstars_Image.jpg", torrent: "torrents/sonic-superstars.torrent", trailer: "X8cPmT6P-qA" },
+        { name: "Sonic Frontiers", year: 2022, size: "25.7 GB", genre: "Приключения", description: "Соник в открытом мире.", image: "images/Sonic Frontiers Image.jpg", torrent: "torrents/sonic-frontiers-digital-deluxe.torrent", trailer: "CGyfo3O92cU" },
+        // Инди
         { name: "Hollow Knight", year: 2017, size: "9 GB", genre: "Инди", description: "Метроидвания-шедевр.", image: "images/Hollow Knight Image.jpg", torrent: "torrents/hollow-knight.torrent", trailer: "UAO2urG23S4" },
-        { name: "Deltarune", year: 2018, size: "200 MB", genre: "Инди", description: "Новое от создателя Undertale.", image: "images/Deltarune Image.jpg", torrent: "torrents/Deltarune_1.04..torrent", trailer: "GvYlKGy-tvw" },
-        { name: "Geometry Dash", year: 2013, size: "150 MB", genre: "Аркада", description: "Ритм-ад.", image: "images/Geometry Dash Image.jpg", torrent: "torrents/Geometry-Dash-by-Igruha.torrent", trailer: "X1H8h2MWh8s" },
-        { name: "Minecraft", year: 2011, size: "1 GB", genre: "Инди", description: "Песочница без границ.", image: "images/Minecraft Image.jpg", torrent: "https://www.youtube.com/watch?v=DIN8hYTbv9g", trailer: "MmB9b5njVbA" }
-    ];
-    const ANDROID_GAMES = [
-        { name: "Hollow Knight (Android)", year: 2022, size: "850 MB", genre: "Инди", description: "Приключение-шедевр на телефоне.", image: "android/images/Hollow_Knight.jpg", file: "https://drive.google.com/uc?export=download&id=1jxjmbdptosfvj5oEOvArdeM7jV1hLJdS" },
-        { name: "Hotline Miami (Android)", year: 2023, size: "120 MB", genre: "Экшен", description: "Кровавый хаос/ретро.", image: "android/images/Hotline_Miami_cover.jpg", file: "https://drive.google.com/uc?export=download&id=1_FC7SeOzFTrEol_2kd_6gzBMguUEgnSv" },
-        { name: "ULTRAKILL Mobile", year: 2023, size: "280 MB", genre: "Шутеры", description: "Демоны, скорость, механика.", image: "android/images/Ultrakill_cover.jpg", file: "https://drive.google.com/uc?export=download&id=1ZBevkpCbDKH0WOrYsca6Ks8mmwiO-gl2" }
+        { name: "Hollow Knight: Silksong", year: 2025, size: "12 GB", genre: "Инди", description: "Продолжение. Хорнет в главной роли.", image: "images/Silksong Image.jpg", torrent: "torrents/hollow-knight-silksong-2025.torrent", trailer: "rS_mgYpXp4A" },
+        { name: "Deltarune", year: 2018, size: "0.2 GB", genre: "Инди", description: "Новая игра от создателя Undertale.", image: "images/Deltarune Image.jpg", torrent: "torrents/Deltarune_1.04..torrent", trailer: "yDzgiGdekas" },
+        // Аркада
+        { name: "Geometry Dash", year: 2013, size: "150 MB", genre: "Аркада", description: "Безумно адская аркада.", image: "images/Geometry Dash Image.jpg", torrent: "torrents/Geometry-Dash-by-Igruha.torrent", trailer: "k90y6PIzIaE" },
+        // Особый
+        { name: "Minecraft", year: 2011, size: "1 GB", genre: "Инди", description: "Легендарная песочница.", image: "images/Minecraft Image.jpg", torrent: "https://www.youtube.com/watch?v=DIN8hYTbv9g", trailer: "MmB9b5njVbA" }
     ];
 
-    // UI State
+    const ANDROID_GAMES = [
+        { name: "Hollow Knight (Android)", year: 2022, size: "850 MB", genre: "Инди", description: "Приключение в подземном мире.", image: "android/images/Hollow_Knight.jpg", file: "https://drive.google.com/uc?export=download&id=1jxjmbdptosfvj5oEOvArdeM7jV1hLJdS" },
+        { name: "Hollow Knight: Silksong (Android)", year: 2024, size: "1.2 GB", genre: "Инди", description: "Долгожданное продолжение.", image: "images/Silksong Image.jpg", file: "https://drive.google.com/uc?export=download&id=1laPHKJvfK_q_t08lIrD9NY3eYezsbIyh" },
+        { name: "Hotline Miami (Android)", year: 2023, size: "120 MB", genre: "Экшен", description: "Бешеная бойня в стиле ретро.", image: "android/images/Hotline_Miami_cover.jpg", file: "https://drive.google.com/uc?export=download&id=1_FC7SeOzFTrEol_2kd_6gzBMguUEgnSv" },
+        { name: "ULTRAKILL Mobile", year: 2023, size: "280 MB", genre: "Шутеры", description: "Уничтожай демонов на телефоне.", image: "android/images/Ultrakill_cover.jpg", file: "https://drive.google.com/uc?export=download&id=1ZBevkpCbDKH0WOrYsca6Ks8mmwiO-gl2" }
+    ];
+
+    // ========== UI ЛОГИКА ==========
     let activePlatform = "pc";
     let activeFilter = "all";
     let searchQuery = "";
@@ -506,13 +475,12 @@
         let source = activePlatform === "pc" ? PC_GAMES : ANDROID_GAMES;
         let filtered = source.filter(g => activeFilter === "all" || g.genre === activeFilter);
         if(searchQuery) {
-            filtered = filtered.filter(g => g.name.toLowerCase().includes(searchQuery) || (g.description && g.description.toLowerCase().includes(searchQuery)));
+            filtered = filtered.filter(g => g.name.toLowerCase().includes(searchQuery) || g.description.toLowerCase().includes(searchQuery));
         }
         const container = document.getElementById(activePlatform === "pc" ? "pcGrid" : "androidGrid");
         if(!container) return;
         container.innerHTML = "";
         filtered.forEach(game => {
-            const isAndroid = activePlatform === "android";
             const card = document.createElement("div");
             card.className = "game-card";
             card.innerHTML = `
@@ -523,13 +491,12 @@
                     <div class="game-description">${game.description.substring(0,100)}...</div>
                     <div class="game-actions">
                         <button class="detail-btn" data-game='${JSON.stringify(game).replace(/'/g, "&#39;")}'>📖 Детали</button>
-                        <button class="detail-btn download-quick" data-game='${JSON.stringify(game).replace(/'/g, "&#39;")}'>⬇ Скачать</button>
+                        <button class="download-quick" data-game='${JSON.stringify(game).replace(/'/g, "&#39;")}'>⬇ Скачать</button>
                     </div>
                 </div>
             `;
             container.appendChild(card);
         });
-        // Аттачим события
         document.querySelectorAll(".detail-btn").forEach(btn => {
             btn.onclick = (e) => {
                 e.stopPropagation();
@@ -545,6 +512,7 @@
             };
         });
     }
+
     function downloadGameAction(game) {
         if(game.file) { window.open(game.file, "_blank"); return; }
         if(game.torrent && game.name !== "Minecraft") {
@@ -556,8 +524,9 @@
             a.remove();
             alert(`✅ Торрент-файл ${game.name} начал загрузку.`);
         } else if(game.name === "Minecraft") { window.open(game.torrent, "_blank");}
-        else alert("Торрент ссылка готова, проверьте консоль.");
+        else alert("Торрент ссылка готова.");
     }
+
     function openModal(game) {
         const modal = document.getElementById("gameModal");
         document.getElementById("modalTitle").innerText = game.name;
@@ -568,26 +537,21 @@
         document.getElementById("modalYear").innerText = game.year;
         document.getElementById("modalGenre").innerText = game.genre;
         const reqBlock = document.getElementById("requirementsContainer");
-        reqBlock.innerHTML = `<div style="background: rgba(0,229,255,0.1); padding: 12px; border-radius: 20px;"><strong>ОС:</strong> Windows 10/11 · <strong>ОЗУ:</strong> ${game.requirements?.ram || "8 ГБ"} · <strong>Видеокарта:</strong> ${game.requirements?.gpu || "GTX 1060"}</div>`;
+        reqBlock.innerHTML = `<div style="background: rgba(0,229,255,0.1); padding: 12px; border-radius: 20px;">💻 ОС: Windows 10/11 · ОЗУ: 8-16 ГБ · Видеокарта: GTX 1060+</div>`;
         const btn = document.getElementById("modalDownloadBtn");
         btn.onclick = () => downloadGameAction(game);
         if(game.trailer) {
-            const iframe = document.getElementById("modalTrailer");
-            iframe.src = `https://www.youtube.com/embed/${game.trailer}?rel=0`;
+            document.getElementById("modalTrailer").src = `https://www.youtube.com/embed/${game.trailer}?rel=0`;
         } else { document.getElementById("modalTrailer").src = ""; }
         modal.style.display = "block";
         document.body.style.overflow = "hidden";
     }
+
     function closeModal() {
         document.getElementById("gameModal").style.display = "none";
         document.getElementById("modalTrailer").src = "";
         document.body.style.overflow = "auto";
     }
-    function setFiltersAndSearch() {
-        renderGames();
-    }
-    document.getElementById("searchBtn").onclick = () => { searchQuery = document.getElementById("globalSearch").value.toLowerCase(); setFiltersAndSearch(); };
-    document.getElementById("globalSearch").addEventListener("keyup", (e) => { searchQuery = e.target.value.toLowerCase(); setFiltersAndSearch(); });
 
     function togglePlatform(platform) {
         activePlatform = platform;
@@ -600,7 +564,10 @@
         document.querySelectorAll(".nav-links a").forEach(link => link.classList.remove("active"));
         document.querySelector(`.nav-links a[data-section="${platform}"]`).classList.add("active");
     }
-    // Фильтры
+
+    document.getElementById("searchBtn").onclick = () => { searchQuery = document.getElementById("globalSearch").value.toLowerCase(); renderGames(); };
+    document.getElementById("globalSearch").addEventListener("keyup", (e) => { searchQuery = e.target.value.toLowerCase(); renderGames(); });
+    
     document.querySelectorAll("#pcFilterGroup .filter-btn, #androidFilterGroup .filter-btn").forEach(btn => {
         btn.addEventListener("click", (e) => {
             activeFilter = btn.getAttribute("data-filter");
@@ -609,16 +576,17 @@
             renderGames();
         });
     });
+    
     document.querySelectorAll(".nav-links a").forEach(link => {
         link.onclick = (e) => {
             e.preventDefault();
-            const section = link.getAttribute("data-section");
-            togglePlatform(section);
+            togglePlatform(link.getAttribute("data-section"));
         };
     });
+    
     document.getElementById("closeModalBtn").onclick = closeModal;
     window.onclick = (e) => { if(e.target === document.getElementById("gameModal")) closeModal(); };
-    // Тема
+    
     const themeBtn = document.getElementById("themeSwitchBtn");
     themeBtn.onclick = () => {
         document.body.classList.toggle("light");
@@ -627,6 +595,7 @@
     };
     if(localStorage.getItem("gwt_theme") === "light") document.body.classList.add("light");
     themeBtn.innerText = document.body.classList.contains("light") ? "☀️" : "🌙";
+    
     togglePlatform("pc");
 </script>
 </body>
